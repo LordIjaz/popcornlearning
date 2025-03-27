@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KS4 Maths - Popcorn Learning</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: black;
+            color: white;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        header {
+            background: linear-gradient(45deg, #007BFF, #F0C808);
+            padding: 20px 40px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 10;
+        }
+        header h1 {
+            font-size: 36px;
+            color: white;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        header .nav-links a {
+            margin: 0 15px;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        header .nav-links a:hover {
+            color: #F0C808;
+        }
+        .main-content {
+            margin-top: 120px;
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(45deg, #1f1f1f, #333);
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        .main-content h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #F0C808;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .question-container {
+            margin-top: 30px;
+        }
+        .question {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        .input-box {
+            margin: 10px;
+            padding: 10px;
+            font-size: 18px;
+            border: 2px solid #007BFF;
+            border-radius: 5px;
+            background-color: #333;
+            color: white;
+        }
+        .button {
+            background-color: #F0C808;
+            color: black;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 20px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .button:hover {
+            background-color: #C79200;
+            transform: scale(1.05);
+        }
+        .feedback {
+            display: none;
+            font-size: 24px;
+            color: green;
+            margin-top: 15px;
+        }
+        footer {
+            background-color: #333;
+            text-align: center;
+            padding: 20px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Popcorn Learning</h1>
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="courses.html">Courses</a>
+        <a href="membership.html">Membership</a>
+    </div>
+</header>
+
+<div class="main-content">
+    <h2>KS4 Maths</h2>
+    <p>Test your maths skills with 30 pre-generated questions!</p>
+    
+    <!-- Start of KS4 Questions -->
+    <div class="question-container" id="question-container">
+        <!-- Pre-generated questions -->
+        <div class="question" id="question1">
+            <p>Solve for x: 3x + 5 = 20</p>
+            <input type="text" id="answer1" class="input-box" placeholder="Enter answer">
+            <button class="button" onclick="checkAnswer(1, 5)">Submit Answer</button>
+            <div id="feedback1" class="feedback">✔ Correct!</div>
+        </div>
+
+        <div class="question" id="question2">
+            <p>Solve for y: 2y - 7 = 15</p>
+            <input type="text" id="answer2" class="input-box" placeholder="Enter answer">
+            <button class="button" onclick="checkAnswer(2, 11)">Submit Answer</button>
+            <div id="feedback2" class="feedback">✔ Correct!</div>
+        </div>
+
+        <div class="question" id="question3">
+            <p>What is 4 × 12?</p>
+            <input type="text" id="answer3" class="input-box" placeholder="Enter answer">
+            <button class="button" onclick="checkAnswer(3, 48)">Submit Answer</button>
+            <div id="feedback3" class="feedback">✔ Correct!</div>
+        </div>
+
+        <div class="question" id="question4">
+            <p>What is 150 ÷ 5?</p>
+            <input type="text" id="answer4" class="input-box" placeholder="Enter answer">
+            <button class="button" onclick="checkAnswer(4, 30)">Submit Answer</button>
+            <div id="feedback4" class="feedback">✔ Correct!</div>
+        </div>
+
+        <div class="question" id="question5">
+            <p>Solve for x: x² = 49</p>
+            <input type="text" id="answer5" class="input-box" placeholder="Enter answer">
+            <button class="button" onclick="checkAnswer(5, 7)">Submit Answer</button>
+            <div id="feedback5" class="feedback">✔ Correct!</div>
+        </div>
+
+        <!-- 25 more questions to reach 30 total -->
+        <!-- Add more similar to the above format -->
+    </div>
+
+</div>
+
+<footer>
+    <p>&copy; 2025 Popcorn Learning. All rights reserved.</p>
+</footer>
+
+<script>
+    let attempts = [0, 0, 0, 0, 0]; // track attempts for 5 questions, add more if needed
+
+    function checkAnswer(questionNumber, correctAnswer) {
+        const userAnswer = document.getElementById(`answer${questionNumber}`).value;
+        const feedback = document.getElementById(`feedback${questionNumber}`);
+        
+        if (userAnswer == correctAnswer) {
+            feedback.style.display = 'block';
+            feedback.style.color = 'green';
+            feedback.innerHTML = "✔ Correct!";
+        } else {
+            attempts[questionNumber - 1]++;
+            if (attempts[questionNumber - 1] >= 3) {
+                feedback.style.display = 'block';
+                feedback.style.color = 'red';
+                feedback.innerHTML = "❌ Incorrect! You've used all attempts.";
+            } else {
+                feedback.style.display = 'block';
+                feedback.style.color = 'yellow';
+                feedback.innerHTML = `❌ Incorrect! You have ${3 - attempts[questionNumber - 1]} attempts left.`;
+            }
+        }
+    }
+</script>
+
+</body>
+</html>

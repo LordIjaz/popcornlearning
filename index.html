@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Popcorn Learning - Home</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: black;
+            color: white;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        header {
+            background: linear-gradient(45deg, #007BFF, #F0C808);
+            padding: 20px 40px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 10;
+        }
+        header h1 {
+            font-size: 36px;
+            color: white;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        header .nav-links a {
+            margin: 0 15px;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        header .nav-links a:hover {
+            color: #F0C808;
+        }
+        .main-content {
+            margin-top: 120px;
+            text-align: center;
+            padding: 100px 20px;
+            background: linear-gradient(45deg, #1f1f1f, #333);
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        .main-content h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #F0C808;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .main-content p {
+            font-size: 20px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: #D1D1D1;
+        }
+        .button {
+            background-color: #F0C808;
+            color: black;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 20px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .button:hover {
+            background-color: #C79200;
+            transform: scale(1.05);
+        }
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 50px;
+        }
+        .feature-box {
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #007BFF;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            color: white;
+            width: 250px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.6);
+        }
+        .feature-box h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #F0C808;
+        }
+        .feature-box p {
+            font-size: 18px;
+        }
+        footer {
+            background-color: #333;
+            text-align: center;
+            padding: 20px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Popcorn Learning</h1>
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="courses.html">Courses</a>
+        <a href="membership.html">Membership</a>
+    </div>
+</header>
+
+<div class="main-content">
+    <h2>Welcome to Popcorn Learning!</h2>
+    <p>We provide interactive and fun learning experiences designed to keep you engaged and motivated. Explore our courses and join a community of learners!</p>
+    <a href="courses.html" class="button">Start Learning Now</a>
+</div>
+
+<div class="features">
+    <div class="feature-box">
+        <h3>Interactive Courses</h3>
+        <p>Our courses are designed to be fun and interactive, keeping you engaged while you learn!</p>
+    </div>
+    <div class="feature-box">
+        <h3>Gamified Learning</h3>
+        <p>Earn points, level up, and compete in challenges to make your learning experience enjoyable!</p>
+    </div>
+    <div class="feature-box">
+        <h3>Real-time Progress</h3>
+        <p>Track your progress as you move through each lesson and see how you're improving!</p>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2025 Popcorn Learning. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
+
