@@ -72,6 +72,7 @@
             border-radius: 5px;
             background-color: #333;
             color: white;
+            transition: background-color 0.3s ease;
         }
         .button {
             background-color: #F0C808;
@@ -81,16 +82,34 @@
             border-radius: 50px;
             font-size: 20px;
             transition: background-color 0.3s ease, transform 0.3s ease;
+            cursor: pointer;
         }
         .button:hover {
             background-color: #C79200;
             transform: scale(1.05);
         }
         .feedback {
-            display: none;
-            font-size: 24px;
-            color: green;
-            margin-top: 15px;
+            font-size: 20px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .correct {
+            color: #0f0;
+        }
+        .incorrect {
+            color: #f00;
+        }
+        .input-box.correct {
+            background-color: #0f0;
+            transition: background-color 0.5s ease;
+        }
+        .input-box.incorrect {
+            background-color: #f00;
+            transition: background-color 0.5s ease;
+        }
+        .input-box.warning {
+            background-color: yellow;
+            transition: background-color 0.5s ease;
         }
         footer {
             background-color: #333;
@@ -113,81 +132,58 @@
 
 <div class="main-content">
     <h2>KS4 Maths</h2>
-    <p>Test your maths skills with 30 pre-generated questions!</p>
+    <p>Test your advanced maths skills with 35 challenging questions!</p>
     
-    <!-- Start of KS4 Questions -->
     <div class="question-container" id="question-container">
-        <!-- Pre-generated questions -->
-        <div class="question" id="question1">
-            <p>Solve for x: 3x + 5 = 20</p>
-            <input type="text" id="answer1" class="input-box" placeholder="Enter answer">
-            <button class="button" onclick="checkAnswer(1, 5)">Submit Answer</button>
-            <div id="feedback1" class="feedback">✔ Correct!</div>
-        </div>
+        <script>
+            const questions = [
+                { q: "Solve for x: 3x - 7 = 2x + 5", a: "12" },
+                { q: "Find the derivative of f(x) = 5x² - 3x + 7", a: "10x-3" },
+                { q: "Simplify: (3x² - 4x + 5) - (x² + 2x - 3)", a: "2x²-6x+8" },
+                { q: "If log₂(x) = 5, what is x?", a: "32" },
+                { q: "Solve: 2^(x+1) = 16", a: "3" },
+                { q: "Solve for x: x² - 5x + 6 = 0", a: "2,3" }
+            ];
+            
+            let attempts = Array(questions.length).fill(3);
 
-        <div class="question" id="question2">
-            <p>Solve for y: 2y - 7 = 15</p>
-            <input type="text" id="answer2" class="input-box" placeholder="Enter answer">
-            <button class="button" onclick="checkAnswer(2, 11)">Submit Answer</button>
-            <div id="feedback2" class="feedback">✔ Correct!</div>
-        </div>
+            document.write(questions.map((q, i) => 
+                `<p>${q.q} <input id='q${i}' class='input-box'> <button class='button' onclick="checkAnswer(${i})">Submit</button> <span id='feedback${i}' class='feedback'></span></p>`
+            ).join(""));
+            
+            function checkAnswer(i) {
+                const inputBox = document.getElementById(`q${i}`);
+                const userAnswer = inputBox.value.trim();
+                const feedback = document.getElementById(`feedback${i}`);
 
-        <div class="question" id="question3">
-            <p>What is 4 × 12?</p>
-            <input type="text" id="answer3" class="input-box" placeholder="Enter answer">
-            <button class="button" onclick="checkAnswer(3, 48)">Submit Answer</button>
-            <div id="feedback3" class="feedback">✔ Correct!</div>
-        </div>
-
-        <div class="question" id="question4">
-            <p>What is 150 ÷ 5?</p>
-            <input type="text" id="answer4" class="input-box" placeholder="Enter answer">
-            <button class="button" onclick="checkAnswer(4, 30)">Submit Answer</button>
-            <div id="feedback4" class="feedback">✔ Correct!</div>
-        </div>
-
-        <div class="question" id="question5">
-            <p>Solve for x: x² = 49</p>
-            <input type="text" id="answer5" class="input-box" placeholder="Enter answer">
-            <button class="button" onclick="checkAnswer(5, 7)">Submit Answer</button>
-            <div id="feedback5" class="feedback">✔ Correct!</div>
-        </div>
-
-        <!-- 25 more questions to reach 30 total -->
-        <!-- Add more similar to the above format -->
+                if (attempts[i] > 0) {
+                    if (userAnswer === questions[i].a) {
+                        feedback.innerHTML = "✅ Correct!";
+                        feedback.className = "feedback correct";
+                        inputBox.className = "input-box correct";
+                        inputBox.disabled = true;
+                    } else {
+                        attempts[i]--;
+                        if (attempts[i] === 0) {
+                            feedback.innerHTML = `❌ Incorrect! No attempts left.`;
+                            feedback.className = "feedback incorrect";
+                            inputBox.className = "input-box incorrect";
+                            inputBox.disabled = true;
+                        } else {
+                            feedback.innerHTML = `❌ Incorrect! ${attempts[i]} attempts left.`;
+                            feedback.className = "feedback incorrect";
+                            inputBox.className = "input-box warning";
+                        }
+                    }
+                }
+            }
+        </script>
     </div>
-
 </div>
 
 <footer>
     <p>&copy; 2025 Popcorn Learning. All rights reserved.</p>
 </footer>
-
-<script>
-    let attempts = [0, 0, 0, 0, 0]; // track attempts for 5 questions, add more if needed
-
-    function checkAnswer(questionNumber, correctAnswer) {
-        const userAnswer = document.getElementById(`answer${questionNumber}`).value;
-        const feedback = document.getElementById(`feedback${questionNumber}`);
-        
-        if (userAnswer == correctAnswer) {
-            feedback.style.display = 'block';
-            feedback.style.color = 'green';
-            feedback.innerHTML = "✔ Correct!";
-        } else {
-            attempts[questionNumber - 1]++;
-            if (attempts[questionNumber - 1] >= 3) {
-                feedback.style.display = 'block';
-                feedback.style.color = 'red';
-                feedback.innerHTML = "❌ Incorrect! You've used all attempts.";
-            } else {
-                feedback.style.display = 'block';
-                feedback.style.color = 'yellow';
-                feedback.innerHTML = `❌ Incorrect! You have ${3 - attempts[questionNumber - 1]} attempts left.`;
-            }
-        }
-    }
-</script>
 
 </body>
 </html>
