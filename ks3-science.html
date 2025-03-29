@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KS3 Science - Popcorn Learning</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #2c3e50;
+            color: white;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        header {
+            background: linear-gradient(45deg, #3498db, #9b59b6);
+            padding: 20px 40px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 10;
+        }
+        header h1 {
+            font-size: 36px;
+            color: white;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        header .nav-links a {
+            margin: 0 15px;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        header .nav-links a:hover {
+            color: #F0C808;
+        }
+        .main-content {
+            margin-top: 120px;
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(45deg, #1f1f1f, #333);
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        .main-content h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #F0C808;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .question-container {
+            margin-top: 30px;
+        }
+        .question {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        .input-box {
+            margin: 10px;
+            padding: 10px;
+            font-size: 18px;
+            border: 2px solid #007BFF;
+            border-radius: 5px;
+            background-color: #333;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .button {
+            background-color: #F0C808;
+            color: black;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 20px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #C79200;
+            transform: scale(1.05);
+        }
+        .feedback {
+            font-size: 20px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .correct {
+            color: #0f0;
+        }
+        .incorrect {
+            color: #f00;
+        }
+        .input-box.correct {
+            background-color: #0f0;
+            transition: background-color 0.5s ease;
+        }
+        .input-box.incorrect {
+            background-color: #f00;
+            transition: background-color 0.5s ease;
+        }
+        .input-box.warning {
+            background-color: #6a1b9a; /* Dark purple color */
+            transition: background-color 0.5s ease;
+        }
+        footer {
+            background-color: #333;
+            text-align: center;
+            padding: 20px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Popcorn Learning</h1>
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="courses.html">Courses</a>
+        <a href="membership.html">Membership</a>
+    </div>
+</header>
+
+<div class="main-content">
+    <h2>KS3 Science</h2>
+    <p>Test your science knowledge with 20 questions!</p>
+    <div id="scoreDisplay">Score: 0</div>
+    
+    <div class="question-container" id="question-container">
+        <script>
+            const questions = [
+                { q: "What is the powerhouse of the cell?", a: "Mitochondria" },
+                { q: "What force pulls objects towards the Earth?", a: "Gravity" },
+                { q: "What is the atomic number of carbon?", a: "6" },
+                { q: "What is the chemical formula for water?", a: "H2O" },
+                { q: "Who proposed the theory of evolution?", a: "Charles Darwin" },
+                { q: "What is the process of plants making their own food?", a: "Photosynthesis" },
+                { q: "What is the name of the force that opposes motion?", a: "Friction" },
+                { q: "What gas do plants absorb during photosynthesis?", a: "Carbon dioxide" },
+                { q: "What is the main gas in Earth's atmosphere?", a: "Nitrogen" },
+                { q: "What is the unit of force?", a: "Newton" },
+                { q: "What is the symbol for the element oxygen?", a: "O" },
+                { q: "What do we call the liquid in a thermometer?", a: "Mercury" },
+                { q: "Which planet is closest to the Sun?", a: "Mercury" },
+                { q: "What is the process by which a liquid turns into a gas?", a: "Evaporation" },
+                { q: "What part of the plant absorbs water?", a: "Roots" },
+                { q: "What is the largest organ in the human body?", a: "Skin" },
+                { q: "What type of rock is formed from cooling magma?", a: "Igneous" },
+                { q: "What is the term for a living organism that makes its own food?", a: "Autotroph" },
+                { q: "What is the formula for calculating speed?", a: "Speed = Distance / Time" },
+                { q: "What is the term for an organism's ability to maintain stable internal conditions?", a: "Homeostasis" }
+            ];
+
+            let score = localStorage.getItem('score') ? parseInt(localStorage.getItem('score')) : 0;
+            document.getElementById("scoreDisplay").innerHTML = `Score: ${score}`;
+            
+            let attempts = Array(questions.length).fill(3);
+
+            document.write(questions.map((q, i) => 
+                `<p>${q.q} <input id='q${i}' class='input-box'> <button class='button' onclick="checkAnswer(${i})">Submit</button> <span id='feedback${i}' class='feedback'></span></p>`
+            ).join(""));
+
+            function checkAnswer(i) {
+                const inputBox = document.getElementById(`q${i}`);
+                const userAnswer = inputBox.value.trim();
+                const feedback = document.getElementById(`feedback${i}`);
+
+                if (attempts[i] > 0) {
+                    if (userAnswer.toLowerCase() === questions[i].a.toLowerCase()) {
+                        feedback.innerHTML = "✅ Correct!";
+                        feedback.className = "feedback correct";
+                        inputBox.className = "input-box correct";
+                        inputBox.disabled = true;
+
+                        // Increase score if answer is correct
+                        score++;
+                        document.getElementById("scoreDisplay").innerHTML = `Score: ${score}`;
+                        localStorage.setItem('score', score);
+                    } else {
+                        attempts[i]--;
+                        if (attempts[i] === 0) {
+                            feedback.innerHTML = `❌ Incorrect! No attempts left.`;
+                            feedback.className = "feedback incorrect";
+                            inputBox.className = "input-box incorrect";
+                            inputBox.disabled = true;
+                        } else {
+                            feedback.innerHTML = `❌ Incorrect! ${attempts[i]} attempts left.`;
+                            feedback.className = "feedback incorrect";
+                            inputBox.className = "input-box warning";
+                        }
+                    }
+                }
+            }
+        </script>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2025 Popcorn Learning. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
