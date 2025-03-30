@@ -72,6 +72,7 @@
             border-radius: 5px;
             background-color: #333;
             color: white;
+            transition: background-color 0.3s ease;
         }
         .button {
             background-color: #F0C808;
@@ -81,16 +82,34 @@
             border-radius: 50px;
             font-size: 20px;
             transition: background-color 0.3s ease, transform 0.3s ease;
+            cursor: pointer;
         }
         .button:hover {
             background-color: #C79200;
             transform: scale(1.05);
         }
         .feedback {
-            display: none;
-            font-size: 24px;
-            color: green;
-            margin-top: 15px;
+            font-size: 20px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .correct {
+            color: #0f0;
+        }
+        .incorrect {
+            color: #f00;
+        }
+        .input-box.correct {
+            background-color: #0f0;
+            transition: background-color 0.5s ease;
+        }
+        .input-box.incorrect {
+            background-color: #f00;
+            transition: background-color 0.5s ease;
+        }
+        .input-box.warning {
+            background-color: yellow;
+            transition: background-color 0.5s ease;
         }
         footer {
             background-color: #333;
@@ -101,6 +120,11 @@
     </style>
 </head>
 <body>
+<script>
+    if (!localStorage.getItem("loggedInUser")) {
+        window.location.href = "login.html"; // Redirect to login page if not logged in
+    }
+</script>
 
 <header>
     <h1>Popcorn Learning</h1>
@@ -108,92 +132,100 @@
         <a href="index.html">Home</a>
         <a href="courses.html">Courses</a>
         <a href="membership.html">Membership</a>
+        <a href="#" onclick="logout()" class="button">Logout</a>
+
+<script>
+    function logout() {
+        localStorage.removeItem("loggedInUser");
+        window.location.href = "login.html";
+    }
+</script>
+
     </div>
 </header>
 
 <div class="main-content">
     <h2>KS3 Maths</h2>
-    <p>Test your maths skills with 30 pre-generated questions!</p>
+    <p>Test your maths skills with 30 questions!</p>
+    <div id="scoreDisplay">Score: 0</div>
     
     <div class="question-container" id="question-container">
-        <!-- 30 Pre-generated KS3 Maths Questions -->
         <script>
             const questions = [
-                ["What is 24 + 16?", 40],
-                ["What is 35 - 18?", 17],
-                ["What is 8 × 7?", 56],
-                ["What is 144 ÷ 12?", 12],
-                ["What is 125 + 79?", 204],
-                ["What is 15²?", 225],
-                ["Solve for x: 2x + 5 = 17", 6],
-                ["Find the mode of 3, 7, 7, 2, 9", 7],
-                ["What is the square root of 196?", 14],
-                ["What is 7/10 as a decimal?", 0.7],
-                ["Factorise: x² + 5x + 6", "(x+2)(x+3)"],
-                ["What is the LCM of 8 and 12?", 24],
-                ["Convert 0.4 to a fraction in simplest form", "2/5"],
-                ["Expand: (x + 2)(x - 3)", "x^2-x-6"],
-                ["Solve for y: 3y - 4 = 11", 5],
-                ["Convert 25% into a decimal", 0.25],
-                ["What is 3/4 + 1/6?", "11/12"],
-                ["Find the missing angle in a triangle if two angles are 65° and 55°", 60],
-                ["Multiply: (2x - 3)(x + 5)", "2x^2+7x-15"],
-                ["What is the cube root of 125?", 5],
-                ["Find the area of a triangle with base 10cm and height 12cm", 60],
-                ["What is 5! (5 factorial)?", 120],
-                ["Find the HCF of 36 and 48", 12],
-                ["Solve: 4x² = 64", 4],
-                ["Convert 2/7 to a decimal (rounded to 3 decimal places)", 0.286],
-                ["Find the next term in the sequence: 3, 6, 12, 24, ...", 48],
-                ["Find the gradient of the line: y = 5x - 2", 5],
-                ["What is the value of 7⁰?", 1],
-                ["What is the reciprocal of 3/5?", "5/3"],
-                ["Solve for x: 3(x - 2) = 15", 7]
+                { q: "What is 5 + 3?", a: "8" },
+                { q: "What is 12 - 7?", a: "5" },
+                { q: "What is 6 × 7?", a: "42" },
+                { q: "What is 9 ÷ 3?", a: "3" },
+                { q: "What is 15 + 12?", a: "27" },
+                { q: "What is 50 - 20?", a: "30" },
+                { q: "What is 3 × 9?", a: "27" },
+                { q: "What is 36 ÷ 6?", a: "6" },
+                { q: "What is 7 × 6?", a: "42" },
+                { q: "What is 8 + 9?", a: "17" },
+                { q: "What is 100 ÷ 10?", a: "10" },
+                { q: "What is 21 - 8?", a: "13" },
+                { q: "What is 5 × 12?", a: "60" },
+                { q: "What is 72 ÷ 9?", a: "8" },
+                { q: "What is 45 + 55?", a: "100" },
+                { q: "What is 80 - 25?", a: "55" },
+                { q: "What is 6 × 8?", a: "48" },
+                { q: "What is 27 ÷ 3?", a: "9" },
+                { q: "What is 18 + 7?", a: "25" },
+                { q: "What is 64 ÷ 8?", a: "8" },
+                { q: "What is 9 × 5?", a: "45" },
+                { q: "What is 100 ÷ 4?", a: "25" },
+                { q: "What is 50 + 30?", a: "80" },
+                { q: "What is 15 ÷ 3?", a: "5" },
+                { q: "What is 10 × 10?", a: "100" },
+                { q: "What is 81 ÷ 9?", a: "9" },
+                { q: "What is 42 ÷ 7?", a: "6" },
+                { q: "What is 3 × 4?", a: "12" },
+                { q: "What is 8 × 8?", a: "64" },
+                { q: "What is 16 ÷ 4?", a: "4" }
             ];
 
-            let attempts = Array(questions.length).fill(0);
+            let score = localStorage.getItem('score') ? parseInt(localStorage.getItem('score')) : 0;
+            document.getElementById("scoreDisplay").innerHTML = `Score: ${score}`;
+            
+            let attempts = Array(questions.length).fill(3);
 
-            function generateQuestions() {
-                const container = document.getElementById("question-container");
-                questions.forEach((q, index) => {
-                    let questionHTML = `
-                        <div class="question" id="question${index + 1}">
-                            <p>${index + 1}. ${q[0]}</p>
-                            <input type="text" id="answer${index + 1}" class="input-box" placeholder="Enter answer">
-                            <button class="button" onclick="checkAnswer(${index + 1}, '${q[1]}')">Submit Answer</button>
-                            <div id="feedback${index + 1}" class="feedback">✔ Correct!</div>
-                        </div>
-                    `;
-                    container.innerHTML += questionHTML;
-                });
-            }
+            document.write(questions.map((q, i) => 
+                `<p>${q.q} <input id='q${i}' class='input-box'> <button class='button' onclick="checkAnswer(${i})">Submit</button> <span id='feedback${i}' class='feedback'></span></p>`
+            ).join(""));
 
-            function checkAnswer(questionNumber, correctAnswer) {
-                const userAnswer = document.getElementById(`answer${questionNumber}`).value.trim();
-                const feedback = document.getElementById(`feedback${questionNumber}`);
-                
-                if (userAnswer.toLowerCase() == correctAnswer.toString()) {
-                    feedback.style.display = 'block';
-                    feedback.style.color = 'green';
-                    feedback.innerHTML = "✔ Correct!";
-                } else {
-                    attempts[questionNumber - 1]++;
-                    if (attempts[questionNumber - 1] >= 3) {
-                        feedback.style.display = 'block';
-                        feedback.style.color = 'red';
-                        feedback.innerHTML = `❌ Incorrect! The correct answer is ${correctAnswer}.`;
+            function checkAnswer(i) {
+                const inputBox = document.getElementById(`q${i}`);
+                const userAnswer = inputBox.value.trim();
+                const feedback = document.getElementById(`feedback${i}`);
+
+                if (attempts[i] > 0) {
+                    if (userAnswer === questions[i].a) {
+                        feedback.innerHTML = "✅ Correct!";
+                        feedback.className = "feedback correct";
+                        inputBox.className = "input-box correct";
+                        inputBox.disabled = true;
+
+                        // Increase score if answer is correct
+                        score++;
+                        document.getElementById("scoreDisplay").innerHTML = `Score: ${score}`;
+                        localStorage.setItem('score', score);
                     } else {
-                        feedback.style.display = 'block';
-                        feedback.style.color = 'yellow';
-                        feedback.innerHTML = `❌ Incorrect! ${3 - attempts[questionNumber - 1]} attempts left.`;
+                        attempts[i]--;
+                        if (attempts[i] === 0) {
+                            feedback.innerHTML = `❌ Incorrect! No attempts left.`;
+                            feedback.className = "feedback incorrect";
+                            inputBox.className = "input-box incorrect";
+                            inputBox.disabled = true;
+                        } else {
+                            feedback.innerHTML = `❌ Incorrect! ${attempts[i]} attempts left.`;
+                            feedback.className = "feedback incorrect";
+                            inputBox.className = "input-box warning";
+                        }
                     }
                 }
             }
-
-            window.onload = generateQuestions;
         </script>
     </div>
-
 </div>
 
 <footer>

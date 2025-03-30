@@ -114,6 +114,12 @@
     </style>
 </head>
 <body>
+    <script>
+    if (!localStorage.getItem("loggedInUser")) {
+        window.location.href = "login.html"; // Redirect to login page if not logged in
+    }
+</script>
+
 
 <header>
     <h1>Popcorn Learning</h1>

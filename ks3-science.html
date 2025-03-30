@@ -120,6 +120,11 @@
     </style>
 </head>
 <body>
+<script>
+    if (!localStorage.getItem("loggedInUser")) {
+        window.location.href = "login.html"; // Redirect to login page if not logged in
+    }
+</script>
 
 <header>
     <h1>Popcorn Learning</h1>
@@ -127,6 +132,15 @@
         <a href="index.html">Home</a>
         <a href="courses.html">Courses</a>
         <a href="membership.html">Membership</a>
+        <a href="#" onclick="logout()" class="button">Logout</a>
+
+<script>
+    function logout() {
+        localStorage.removeItem("loggedInUser");
+        window.location.href = "login.html";
+    }
+</script>
+
     </div>
 </header>
 
