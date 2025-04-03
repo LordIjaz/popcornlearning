@@ -1,4 +1,4 @@
-// 🔹 Replace these values with your Firebase config
+// Initialize Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyBNNcj4L1h0M0_Q8PFaE-Up-hyKMxnMvGY", 
 
@@ -16,40 +16,54 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-// 🔹 Sign In Function
-function signIn() {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+// Get authentication service
+const auth = firebase.auth();
 
-    firebase.auth().signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-            console.log("Logged in!");
-            window.location.href = "home.html"; // Redirect after login
-        })
-        .catch((error) => {
-            alert(error.message);
-        });
-}
-
-// 🔹 Sign Up Function
+// Sign-up function
 function signUp() {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+    const email = document.getElementById("signup-email").value;
+    const password = document.getElementById("signup-password").value;
 
-    firebase.auth().createUserWithEmailAndPassword(email, password)
+    auth.createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
-            alert("Account created!");
+            alert("Sign-up successful!");
+            window.location.href = "index.html"; // Redirect to homepage
         })
         .catch((error) => {
             alert(error.message);
         });
 }
 
-// 🔹 Logout Function
+// Login function
+function login() {
+    const email = document.getElementById("login-email").value;
+    const password = document.getElementById("login-password").value;
+
+    auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            alert("Login successful!");
+            window.location.href = "index.html"; // Redirect to homepage
+        })
+        .catch((error) => {
+            alert(error.message);
+        });
+}
+
+// Logout function
 function logout() {
-    firebase.auth().signOut().then(() => {
-        alert("Logged out!");
+    auth.signOut().then(() => {
+        alert("Logout successful!");
+        window.location.href = "login.html"; // Redirect to login page
     }).catch((error) => {
-        console.error(error);
+        alert(error.message);
     });
 }
+
+// Check if user is logged in
+auth.onAuthStateChanged((user) => {
+    if (user) {
+        console.log("User is logged in:", user.email);
+    } else {
+        console.log("No user is logged in.");
+    }
+});
