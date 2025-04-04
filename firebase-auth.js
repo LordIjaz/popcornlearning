@@ -1,35 +1,47 @@
-const auth = firebase.auth();
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { 
+  getAuth, 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-// Sign up function
-function signUp() {
-  const email = document.getElementById("signup-email").value;
-  const password = document.getElementById("signup-password").value;
+// Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyBNNcj4L1h0M0_Q8PFaE-Up-hyKMxnMvGY",
+  authDomain: "popcornlearning-332a5.firebaseapp.com",
+  projectId: "popcornlearning-332a5",
+  storageBucket: "popcornlearning-332a5.firebasestorage.app",
+  messagingSenderId: "923654716319",
+  appId: "1:923654716319:web:ceb873f28914652b6d1baa"
+};
 
-  auth.createUserWithEmailAndPassword(email, password)
-    .then(() => {
-      document.getElementById("message").innerText = "Sign up successful! Redirecting...";
-      setTimeout(() => {
-        window.location.href = "home.html";
-      }, 1000);
-    })
-    .catch((error) => {
-      document.getElementById("message").innerText = error.message;
-    });
-}
+// Init Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-// Login function
-function login() {
+// 🔒 Login logic
+const loginForm = document.getElementById("login-form");
+
+loginForm.addEventListener("submit", (e) => {
+  e.preventDefault();
   const email = document.getElementById("login-email").value;
   const password = document.getElementById("login-password").value;
 
-  auth.signInWithEmailAndPassword(email, password)
-    .then(() => {
-      document.getElementById("message").innerText = "Login successful! Redirecting...";
-      setTimeout(() => {
-        window.location.href = "home.html";
-      }, 1000);
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      console.log("Login successful:", userCredential.user);
+      alert("Login successful!");
+      // Wait for Firebase to confirm the user is logged in
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          window.location.href = "index.html"; // ✅ Redirect only when auth is ready
+        }
+      });
     })
     .catch((error) => {
-      document.getElementById("message").innerText = error.message;
+      console.error("Login error:", error.message);
+      alert("Login error: " + error.message);
     });
-}
+});

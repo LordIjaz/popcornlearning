@@ -86,6 +86,7 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
+    // Register user
     window.signUpUser = function () {
       const email = document.getElementById("register-email").value;
       const password = document.getElementById("register-password").value;
@@ -99,27 +100,35 @@
         });
     };
 
+    // Login user
     window.loginUser = function () {
-  const email = document.getElementById("login-email").value;
-  const password = document.getElementById("login-password").value;
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      alert("Login successful!");
-      console.log("Logged in:", userCredential.user);
-      document.getElementById("logoutBtn").style.display = "block";
-      window.location.href = "index.html"; // ✅ Redirect after login
-    })
-    .catch((error) => {
-      alert("Login error: " + error.message);
-    });
-};
+      const email = document.getElementById("login-email").value;
+      const password = document.getElementById("login-password").value;
 
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          alert("Login successful!");
+          console.log("Logged in:", userCredential.user);
 
+          // ✅ Save login status
+          localStorage.setItem("loggedInUser", "true");
+
+          // ✅ Redirect to index.html
+          window.location.href = "index.html";
+        })
+        .catch((error) => {
+          alert("Login error: " + error.message);
+        });
+    };
+
+    // Logout user
     window.logoutUser = function () {
       signOut(auth)
         .then(() => {
           alert("Logged out successfully!");
+          localStorage.removeItem("loggedInUser");
           document.getElementById("logoutBtn").style.display = "none";
+          window.location.href = "login.html";
         })
         .catch((error) => {
           alert("Logout error: " + error.message);
