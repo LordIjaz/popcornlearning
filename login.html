@@ -86,40 +86,45 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    // Register user
-    window.signUpUser = function () {
-      const email = document.getElementById("register-email").value;
-      const password = document.getElementById("register-password").value;
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          alert("Sign-up successful!");
-          console.log("Signed up:", userCredential.user);
-        })
-        .catch((error) => {
-          alert("Sign-up error: " + error.message);
-        });
-    };
+ // Register user
+window.signUpUser = function () {
+  const email = document.getElementById("register-email").value;
+  const password = document.getElementById("register-password").value;
 
-    // Login user
-    window.loginUser = function () {
-      const email = document.getElementById("login-email").value;
-      const password = document.getElementById("login-password").value;
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      console.log("Signed up:", userCredential.user);
+      // Redirect to username creation page
+      window.location.href = "set-username.html";
+    })
+    .catch((error) => {
+      alert("Sign-up error: " + error.message);
+    });
+};
 
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          alert("Login successful!");
-          console.log("Logged in:", userCredential.user);
 
-          // ✅ Save login status
-          localStorage.setItem("loggedInUser", "true");
+// Login user
+window.loginUser = function () {
+  const email = document.getElementById("login-email").value;
+  const password = document.getElementById("login-password").value;
 
-          // ✅ Redirect to index.html
-          window.location.href = "index.html";
-        })
-        .catch((error) => {
-          alert("Login error: " + error.message);
-        });
-    };
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      alert("Login successful!");
+      console.log("Logged in:", userCredential.user);
+
+      // ✅ Save login status with displayName or email
+      const user = userCredential.user;
+      localStorage.setItem("loggedInUser", user.displayName || user.email);
+
+      // ✅ Redirect to index.html
+      window.location.href = "index.html";
+    })
+    .catch((error) => {
+      alert("Login error: " + error.message);
+    });
+};
+
 
     // Logout user
     window.logoutUser = function () {

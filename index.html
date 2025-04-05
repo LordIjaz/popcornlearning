@@ -114,12 +114,11 @@
     </style>
 </head>
 <body>
-    <script>
+<script>
     if (!localStorage.getItem("loggedInUser")) {
         window.location.href = "login.html"; // Redirect to login page if not logged in
     }
 </script>
-
 
 <header>
     <h1>Popcorn Learning</h1>
@@ -131,7 +130,7 @@
 </header>
 
 <div class="main-content">
-    <h2>Welcome to Popcorn Learning!</h2>
+    <h2 id="welcomeMessage">Welcome to Popcorn Learning!</h2>
     <p>We provide interactive and fun learning experiences designed to keep you engaged and motivated. Explore our courses and join a community of learners!</p>
     <a href="courses.html" class="button">Start Learning Now</a>
 </div>
@@ -155,6 +154,48 @@
     <p>&copy; 2025 Popcorn Learning. All rights reserved.</p>
 </footer>
 
+<!-- Firebase Code -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBNNcj4L1h0M0_Q8PFaE-Up-hyKMxnMvGY",
+        authDomain: "popcornlearning-332a5.firebaseapp.com",
+        projectId: "popcornlearning-332a5",
+        storageBucket: "popcornlearning-332a5.appspot.com",
+        messagingSenderId: "923654716319",
+        appId: "1:923654716319:web:ceb873f28914652b6d1baa"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const welcomeEl = document.getElementById("welcomeMessage");
+
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            try {
+                const userRef = doc(db, "users", user.uid);
+                const userSnap = await getDoc(userRef);
+
+                if (userSnap.exists()) {
+                    const username = userSnap.data().username;
+                    welcomeEl.textContent = `Welcome back, ${username}!`;
+                } else {
+                    welcomeEl.textContent = "Welcome back!";
+                }
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+                welcomeEl.textContent = "Welcome!";
+            }
+        } else {
+            window.location.href = "login.html";
+        }
+    });
+</script>
 </body>
 </html>
 
