@@ -174,47 +174,49 @@
                 { q: "What is the term for an organism's ability to maintain stable internal conditions?", a: "Homeostasis" }
             ];
 
-            let score = localStorage.getItem('score') ? parseInt(localStorage.getItem('score')) : 0;
-            document.getElementById("scoreDisplay").innerHTML = `Score: ${score}`;
-            
-            let attempts = Array(questions.length).fill(3);
+    // Inside your script block
+    let score = localStorage.getItem('score') ? parseInt(localStorage.getItem('score')) : 0;
+    document.getElementById("scoreDisplay").innerHTML = `Score: ${score}`;
 
-            document.write(questions.map((q, i) => 
-                `<p>${q.q} <input id='q${i}' class='input-box'> <button class='button' onclick="checkAnswer(${i})">Submit</button> <span id='feedback${i}' class='feedback'></span></p>`
-            ).join(""));
+    let attempts = Array(questions.length).fill(3);
 
-            function checkAnswer(i) {
-                const inputBox = document.getElementById(`q${i}`);
-                const userAnswer = inputBox.value.trim();
-                const feedback = document.getElementById(`feedback${i}`);
+    document.write(questions.map((q, i) => 
+        `<p>${q.q} <input id='q${i}' class='input-box'> <button class='button' onclick="checkAnswer(${i})">Submit</button> <span id='feedback${i}' class='feedback'></span></p>`
+    ).join(""));
 
-                if (attempts[i] > 0) {
-                    if (userAnswer.toLowerCase() === questions[i].a.toLowerCase()) {
-                        feedback.innerHTML = "✅ Correct!";
-                        feedback.className = "feedback correct";
-                        inputBox.className = "input-box correct";
-                        inputBox.disabled = true;
+    function checkAnswer(i) {
+        const inputBox = document.getElementById(`q${i}`);
+        const userAnswer = inputBox.value.trim();
+        const feedback = document.getElementById(`feedback${i}`);
 
-                        // Increase score if answer is correct
-                        score++;
-                        document.getElementById("scoreDisplay").innerHTML = `Score: ${score}`;
-                        localStorage.setItem('score', score);
-                    } else {
-                        attempts[i]--;
-                        if (attempts[i] === 0) {
-                            feedback.innerHTML = `❌ Incorrect! No attempts left.`;
-                            feedback.className = "feedback incorrect";
-                            inputBox.className = "input-box incorrect";
-                            inputBox.disabled = true;
-                        } else {
-                            feedback.innerHTML = `❌ Incorrect! ${attempts[i]} attempts left.`;
-                            feedback.className = "feedback incorrect";
-                            inputBox.className = "input-box warning";
-                        }
-                    }
+        if (attempts[i] > 0) {
+            if (userAnswer === questions[i].a) {
+                feedback.innerHTML = "✅ Correct!";
+                feedback.className = "feedback correct";
+                inputBox.className = "input-box correct";
+                inputBox.disabled = true;
+
+                // Increase score if answer is correct
+                score++;
+                document.getElementById("scoreDisplay").innerHTML = `Score: ${score}`;
+                localStorage.setItem('score', score);
+            } else {
+                attempts[i]--;
+                if (attempts[i] === 0) {
+                    feedback.innerHTML = `❌ Incorrect! The correct answer was: ${questions[i].a}`;
+                    feedback.className = "feedback incorrect";
+                    inputBox.className = "input-box incorrect";
+                    inputBox.disabled = true;
+                } else {
+                    feedback.innerHTML = `❌ Incorrect! ${attempts[i]} attempt(s) left.`;
+                    feedback.className = "feedback incorrect";
+                    inputBox.className = "input-box warning";
                 }
             }
-        </script>
+        }
+    }
+</script>
+
     </div>
 </div>
 
