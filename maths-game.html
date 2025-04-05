@@ -176,11 +176,88 @@
       50% { transform: translateY(-15px); }
     }
   </style>
+    <!-- Firebase App (Core) -->
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+
 </head>
 <body>
 <script>
   if (!localStorage.getItem("loggedInUser")) {
     window.location.href = "login.html";
+  }
+    async function saveScoreToLeaderboard(score) {
+  const username = localStorage.getItem("loggedInUser") || "Anonymous";
+  await db.collection("leaderboard").add({
+    username: username,
+    score: score,
+    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+  });
+  loadLeaderboard();
+}
+    async function loadLeaderboard() {
+  const leaderboardEl = document.getElementById("leaderboard-entries");
+  leaderboardEl.innerHTML = ""; // Clear list
+
+  const snapshot = await db.collection("leaderboard")
+    .orderBy("score", "desc")
+    .limit(10)
+    .get();
+
+  snapshot.forEach(doc => {
+    const data = doc.data();
+    const li = document.createElement("li");
+    li.textContent = `${data.username}: ${data.score}`;
+    leaderboardEl.appendChild(li);
+  });
+}
+
+
+</script>
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyBNNcj4L1h0M0_Q8PFaE-Up-hyKMxnMvGY", 
+
+  authDomain: "popcornlearning-332a5.firebaseapp.com", 
+
+  projectId: "popcornlearning-332a5", 
+
+  storageBucket: "popcornlearning-332a5.firebasestorage.app", 
+
+  messagingSenderId: "923654716319", 
+
+  appId: "1:923654716319:web:ceb873f28914652b6d1baa", 
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  async function saveScoreToLeaderboard(score) {
+    const username = localStorage.getItem("loggedInUser") || "Anonymous";
+    await db.collection("leaderboard").add({
+      username: username,
+      score: score,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    loadLeaderboard();
+  }
+
+  async function loadLeaderboard() {
+    const leaderboardRef = db.collection("leaderboard").orderBy("score", "desc").limit(5);
+    const snapshot = await leaderboardRef.get();
+    const leaderboardEl = document.getElementById("leaderboard-entries");
+    leaderboardEl.innerHTML = "";
+
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      const entry = document.createElement("li");
+      entry.textContent = `${data.username}: ${data.score}`;
+      leaderboardEl.appendChild(entry);
+    });
   }
 </script>
 
@@ -204,6 +281,11 @@
   <div id="score">Score: 0</div>
   <div id="timer">⏰ Time left: 60s</div>
   <div id="timer-bar"><div id="timer-fill"></div></div>
+    <div id="leaderboard-container">
+  <h2>🏆 Leaderboard</h2>
+  <ul id="leaderboard-entries" style="list-style: none; padding: 0; font-size: 18px;"></ul>
+</div>
+
   <button id="restart-btn" onclick="restartGame()">Start Again</button>
 </div>
 
@@ -300,11 +382,13 @@
       timerEl.textContent = `⏰ Time left: ${timeLeft}s`;
       timerFill.style.width = `${(timeLeft / 60) * 100}%`;
       if (timeLeft === 0) {
-        clearInterval(timerInterval);
-        questionEl.textContent = "⏳ Time's up!";
-        answerInput.disabled = true;
-        restartBtn.style.display = "inline-block";
-      }
+         clearInterval(timerInterval);
+         questionEl.textContent = "⏳ Time's up!";
+         answerInput.disabled = true;
+         saveScoreToLeaderboard(score);
+         restartBtn.style.display = "inline-block";
+}
+
     }, 1000);
   }
 
@@ -313,6 +397,11 @@
   }
 
   window.onload = startGame;
+    window.onload = () => {
+  startGame();
+  loadLeaderboard();
+};
+
 </script>
     <audio id="correct-sound" src="correct.mp3" preload="auto"></audio>
   <audio id="wrong-sound" src="wrong.mp3" preload="auto"></audio>
