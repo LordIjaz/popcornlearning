@@ -58,7 +58,9 @@
             border-radius: 50px;
             font-size: 20px;
             transition: background-color 0.3s ease, transform 0.3s ease;
-            margin: 20px;
+            margin: 20px auto;
+            display: block;
+            width: fit-content;
         }
         .button:hover {
             background-color: #C79200;
@@ -120,14 +122,12 @@
         <a href="courses.html">Courses</a>
         <a href="membership.html">Membership</a>
         <a href="#" onclick="logout()" class="button">Logout</a>
-
-<script>
-    function logout() {
-        localStorage.removeItem("loggedInUser");
-        window.location.href = "login.html";
-    }
-</script>
-
+        <script>
+            function logout() {
+                localStorage.removeItem("loggedInUser");
+                window.location.href = "login.html";
+            }
+        </script>
     </div>
 </header>
 
@@ -138,9 +138,7 @@
     <a href="ks3.html" class="button">KS3 Maths</a>
     <a href="ks4.html" class="button">KS4 Maths</a>
     <a href="maths-game.html" class="button">Multiplication Game</a>
-
-    <a href="ks3-science.html" class="button">KS3 Science</a> <!-- New button for KS3 Science -->
-
+    <a href="ks3-science.html" class="button">KS3 Science</a>
 </div>
 
 <footer>
