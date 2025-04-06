@@ -209,14 +209,17 @@
         btn.className = "option";
         btn.onclick = () => {
           if (opt === q.correct) {
-            correctSound.play();
-            score++;
-            scoreEl.textContent = `Score: ${score}`;
-            btn.classList.add("correct");
-          } else {
-            wrongSound.play();
-            btn.classList.add("incorrect");
-          }
+  correctSound.play();
+  score++;
+  scoreEl.textContent = `Score: ${score}`;
+  btn.classList.add("correct");
+} else {
+  wrongSound.play();
+  score--;
+  scoreEl.textContent = `Score: ${score}`;
+  btn.classList.add("incorrect");
+}
+
           setTimeout(() => {
             if (timeLeft > 0) nextQuestion();
           }, 600);
