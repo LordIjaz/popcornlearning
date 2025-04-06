@@ -241,37 +241,44 @@
     }
 
     function nextQuestion() {
-      const q = questions[Math.floor(Math.random() * questions.length)];
-      questionEl.textContent = `Select the ${q.type} of "${q.word}"`;
-      const opts = [...q.options];
-      shuffle(opts);
+  const q = questions[Math.floor(Math.random() * questions.length)];
+  questionEl.textContent = `Select the ${q.type} of "${q.word}"`;
+  const opts = [...q.options];
+  shuffle(opts);
 
-      optionsEl.innerHTML = "";
+  optionsEl.innerHTML = "";
 
-      opts.forEach(opt => {
-        const btn = document.createElement("div");
-        btn.textContent = opt;
-        btn.className = "option";
-        btn.onclick = () => {
-          if (opt === q.correct) {
-            correctSound.play();
-            score++;
-            scoreEl.textContent = `Score: ${score}`;
-            btn.classList.add("correct");
-          } else {
-            wrongSound.play();
-            score--;
-            scoreEl.textContent = `Score: ${score}`;
-            btn.classList.add("incorrect");
-          }
+  opts.forEach(opt => {
+    const btn = document.createElement("div");
+    btn.textContent = opt;
+    btn.className = "option";
+    btn.onclick = () => {
+      if (opt === q.correct) {
+        correctSound.play();
+        score++;
+        scoreEl.textContent = `Score: ${score}`;
+        btn.classList.add("correct");
+      } else {
+        wrongSound.play();
+        score--;
+        scoreEl.textContent = `Score: ${score}`;
+        btn.classList.add("incorrect");
+      }
 
-          setTimeout(() => {
-            if (timeLeft > 0) nextQuestion();
-          }, 600);
-        };
-        optionsEl.appendChild(btn);
+      // Disable all buttons after one click
+      const allButtons = document.querySelectorAll('.option');
+      allButtons.forEach(button => {
+        button.onclick = null;  // Disable further clicks
       });
-    }
+
+      setTimeout(() => {
+        if (timeLeft > 0) nextQuestion();
+      }, 600);
+    };
+    optionsEl.appendChild(btn);
+  });
+}
+
 
     function saveScore(username, score) {
       db.collection("wordClashScores").add({
