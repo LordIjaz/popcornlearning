@@ -13,6 +13,41 @@
       margin: 0;
       padding: 0;
     }
+
+    /* NAVIGATION BAR */
+    nav {
+      background-color: #222;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      border-bottom: 3px solid #F0C808;
+    }
+    nav .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #F0C808;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 15px;
+      margin: 0;
+      padding: 0;
+    }
+    nav ul li {
+      display: inline;
+    }
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+    nav ul li a:hover {
+      color: #F0C808;
+    }
+
     header {
       background: linear-gradient(45deg, #007BFF, #F0C808);
       padding: 20px;
@@ -87,6 +122,17 @@
   </style>
 </head>
 <body>
+  <!-- Navigation Bar -->
+  <nav>
+    <div class="logo">Popcorn Learning</div>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="membership.html">Memberships</a></li>
+      <li><a href="courses.html">Courses</a></li>
+      <li><a href="maths-game.html">Games</a></li>
+    </ul>
+  </nav>
+
   <header>Word Clash</header>
 
   <div id="gameContainer">
@@ -121,7 +167,6 @@
       appId: "1:923654716319:web:ceb873f28914652b6d1baa", 
     };
 
-    // Initialise Firebase
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
@@ -209,16 +254,16 @@
         btn.className = "option";
         btn.onclick = () => {
           if (opt === q.correct) {
-  correctSound.play();
-  score++;
-  scoreEl.textContent = `Score: ${score}`;
-  btn.classList.add("correct");
-} else {
-  wrongSound.play();
-  score--;
-  scoreEl.textContent = `Score: ${score}`;
-  btn.classList.add("incorrect");
-}
+            correctSound.play();
+            score++;
+            scoreEl.textContent = `Score: ${score}`;
+            btn.classList.add("correct");
+          } else {
+            wrongSound.play();
+            score--;
+            scoreEl.textContent = `Score: ${score}`;
+            btn.classList.add("incorrect");
+          }
 
           setTimeout(() => {
             if (timeLeft > 0) nextQuestion();
@@ -259,4 +304,3 @@
   </script>
 </body>
 </html>
-
