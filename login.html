@@ -12,6 +12,7 @@
       text-align: center;
       margin: 0;
       padding: 0;
+      overflow: hidden;
     }
 
     header {
@@ -42,6 +43,8 @@
       padding: 30px;
       border-radius: 15px;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+      z-index: 2;
+      position: relative;
     }
 
     input {
@@ -81,6 +84,36 @@
       font-size: 24px;
       color: #F0C808;
     }
+
+    /* === Professor Pop Animation === */
+    #professor-pop {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100px;
+      height: auto;
+      z-index: 1;
+      animation: flyPopcorn 20s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes flyPopcorn {
+      0% {
+        transform: translate(0vw, 0vh) rotate(0deg);
+      }
+      25% {
+        transform: translate(80vw, 10vh) rotate(10deg);
+      }
+      50% {
+        transform: translate(60vw, 70vh) rotate(-10deg);
+      }
+      75% {
+        transform: translate(10vw, 60vh) rotate(5deg);
+      }
+      100% {
+        transform: translate(0vw, 0vh) rotate(0deg);
+      }
+    }
   </style>
 </head>
 <body>
@@ -99,10 +132,14 @@
     <input type="email" id="register-email" placeholder="Email" required />
     <input type="password" id="register-password" placeholder="Password" required />
     <button onclick="signUpUser()">Sign Up</button>
+    <button onclick="window.location.href='reset-password.html'">Forgot Password?</button>
 
     <button onclick="logoutUser()" style="display:none;" id="logoutBtn">Logout</button>
     <p id="message" class="error"></p>
   </div>
+
+  <!-- Professor Pop Mascot -->
+  <img src="Professor Pop.PNG" alt="Professor Pop" id="professor-pop" />
 
   <!-- Firebase SDK -->
   <script type="module">
@@ -171,3 +208,4 @@
   </script>
 </body>
 </html>
+
