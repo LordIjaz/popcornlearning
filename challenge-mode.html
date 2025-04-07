@@ -291,6 +291,15 @@
     document.getElementById("xpChangeMsg").innerText = "";
     startTime = Date.now();
   }
+    function simplifyFraction(fraction) {
+  const parts = fraction.split('/');
+  const num = parseInt(parts[0]);
+  const den = parseInt(parts[1]);
+  const gcd = (a, b) => b === 0 ? a : gcd(b, a % b);
+  const divisor = gcd(num, den);
+  return `${num / divisor}/${den / divisor}`;
+}
+
 
   function updateLivesDisplay() {
     document.getElementById("lives").innerText = lives;
@@ -304,7 +313,7 @@
     const timeTaken = (Date.now() - startTime) / 1000;
     let gain = 0;
 
-    if (userAns === correctAns) {
+    if (simplifyFraction(userAns) === correctAns) {
       correct++;
       if (timeTaken <= 5) gain = 4;
       else if (timeTaken <= 10) gain = 3;
