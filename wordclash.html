@@ -338,7 +338,7 @@
         button.onclick = null;  // Disable further clicks
       });
 
-      
+      setTimeout(() => {
         if (timeLeft > 0) nextQuestion();
       }, 600);
     };
@@ -376,5 +376,118 @@
     startBtn.addEventListener("click", startGame);
     window.onload = loadLeaderboard;
   </script>
+    <script>
+  let currentQuestionIndex = 0;
+  let score = 0;
+  let timer;
+  let timeLeft = 30;
+
+  const startBtn = document.getElementById("startBtn");
+  const questionEl = document.getElementById("question");
+  const optionsEl = document.getElementById("options");
+  const scoreEl = document.getElementById("score");
+  const timerEl = document.getElementById("timer");
+  const correctSound = document.getElementById("correctSound");
+  const wrongSound = document.getElementById("wrongSound");
+
+  function shuffle(array) {
+    return array.sort(() => Math.random() - 0.5);
+  }
+
+  function startGame() {
+    score = 0;
+    currentQuestionIndex = 0;
+    timeLeft = 30;
+    scoreEl.textContent = "Score: 0";
+    startBtn.disabled = true;
+    nextQuestion();
+    startTimer();
+  }
+
+  function startTimer() {
+    timerEl.textContent = `Time left: ${timeLeft}s`;
+    timer = setInterval(() => {
+      timeLeft--;
+      timerEl.textContent = `Time left: ${timeLeft}s`;
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        questionEl.textContent = "Time's up!";
+        optionsEl.innerHTML = "";
+        startBtn.disabled = false;
+        saveScore(score);
+      }
+    }, 1000);
+  }
+
+  function nextQuestion() {
+    const question = questions[currentQuestionIndex % questions.length];
+    questionEl.textContent = `${question.type === "synonym" ? "Synonym" : "Antonym"} of "${question.word}"?`;
+    optionsEl.innerHTML = "";
+
+    shuffle(question.options).forEach(option => {
+      const btn = document.createElement("div");
+      btn.classList.add("option");
+      btn.textContent = option;
+      btn.onclick = () => handleAnswer(option, question.correct);
+      optionsEl.appendChild(btn);
+    });
+  }
+
+  function handleAnswer(selected, correct) {
+    const allOptions = document.querySelectorAll(".option");
+    allOptions.forEach(btn => {
+      btn.onclick = null;
+      if (btn.textContent === correct) {
+        btn.classList.add("correct");
+      } else if (btn.textContent === selected) {
+        btn.classList.add("incorrect");
+      }
+    });
+
+    if (selected === correct) {
+      score += 1;
+      correctSound.play();
+    } else {
+      wrongSound.play();
+    }
+
+    scoreEl.textContent = `Score: ${score}`;
+    currentQuestionIndex++;
+
+    // Move to next question instantly with no delay
+    setTimeout(nextQuestion, 100);
+  }
+
+  function saveScore(score) {
+    const username = "Anonymous"; // Replace with actual username if using auth
+    db.collection("wordclash_leaderboard").add({
+      name: username,
+      score: score,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(loadLeaderboard);
+  }
+
+  function loadLeaderboard() {
+    const leaderboardEntries = document.getElementById("leaderboardEntries");
+    leaderboardEntries.innerHTML = "";
+    db.collection("wordclash_leaderboard")
+      .orderBy("score", "desc")
+      .limit(10)
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const entry = document.createElement("div");
+          entry.className = "entry";
+          entry.textContent = `${data.name}: ${data.score}`;
+          leaderboardEntries.appendChild(entry);
+        });
+      });
+  }
+
+  startBtn.addEventListener("click", startGame);
+  window.onload = loadLeaderboard;
+</script>
+
 </body>
 </html>
