@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Challenge Mode - Fractions Fiend</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #0f0f0f, #1a1a2e);
+      color: white;
+      overflow-x: hidden;
+      text-align: center;
+    }
+
+    header {
+      background: linear-gradient(to right, #F0C808, #f25c05);
+      padding: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-shadow: 1px 1px #000;
+    }
+
+    /* --- NEW NAV BUTTON STYLING --- */
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      background-color: #1a1a2e;
+      padding: 10px 0;
+    }
+
+    .nav-buttons a {
+      text-decoration: none;
+    }
+
+    .nav-buttons button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #F0C808;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      font-weight: bold;
+      color: #000;
+    }
+
+    .nav-buttons button:hover {
+      background-color: #c79200;
+      transform: scale(1.05);
+    }
+    /* ----------------------------- */
+
+    .boss-container {
+      margin-top: 40px;
+      animation: floatBoss 3s ease-in-out infinite;
+    }
+
+    .boss-container img {
+      width: 200px;
+      border-radius: 20px;
+    }
+
+    @keyframes floatBoss {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-15px);
+      }
+    }
+
+    .question-card {
+      background: #222;
+      margin: 40px auto;
+      padding: 20px;
+      width: 90%;
+      max-width: 500px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px #f0c808;
+    }
+
+    .question-card h2 {
+      font-size: 22px;
+      margin-bottom: 15px;
+    }
+
+    input[type="text"] {
+      padding: 12px;
+      font-size: 18px;
+      border-radius: 8px;
+      border: none;
+      width: 80%;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 12px 25px;
+      font-size: 16px;
+      background-color: #F0C808;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #c79200;
+    }
+
+    .stats {
+      margin-top: 20px;
+      font-size: 16px;
+    }
+
+    .rank-display {
+      font-size: 20px;
+      margin-top: 20px;
+      color: #00ffcc;
+    }
+
+    .xp-change {
+      font-size: 20px;
+      transition: all 0.5s ease;
+    }
+
+    .xp-change.gain {
+      color: #4BB543;
+    }
+
+    .xp-change.loss {
+      color: #ff4d4d;
+    }
+
+    .lives-display {
+      font-size: 18px;
+      color: #ff6b6b;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>🧙‍♂️ Challenge Mode: The Fractions Fiend</header>
+
+  <!-- 🔘 Navigation Buttons -->
+  <div class="nav-buttons">
+    <a href="index.html"><button>🏠 Home</button></a>
+    <a href="challenge-mode-scores.html"><button>📊 Ranked Leaderboard</button></a>
+  </div>
+
+  <!-- Keep the rest of your game content below here... -->
+
+
+  <div class="boss-container">
+    <img src="boss-fractions-fiend.png" alt="Fractions Fiend Boss" />
+  </div>
+
+  <div class="question-card">
+    <h2 id="question">Loading question...</h2>
+    <input type="text" id="answer" placeholder="Type your answer" />
+    <br/>
+    <button onclick="submitAnswer()">Submit</button>
+    <div class="xp-change" id="xpChangeMsg"></div>
+    <div class="stats">
+      XP: <span id="xp">0</span> |
+      Speed: <span id="speed">0s</span> |
+      Accuracy: <span id="accuracy">0%</span>
+    </div>
+    <div class="lives-display">❤️ Lives Left: <span id="lives">3</span></div>
+    <div class="rank-display" id="rank">Rank: Bronze III</div>
+  </div>
+
+  <!-- Firebase Scripts -->
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+  import { getDatabase, ref, set, get, update } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyC4s2aWk3XkKqgzV_Bz3-s-VWk8ZPMTLNY",
+    authDomain: "popcornlearning-332a5.firebaseapp.com",
+    databaseURL: "https://popcornlearning-332a5-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "popcornlearning-332a5",
+    storageBucket: "popcornlearning-332a5.appspot.com",
+    messagingSenderId: "227316807463",
+    appId: "1:227316807463:web:e8b5dbd2c1998a11faef26"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  const ranks = [
+    { rank: "Unreal", xp: 4700 },
+    { rank: "Champion", xp: 3800 },
+    { rank: "Elite", xp: 3100 },
+    { rank: "Diamond I", xp: 2550 },
+    { rank: "Diamond II", xp: 2100 },
+    { rank: "Diamond III", xp: 1700 },
+    { rank: "Platinum I", xp: 1350 },
+    { rank: "Platinum II", xp: 1050 },
+    { rank: "Platinum III", xp: 800 },
+    { rank: "Gold I", xp: 600 },
+    { rank: "Gold II", xp: 450 },
+    { rank: "Gold III", xp: 300 },
+    { rank: "Silver I", xp: 200 },
+    { rank: "Silver II", xp: 140 },
+    { rank: "Silver III", xp: 90 },
+    { rank: "Bronze I", xp: 50 },
+    { rank: "Bronze II", xp: 20 },
+    { rank: "Bronze III", xp: 0 }
+  ];
+
+  function getRank(xp) {
+    for (let i = 0; i < ranks.length; i++) {
+      if (xp >= ranks[i].xp) return ranks[i].rank;
+    }
+    return "Bronze III"; // Fallback
+  }
+
+  let currentQuestion = 0;
+  let correct = 0;
+  let startTime = 0;
+  let challengeStartTime;
+  let sessionXP = 0;
+  let totalXP = 0;
+  let lives = 3;
+  let questions = [];
+
+  async function loadUserData() {
+    const username = localStorage.getItem("loggedInUser") || "guest_user";
+    const userRef = ref(db, `challengeUsers/${username}`);
+    try {
+      const snapshot = await get(userRef);
+      if (snapshot.exists()) {
+        const userData = snapshot.val();
+        totalXP = userData.xp || 0;
+        document.getElementById("rank").innerText = `Rank: ${getRank(totalXP)}`;
+      }
+    } catch (error) {
+      console.error("❌ Error loading user data:", error);
+    }
+  }
+
+  function getRandomFraction() {
+    let a = Math.ceil(Math.random() * 9);
+    let b = Math.ceil(Math.random() * 9);
+    let c = Math.ceil(Math.random() * 9);
+    let d = Math.ceil(Math.random() * 9);
+    if (b === 0) b = 1;
+    if (d === 0) d = 1;
+    const question = `${a}/${b} + ${c}/${d}`;
+    const resultNum = a * d + c * b;
+    const resultDen = b * d;
+    const gcd = (x, y) => y === 0 ? x : gcd(y, x % y);
+    const g = gcd(resultNum, resultDen);
+    return {
+      q: question,
+      a: `${resultNum / g}/${resultDen / g}`
+    };
+  }
+
+  function parseFraction(input) {
+    const mixed = input.trim().match(/^(\d+)\s+(\d+)\/(\d+)$/);
+    if (mixed) {
+      const whole = parseInt(mixed[1]);
+      const num = parseInt(mixed[2]);
+      const den = parseInt(mixed[3]);
+      return `${(whole * den) + num}/${den}`;
+    }
+
+    const simple = input.trim().match(/^(\d+)\/(\d+)$/);
+    if (simple) return `${simple[1]}/${simple[2]}`;
+
+    return null;
+  }
+
+  function generateQuestions(count = 20) {
+    questions = [];
+    for (let i = 0; i < count; i++) {
+      questions.push(getRandomFraction());
+    }
+  }
+
+  function loadQuestion() {
+    const q = questions[currentQuestion];
+    document.getElementById("question").innerText = `Q${currentQuestion + 1}: ${q.q}`;
+    document.getElementById("answer").value = "";
+    document.getElementById("xpChangeMsg").innerText = "";
+    startTime = Date.now();
+  }
+
+  function updateLivesDisplay() {
+    document.getElementById("lives").innerText = lives;
+  }
+
+  window.submitAnswer = async function () {
+    if (lives <= 0) return;
+
+    const userAns = parseFraction(document.getElementById("answer").value.trim());
+    const correctAns = parseFraction(questions[currentQuestion].a);
+    const timeTaken = (Date.now() - startTime) / 1000;
+    let gain = 0;
+
+    if (userAns === correctAns) {
+      correct++;
+      if (timeTaken <= 5) gain = 4;
+      else if (timeTaken <= 10) gain = 3;
+      else if (timeTaken <= 15) gain = 2;
+      else if (timeTaken <= 25) gain = 1;
+    } else {
+      gain = -1;
+      lives--;
+      updateLivesDisplay();
+    }
+
+    const xpMsg = document.getElementById("xpChangeMsg");
+    if (gain > 0) {
+      sessionXP += gain;
+      xpMsg.innerText = `+${gain} XP`;
+      xpMsg.className = "xp-change gain";
+    } else {
+      sessionXP = Math.max(0, sessionXP - 1);
+      xpMsg.innerText = "-1 XP";
+      xpMsg.className = "xp-change loss";
+    }
+
+    const currentTotalXP = totalXP + sessionXP;
+    document.getElementById("xp").innerText = sessionXP;
+    document.getElementById("rank").innerText = "Rank: " + getRank(currentTotalXP);
+
+    const totalTime = (Date.now() - challengeStartTime) / 1000;
+    const accuracy = (correct / (currentQuestion + 1)) * 100;
+
+    document.getElementById("speed").innerText = `${totalTime.toFixed(1)}s`;
+    document.getElementById("accuracy").innerText = `${accuracy.toFixed(0)}%`;
+
+    currentQuestion++;
+
+    if (lives <= 0) {
+      alert("💀 Game Over! You've run out of lives.");
+      await saveUserProgress(currentTotalXP, totalTime, accuracy);
+    } else if (currentQuestion < questions.length) {
+      setTimeout(loadQuestion, 400);
+    } else {
+      await saveUserProgress(currentTotalXP, totalTime, accuracy);
+      alert("🎉 Challenge Complete!");
+    }
+  };
+
+  async function saveUserProgress(newXP, time, accuracy) {
+    const username = localStorage.getItem("loggedInUser") || "guest_user";
+    const userRef = ref(db, `challengeUsers/${username}`);
+    await update(userRef, {
+      xp: newXP,
+      time: time,
+      accuracy: accuracy
+    });
+  }
+
+  // Initialise
+  await loadUserData();
+  generateQuestions();
+  challengeStartTime = Date.now();
+  loadQuestion();
+  updateLivesDisplay();
+</script>
+
+  </script>
+</body>
+</html>
+
+

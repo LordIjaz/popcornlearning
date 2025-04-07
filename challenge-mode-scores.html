@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Challenge Mode - Leaderboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #0f0f0f, #1a1a2e);
+      color: white;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    header {
+      background: linear-gradient(to right, #F0C808, #f25c05);
+      padding: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-shadow: 1px 1px #000;
+    }
+
+    .home-btn {
+      background-color: #F0C808;
+      color: #333;
+      font-size: 18px;
+      padding: 10px 20px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .home-btn:hover {
+      background-color: #f25c05;
+    }
+
+    .leaderboard-container {
+      margin-top: 40px;
+    }
+
+    .leaderboard-table {
+      width: 90%;
+      margin: 0 auto;
+      background-color: #222;
+      border-radius: 15px;
+      border: 1px solid #f0c808;
+      padding: 20px;
+    }
+
+    .leaderboard-table th, .leaderboard-table td {
+      padding: 10px;
+      font-size: 18px;
+    }
+
+    .leaderboard-table th {
+      background-color: #f0c808;
+    }
+
+    .leaderboard-table tr:nth-child(even) {
+      background-color: #333;
+    }
+
+    .rank {
+      font-weight: bold;
+      color: #00ffcc;
+    }
+
+    .user-name {
+      font-size: 18px;
+    }
+
+    .user-score {
+      color: #f0c808;
+    }
+
+    .user-rank {
+      color: #ff63c3;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>🧙‍♂️ Challenge Mode - Leaderboard</header>
+  
+  <!-- Home Button -->
+  <div>
+    <button class="home-btn" onclick="window.location.href='index.html'">Home</button>
+  </div>
+
+  <div class="leaderboard-container">
+    <table class="leaderboard-table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>User</th>
+          <th>XP</th>
+          <th>Rank Title</th>
+        </tr>
+      </thead>
+      <tbody id="leaderboard"></tbody>
+    </table>
+  </div>
+
+  <!-- Firebase Scripts -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+    import { getDatabase, ref, get, orderByChild, limitToFirst } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC4s2aWk3XkKqgzV_Bz3-s-VWk8ZPMTLNY",
+      authDomain: "popcornlearning-332a5.firebaseapp.com",
+      databaseURL: "https://popcornlearning-332a5-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "popcornlearning-332a5",
+      storageBucket: "popcornlearning-332a5.appspot.com",
+      messagingSenderId: "227316807463",
+      appId: "1:227316807463:web:e8b5dbd2c1998a11faef26"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    function getLeaderboard() {
+      const leaderboardRef = ref(db, 'challengeUsers');
+      
+      get(leaderboardRef, orderByChild('xp'), limitToFirst(10))
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            const leaderboardData = snapshot.val();
+            const sortedLeaderboard = Object.entries(leaderboardData)
+              .map(([user, data]) => ({
+                username: user,
+                xp: data.xp,
+                rank: data.rank
+              }))
+              .sort((a, b) => b.xp - a.xp); // Sort by XP in descending order
+
+            updateLeaderboard(sortedLeaderboard);
+          } else {
+            console.log("No leaderboard data available");
+          }
+        })
+        .catch((error) => {
+          console.error("❌ Error fetching leaderboard:", error);
+        });
+    }
+
+    function getRankTitle(xp) {
+      if (xp >= 4700) return 'Unreal';
+      if (xp >= 3800) return 'Champion';
+      if (xp >= 3100) return 'Elite';
+      if (xp >= 2550) return 'Diamond I';
+      if (xp >= 2100) return 'Diamond II';
+      if (xp >= 1700) return 'Diamond III';
+      if (xp >= 1350) return 'Platinum I';
+      if (xp >= 1050) return 'Platinum II';
+      if (xp >= 800) return 'Platinum III';
+      if (xp >= 600) return 'Gold I';
+      if (xp >= 450) return 'Gold II';
+      if (xp >= 300) return 'Gold III';
+      if (xp >= 200) return 'Silver I';
+      if (xp >= 140) return 'Silver II';
+      if (xp >= 90) return 'Silver III';
+      if (xp >= 50) return 'Bronze I';
+      if (xp >= 20) return 'Bronze II';
+      return 'Bronze III';
+    }
+
+    function updateLeaderboard(leaderboard) {
+      const leaderboardElement = document.getElementById('leaderboard');
+      leaderboardElement.innerHTML = ""; // Clear existing leaderboard
+
+      leaderboard.forEach((entry, index) => {
+        const rankTitle = getRankTitle(entry.xp);
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td class="rank">${index + 1}</td>
+          <td class="user-name">${entry.username}</td>
+          <td class="user-score">${entry.xp}</td>
+          <td class="user-rank">${rankTitle}</td>
+        `;
+        leaderboardElement.appendChild(row);
+      });
+    }
+
+    // Fetch leaderboard when the page loads
+    getLeaderboard();
+  </script>
+</body>
+</html>
