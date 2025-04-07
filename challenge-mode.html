@@ -244,22 +244,23 @@
   }
 
   function getRandomFraction() {
-    let a = Math.ceil(Math.random() * 9);
-    let b = Math.ceil(Math.random() * 9);
-    let c = Math.ceil(Math.random() * 9);
-    let d = Math.ceil(Math.random() * 9);
-    if (b === 0) b = 1;
-    if (d === 0) d = 1;
-    const question = `${a}/${b} + ${c}/${d}`;
-    const resultNum = a * d + c * b;
-    const resultDen = b * d;
-    const gcd = (x, y) => y === 0 ? x : gcd(y, x % y);
-    const g = gcd(resultNum, resultDen);
-    return {
-      q: question,
-      a: `${resultNum / g}/${resultDen / g}`
-    };
-  }
+  let a = Math.ceil(Math.random() * 9);
+  let b = Math.ceil(Math.random() * 9);
+  let c = Math.ceil(Math.random() * 9);
+  let d = Math.ceil(Math.random() * 9);
+  if (b === 0) b = 1;
+  if (d === 0) d = 1;
+  const question = `${a}/${b} × ${c}/${d}`;
+  const resultNum = a * c;
+  const resultDen = b * d;
+  const gcd = (x, y) => y === 0 ? x : gcd(y, x % y);
+  const g = gcd(resultNum, resultDen);
+  return {
+    q: question,
+    a: `${resultNum / g}/${resultDen / g}`
+  };
+}
+
 
   function parseFraction(input) {
     const mixed = input.trim().match(/^(\d+)\s+(\d+)\/(\d+)$/);
@@ -366,8 +367,6 @@
   loadQuestion();
   updateLivesDisplay();
 </script>
-
-  </script>
 </body>
 </html>
 
