@@ -23,7 +23,6 @@
       text-shadow: 1px 1px #000;
     }
 
-    /* --- NEW NAV BUTTON STYLING --- */
     .nav-buttons {
       display: flex;
       justify-content: center;
@@ -52,7 +51,6 @@
       background-color: #c79200;
       transform: scale(1.05);
     }
-    /* ----------------------------- */
 
     .boss-container {
       margin-top: 40px;
@@ -140,19 +138,20 @@
       color: #ff6b6b;
       margin-top: 10px;
     }
+
+    .timer {
+      font-size: 24px;
+      color: #ff6b6b;
+    }
   </style>
 </head>
 <body>
   <header>🧙‍♂️ Challenge Mode: The Fractions Fiend</header>
 
-  <!-- 🔘 Navigation Buttons -->
   <div class="nav-buttons">
     <a href="index.html"><button>🏠 Home</button></a>
     <a href="challenge-mode-scores.html"><button>📊 Ranked Leaderboard</button></a>
   </div>
-
-  <!-- Keep the rest of your game content below here... -->
-
 
   <div class="boss-container">
     <img src="boss-fractions-fiend.png" alt="Fractions Fiend Boss" />
@@ -171,6 +170,7 @@
     </div>
     <div class="lives-display">❤️ Lives Left: <span id="lives">3</span></div>
     <div class="rank-display" id="rank">Rank: Bronze III</div>
+    <div class="timer" id="timer">60s</div>
   </div>
 
   <!-- Firebase Scripts -->
@@ -192,23 +192,23 @@
   const db = getDatabase(app);
 
   const ranks = [
-    { rank: "Unreal", xp: 4700 },
-    { rank: "Champion", xp: 3800 },
-    { rank: "Elite", xp: 3100 },
-    { rank: "Diamond I", xp: 2550 },
-    { rank: "Diamond II", xp: 2100 },
-    { rank: "Diamond III", xp: 1700 },
-    { rank: "Platinum I", xp: 1350 },
-    { rank: "Platinum II", xp: 1050 },
-    { rank: "Platinum III", xp: 800 },
-    { rank: "Gold I", xp: 600 },
-    { rank: "Gold II", xp: 450 },
-    { rank: "Gold III", xp: 300 },
-    { rank: "Silver I", xp: 200 },
-    { rank: "Silver II", xp: 140 },
-    { rank: "Silver III", xp: 90 },
-    { rank: "Bronze I", xp: 50 },
-    { rank: "Bronze II", xp: 20 },
+    { rank: "Unreal", xp: 7500 },
+    { rank: "Champion", xp: 5500 },
+    { rank: "Elite", xp: 4500 },
+    { rank: "Diamond I", xp: 3100 },
+    { rank: "Diamond II", xp: 2500 },
+    { rank: "Diamond III", xp: 2000 },
+    { rank: "Platinum I", xp: 1850 },
+    { rank: "Platinum II", xp: 1500 },
+    { rank: "Platinum III", xp: 1100 },
+    { rank: "Gold I", xp: 800 },
+    { rank: "Gold II", xp: 500 },
+    { rank: "Gold III", xp: 400 },
+    { rank: "Silver I", xp: 300 },
+    { rank: "Silver II", xp: 240 },
+    { rank: "Silver III", xp: 190 },
+    { rank: "Bronze I", xp: 80 },
+    { rank: "Bronze II", xp: 40 },
     { rank: "Bronze III", xp: 0 }
   ];
 
@@ -227,6 +227,7 @@
   let totalXP = 0;
   let lives = 3;
   let questions = [];
+  let countdownTimer;
 
   async function loadUserData() {
     const username = localStorage.getItem("loggedInUser") || "guest_user";
@@ -244,23 +245,22 @@
   }
 
   function getRandomFraction() {
-  let a = Math.ceil(Math.random() * 9);
-  let b = Math.ceil(Math.random() * 9);
-  let c = Math.ceil(Math.random() * 9);
-  let d = Math.ceil(Math.random() * 9);
-  if (b === 0) b = 1;
-  if (d === 0) d = 1;
-  const question = `${a}/${b} × ${c}/${d}`;
-  const resultNum = a * c;
-  const resultDen = b * d;
-  const gcd = (x, y) => y === 0 ? x : gcd(y, x % y);
-  const g = gcd(resultNum, resultDen);
-  return {
-    q: question,
-    a: `${resultNum / g}/${resultDen / g}`
-  };
-}
-
+    let a = Math.ceil(Math.random() * 9);
+    let b = Math.ceil(Math.random() * 9);
+    let c = Math.ceil(Math.random() * 9);
+    let d = Math.ceil(Math.random() * 9);
+    if (b === 0) b = 1;
+    if (d === 0) d = 1;
+    const question = `${a}/${b} × ${c}/${d}`;
+    const resultNum = a * c;
+    const resultDen = b * d;
+    const gcd = (x, y) => y === 0 ? x : gcd(y, x % y);
+    const g = gcd(resultNum, resultDen);
+    return {
+      q: question,
+      a: `${resultNum / g}/${resultDen / g}`
+    };
+  }
 
   function parseFraction(input) {
     const mixed = input.trim().match(/^(\d+)\s+(\d+)\/(\d+)$/);
@@ -290,93 +290,104 @@
     document.getElementById("answer").value = "";
     document.getElementById("xpChangeMsg").innerText = "";
     startTime = Date.now();
+    startCountdown();
   }
-    function simplifyFraction(fraction) {
-  const parts = fraction.split('/');
-  const num = parseInt(parts[0]);
-  const den = parseInt(parts[1]);
-  const gcd = (a, b) => b === 0 ? a : gcd(b, a % b);
-  const divisor = gcd(num, den);
-  return `${num / divisor}/${den / divisor}`;
-}
 
+  function startCountdown() {
+    let remainingTime = 60;
+    document.getElementById("timer").innerText = `${remainingTime}s`;
+
+    countdownTimer = setInterval(() => {
+      remainingTime--;
+      document.getElementById("timer").innerText = `${remainingTime}s`;
+      if (remainingTime <= 0) {
+        clearInterval(countdownTimer);
+        submitAnswer();
+      }
+    }, 1000);
+  }
+
+  function simplifyFraction(fraction) {
+    const parts = fraction.split('/');
+    const num = parseInt(parts[0]);
+    const den = parseInt(parts[1]);
+    const gcd = (a, b) => b === 0 ? a : gcd(b, a % b);
+    const divisor = gcd(num, den);
+    return `${num / divisor}/${den / divisor}`;
+  }
 
   function updateLivesDisplay() {
     document.getElementById("lives").innerText = lives;
+    if (lives <= 0) {
+      alert("Game Over!");
+      resetGame();
+    }
   }
 
-  window.submitAnswer = async function () {
-    if (lives <= 0) return;
+  async function submitAnswer() {
+    const answerInput = document.getElementById("answer").value.trim();
+    const currentQ = questions[currentQuestion];
+    const correctAnswer = currentQ.a;
+    const userAnswer = simplifyFraction(answerInput);
 
-    const userAns = parseFraction(document.getElementById("answer").value.trim());
-    const correctAns = parseFraction(questions[currentQuestion].a);
-    const timeTaken = (Date.now() - startTime) / 1000;
-    let gain = 0;
+    let xpChange = 0;
+    let speed = ((Date.now() - startTime) / 1000).toFixed(2);
 
-    if (simplifyFraction(userAns) === correctAns) {
+    if (userAnswer === correctAnswer) {
       correct++;
-      if (timeTaken <= 5) gain = 4;
-      else if (timeTaken <= 10) gain = 3;
-      else if (timeTaken <= 15) gain = 2;
-      else if (timeTaken <= 25) gain = 1;
+      xpChange = calculateXP(speed);
     } else {
-      gain = -1;
+      xpChange = -1;
       lives--;
       updateLivesDisplay();
     }
 
-    const xpMsg = document.getElementById("xpChangeMsg");
-    if (gain > 0) {
-      sessionXP += gain;
-      xpMsg.innerText = `+${gain} XP`;
-      xpMsg.className = "xp-change gain";
-    } else {
-      sessionXP = Math.max(0, sessionXP - 1);
-      xpMsg.innerText = "-1 XP";
-      xpMsg.className = "xp-change loss";
+    totalXP += xpChange;
+    sessionXP += xpChange;
+
+    document.getElementById("xpChangeMsg").innerText = `XP: ${xpChange > 0 ? "+" : ""}${xpChange}`;
+    document.getElementById("xp").innerText = totalXP;
+    document.getElementById("speed").innerText = `${speed}s`;
+    document.getElementById("accuracy").innerText = `${((correct / (currentQuestion + 1)) * 100).toFixed(1)}%`;
+    document.getElementById("rank").innerText = `Rank: ${getRank(totalXP)}`;
+
+    if (lives > 0) {
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        loadQuestion();
+      } else {
+        alert("You've completed the challenge!");
+        resetGame();
+      }
     }
-
-    const currentTotalXP = totalXP + sessionXP;
-    document.getElementById("xp").innerText = sessionXP;
-    document.getElementById("rank").innerText = "Rank: " + getRank(currentTotalXP);
-
-    const totalTime = (Date.now() - challengeStartTime) / 1000;
-    const accuracy = (correct / (currentQuestion + 1)) * 100;
-
-    document.getElementById("speed").innerText = `${totalTime.toFixed(1)}s`;
-    document.getElementById("accuracy").innerText = `${accuracy.toFixed(0)}%`;
-
-    currentQuestion++;
-
-    if (lives <= 0) {
-      alert("💀 Game Over! You've run out of lives.");
-      await saveUserProgress(currentTotalXP, totalTime, accuracy);
-    } else if (currentQuestion < questions.length) {
-      setTimeout(loadQuestion, 400);
-    } else {
-      await saveUserProgress(currentTotalXP, totalTime, accuracy);
-      alert("🎉 Challenge Complete!");
-    }
-  };
-
-  async function saveUserProgress(newXP, time, accuracy) {
-    const username = localStorage.getItem("loggedInUser") || "guest_user";
-    const userRef = ref(db, `challengeUsers/${username}`);
-    await update(userRef, {
-      xp: newXP,
-      time: time,
-      accuracy: accuracy
-    });
   }
 
-  // Initialise
-  await loadUserData();
+  function calculateXP(speed) {
+    if (speed <= 5) return 3;
+    if (speed <= 10) return 2;
+    if (speed <= 15) return 1;
+    return 0;
+  }
+
+  function resetGame() {
+    currentQuestion = 0;
+    correct = 0;
+    lives = 3;
+    totalXP = 0;
+    sessionXP = 0;
+    document.getElementById("xp").innerText = totalXP;
+    document.getElementById("accuracy").innerText = "0%";
+    document.getElementById("speed").innerText = "0s";
+    document.getElementById("lives").innerText = "3";
+    loadUserData();
+  }
+
+  loadUserData();
   generateQuestions();
-  challengeStartTime = Date.now();
   loadQuestion();
-  updateLivesDisplay();
-</script>
+  </script>
 </body>
 </html>
+
 
 
