@@ -173,221 +173,239 @@
     <div class="timer" id="timer">60s</div>
   </div>
 
-  <!-- Firebase Scripts -->
+  <!-- Firebase + Game Logic -->
   <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-  import { getDatabase, ref, set, get, update } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyC4s2aWk3XkKqgzV_Bz3-s-VWk8ZPMTLNY",
-    authDomain: "popcornlearning-332a5.firebaseapp.com",
-    databaseURL: "https://popcornlearning-332a5-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "popcornlearning-332a5",
-    storageBucket: "popcornlearning-332a5.appspot.com",
-    messagingSenderId: "227316807463",
-    appId: "1:227316807463:web:e8b5dbd2c1998a11faef26"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-
-  const ranks = [
-    { rank: "Unreal", xp: 7500 },
-    { rank: "Champion", xp: 5500 },
-    { rank: "Elite", xp: 4500 },
-    { rank: "Diamond I", xp: 3100 },
-    { rank: "Diamond II", xp: 2500 },
-    { rank: "Diamond III", xp: 2000 },
-    { rank: "Platinum I", xp: 1850 },
-    { rank: "Platinum II", xp: 1500 },
-    { rank: "Platinum III", xp: 1100 },
-    { rank: "Gold I", xp: 800 },
-    { rank: "Gold II", xp: 500 },
-    { rank: "Gold III", xp: 400 },
-    { rank: "Silver I", xp: 300 },
-    { rank: "Silver II", xp: 240 },
-    { rank: "Silver III", xp: 190 },
-    { rank: "Bronze I", xp: 80 },
-    { rank: "Bronze II", xp: 40 },
-    { rank: "Bronze III", xp: 0 }
-  ];
-
-  function getRank(xp) {
-    for (let i = 0; i < ranks.length; i++) {
-      if (xp >= ranks[i].xp) return ranks[i].rank;
-    }
-    return "Bronze III"; // Fallback
-  }
-
-  let currentQuestion = 0;
-  let correct = 0;
-  let startTime = 0;
-  let challengeStartTime;
-  let sessionXP = 0;
-  let totalXP = 0;
-  let lives = 3;
-  let questions = [];
-  let countdownTimer;
-
-  async function loadUserData() {
-    const username = localStorage.getItem("loggedInUser") || "guest_user";
-    const userRef = ref(db, `challengeUsers/${username}`);
-    try {
-      const snapshot = await get(userRef);
-      if (snapshot.exists()) {
-        const userData = snapshot.val();
-        totalXP = userData.xp || 0;
-        document.getElementById("rank").innerText = `Rank: ${getRank(totalXP)}`;
-      }
-    } catch (error) {
-      console.error("❌ Error loading user data:", error);
-    }
-  }
-
-  function getRandomFraction() {
-    let a = Math.ceil(Math.random() * 9);
-    let b = Math.ceil(Math.random() * 9);
-    let c = Math.ceil(Math.random() * 9);
-    let d = Math.ceil(Math.random() * 9);
-    if (b === 0) b = 1;
-    if (d === 0) d = 1;
-    const question = `${a}/${b} × ${c}/${d}`;
-    const resultNum = a * c;
-    const resultDen = b * d;
-    const gcd = (x, y) => y === 0 ? x : gcd(y, x % y);
-    const g = gcd(resultNum, resultDen);
-    return {
-      q: question,
-      a: `${resultNum / g}/${resultDen / g}`
+    const firebaseConfig = {
+      apiKey: "AIzaSyC4s2aWk3XkKqgzV_Bz3-s-VWk8ZPMTLNY",
+      authDomain: "popcornlearning-332a5.firebaseapp.com",
+      databaseURL: "https://popcornlearning-332a5-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "popcornlearning-332a5",
+      storageBucket: "popcornlearning-332a5.appspot.com",
+      messagingSenderId: "227316807463",
+      appId: "1:227316807463:web:e8b5dbd2c1998a11faef26"
     };
-  }
 
-  function parseFraction(input) {
-    const mixed = input.trim().match(/^(\d+)\s+(\d+)\/(\d+)$/);
-    if (mixed) {
-      const whole = parseInt(mixed[1]);
-      const num = parseInt(mixed[2]);
-      const den = parseInt(mixed[3]);
-      return `${(whole * den) + num}/${den}`;
-    }
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
-    const simple = input.trim().match(/^(\d+)\/(\d+)$/);
-    if (simple) return `${simple[1]}/${simple[2]}`;
+    const ranks = [
+      { rank: "Unreal", xp: 7500 },
+      { rank: "Champion", xp: 5500 },
+      { rank: "Elite", xp: 4500 },
+      { rank: "Diamond I", xp: 3100 },
+      { rank: "Diamond II", xp: 2500 },
+      { rank: "Diamond III", xp: 2000 },
+      { rank: "Platinum I", xp: 1850 },
+      { rank: "Platinum II", xp: 1500 },
+      { rank: "Platinum III", xp: 1100 },
+      { rank: "Gold I", xp: 800 },
+      { rank: "Gold II", xp: 500 },
+      { rank: "Gold III", xp: 400 },
+      { rank: "Silver I", xp: 300 },
+      { rank: "Silver II", xp: 240 },
+      { rank: "Silver III", xp: 190 },
+      { rank: "Bronze I", xp: 80 },
+      { rank: "Bronze II", xp: 40 },
+      { rank: "Bronze III", xp: 0 }
+    ];
 
-    return null;
-  }
-
-  function generateQuestions(count = 20) {
-    questions = [];
-    for (let i = 0; i < count; i++) {
-      questions.push(getRandomFraction());
-    }
-  }
-
-  function loadQuestion() {
-    const q = questions[currentQuestion];
-    document.getElementById("question").innerText = `Q${currentQuestion + 1}: ${q.q}`;
-    document.getElementById("answer").value = "";
-    document.getElementById("xpChangeMsg").innerText = "";
-    startTime = Date.now();
-    startCountdown();
-  }
-
-  function startCountdown() {
-    let remainingTime = 60;
-    document.getElementById("timer").innerText = `${remainingTime}s`;
-
-    countdownTimer = setInterval(() => {
-      remainingTime--;
-      document.getElementById("timer").innerText = `${remainingTime}s`;
-      if (remainingTime <= 0) {
-        clearInterval(countdownTimer);
-        submitAnswer();
+    function getRank(xp) {
+      for (let i = 0; i < ranks.length; i++) {
+        if (xp >= ranks[i].xp) return ranks[i].rank;
       }
-    }, 1000);
-  }
-
-  function simplifyFraction(fraction) {
-    const parts = fraction.split('/');
-    const num = parseInt(parts[0]);
-    const den = parseInt(parts[1]);
-    const gcd = (a, b) => b === 0 ? a : gcd(b, a % b);
-    const divisor = gcd(num, den);
-    return `${num / divisor}/${den / divisor}`;
-  }
-
-  function updateLivesDisplay() {
-    document.getElementById("lives").innerText = lives;
-    if (lives <= 0) {
-      alert("Game Over!");
-      resetGame();
-    }
-  }
-
-  async function submitAnswer() {
-    const answerInput = document.getElementById("answer").value.trim();
-    const currentQ = questions[currentQuestion];
-    const correctAnswer = currentQ.a;
-    const userAnswer = simplifyFraction(answerInput);
-
-    let xpChange = 0;
-    let speed = ((Date.now() - startTime) / 1000).toFixed(2);
-
-    if (userAnswer === correctAnswer) {
-      correct++;
-      xpChange = calculateXP(speed);
-    } else {
-      xpChange = -1;
-      lives--;
-      updateLivesDisplay();
+      return "Bronze III";
     }
 
-    totalXP += xpChange;
-    sessionXP += xpChange;
+    let currentQuestion = 0;
+    let correct = 0;
+    let startTime = 0;
+    let sessionXP = 0;
+    let totalXP = 0;
+    let lives = 3;
+    let questions = [];
+    let countdownTimer;
 
-    document.getElementById("xpChangeMsg").innerText = `XP: ${xpChange > 0 ? "+" : ""}${xpChange}`;
-    document.getElementById("xp").innerText = totalXP;
-    document.getElementById("speed").innerText = `${speed}s`;
-    document.getElementById("accuracy").innerText = `${((correct / (currentQuestion + 1)) * 100).toFixed(1)}%`;
-    document.getElementById("rank").innerText = `Rank: ${getRank(totalXP)}`;
+    async function loadUserData() {
+      const username = localStorage.getItem("loggedInUser") || "guest_user";
+      const userRef = ref(db, `challengeUsers/${username}`);
+      try {
+        const snapshot = await get(userRef);
+        if (snapshot.exists()) {
+          const userData = snapshot.val();
+          totalXP = userData.xp || 0;
+          document.getElementById("rank").innerText = `Rank: ${getRank(totalXP)}`;
+        }
+      } catch (error) {
+        console.error("❌ Error loading user data:", error);
+      }
+    }
 
-    if (lives > 0) {
-      currentQuestion++;
-      if (currentQuestion < questions.length) {
-        loadQuestion();
-      } else {
-        alert("You've completed the challenge!");
+    function getRandomFraction() {
+      let a = Math.ceil(Math.random() * 9);
+      let b = Math.ceil(Math.random() * 9);
+      let c = Math.ceil(Math.random() * 9);
+      let d = Math.ceil(Math.random() * 9);
+      const question = `${a}/${b} × ${c}/${d}`;
+      const resultNum = a * c;
+      const resultDen = b * d;
+      const gcd = (x, y) => y === 0 ? x : gcd(y, x % y);
+      const g = gcd(resultNum, resultDen);
+      return {
+        q: question,
+        a: `${resultNum / g}/${resultDen / g}`
+      };
+    }
+
+    function simplifyFraction(fraction) {
+      const parts = fraction.split('/');
+      const num = parseInt(parts[0]);
+      const den = parseInt(parts[1]);
+      const gcd = (a, b) => b === 0 ? a : gcd(b, a % b);
+      const divisor = gcd(num, den);
+      return `${num / divisor}/${den / divisor}`;
+    }
+
+    function parseFraction(input) {
+      const simple = input.trim().match(/^(\d+)\s+(\d+)\/(\d+)$/);
+      if (simple) {
+        const whole = parseInt(simple[1]);
+        const num = parseInt(simple[2]);
+        const den = parseInt(simple[3]);
+        return simplifyFraction(`${(whole * den) + num}/${den}`);
+      }
+      const fraction = input.trim().match(/^(\d+)\/(\d+)$/);
+      if (fraction) return simplifyFraction(fraction[0]);
+      return null;
+    }
+
+    function generateQuestions(count = 20) {
+      questions = [];
+      for (let i = 0; i < count; i++) {
+        questions.push(getRandomFraction());
+      }
+    }
+
+    function loadQuestion() {
+      clearInterval(countdownTimer);
+      const q = questions[currentQuestion];
+      document.getElementById("question").innerText = `Q${currentQuestion + 1}: ${q.q}`;
+      document.getElementById("answer").value = "";
+      document.getElementById("xpChangeMsg").innerText = "";
+      startTime = Date.now();
+      startCountdown();
+    }
+
+    function startCountdown() {
+      let remainingTime = 60;
+      document.getElementById("timer").innerText = `${remainingTime}s`;
+      countdownTimer = setInterval(() => {
+        remainingTime--;
+        document.getElementById("timer").innerText = `${remainingTime}s`;
+        if (remainingTime <= 0) {
+          clearInterval(countdownTimer);
+          submitAnswer();
+        }
+      }, 1000);
+    }
+
+    function calculateXP(time) {
+      if (time <= 5) return 3;
+      if (time <= 10) return 2;
+      if (time <= 15) return 1;
+      return 0;
+    }
+
+    function updateLivesDisplay() {
+      document.getElementById("lives").innerText = lives;
+      if (lives <= 0) {
+        alert("Game Over!");
         resetGame();
       }
     }
+
+    function resetGame() {
+      currentQuestion = 0;
+      correct = 0;
+      sessionXP = 0;
+      lives = 3;
+      generateQuestions();
+      loadQuestion();
+    }
+
+   window.submitAnswer = function () {
+  clearInterval(countdownTimer);
+  const answerInput = document.getElementById("answer").value.trim();
+  const currentQ = questions[currentQuestion];
+  const correctAnswer = currentQ.a;
+
+  // Try-catch ensures input parsing doesn't crash the game
+  let userAnswer;
+  try {
+    userAnswer = simplifyFraction(answerInput);
+    if (!userAnswer || userAnswer.includes("NaN") || userAnswer.includes("Infinity")) {
+      throw new Error("Invalid fraction");
+    }
+  } catch (e) {
+    document.getElementById("xpChangeMsg").innerText = "❌ Invalid input!";
+    lives--;
+    updateLivesDisplay();
+    currentQuestion++;
+    if (currentQuestion < questions.length) {
+      loadQuestion();
+    } else {
+      alert("You've completed the challenge!");
+      resetGame();
+    }
+    return;
   }
 
-  function calculateXP(speed) {
-    if (speed <= 5) return 3;
-    if (speed <= 10) return 2;
-    if (speed <= 15) return 1;
-    return 0;
+  let xpChange = 0;
+  let speed = ((Date.now() - startTime) / 1000).toFixed(2);
+
+  if (userAnswer === correctAnswer) {
+    correct++;
+    xpChange = calculateXP(speed);
+    document.getElementById("xpChangeMsg").innerText = `✅ Correct! +${xpChange} XP`;
+  } else {
+    xpChange = -1;
+    lives--;
+    updateLivesDisplay();
+    document.getElementById("xpChangeMsg").innerText = `❌ Wrong! -1 XP`;
   }
 
-  function resetGame() {
-    currentQuestion = 0;
-    correct = 0;
-    lives = 3;
-    totalXP = 0;
-    sessionXP = 0;
-    document.getElementById("xp").innerText = totalXP;
-    document.getElementById("accuracy").innerText = "0%";
-    document.getElementById("speed").innerText = "0s";
-    document.getElementById("lives").innerText = "3";
+  totalXP += xpChange;
+  sessionXP += xpChange;
+
+  document.getElementById("xp").innerText = totalXP;
+  document.getElementById("speed").innerText = `${speed}s`;
+  document.getElementById("accuracy").innerText = `${((correct / (currentQuestion + 1)) * 100).toFixed(1)}%`;
+  document.getElementById("rank").innerText = `Rank: ${getRank(totalXP)}`;
+
+  currentQuestion++;
+  if (currentQuestion < questions.length) {
+    loadQuestion();
+  } else {
+    alert("You've completed the challenge!");
+    resetGame();
+  }
+};
+
+
     loadUserData();
-  }
-
-  loadUserData();
-  generateQuestions();
-  loadQuestion();
+    generateQuestions();
+    loadQuestion();
   </script>
 </body>
 </html>
+
+
+
+
+
+
 
 
 
