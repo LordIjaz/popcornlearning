@@ -90,6 +90,7 @@
   <!-- Home Button -->
   <div>
     <button class="home-btn" onclick="window.location.href='index.html'">Home</button>
+    <button class="home-btn" onclick="window.location.href='ranked-progression.html'">Ranked progress</button>
   </div>
 
   <div class="leaderboard-container">
@@ -151,18 +152,18 @@
 
     function getRankTitle(xp) {
       if (xp >= 20000) return 'Unreal';
-      if (xp >= 14000) return 'Champion';
-      if (xp >= 10000) return 'Elite';
+      if (xp >= 15000) return 'Champion';
+      if (xp >= 11000) return 'Elite';
       if (xp >= 7000) return 'Diamond I';
-      if (xp >= 5000) return 'Diamond II';
-      if (xp >=4000) return 'Diamond III';
-      if (xp >= 3250) return 'Platinum I';
-      if (xp >= 2500) return 'Platinum II';
-      if (xp >= 2000) return 'Platinum III';
-      if (xp >= 1600) return 'Gold I';
-      if (xp >= 1200) return 'Gold II';
-      if (xp >= 1000) return 'Gold III';
-      if (xp >= 800) return 'Silver I';
+      if (xp >= 6000) return 'Diamond II';
+      if (xp >=5000) return 'Diamond III';
+      if (xp >= 4250) return 'Platinum I';
+      if (xp >= 3500) return 'Platinum II';
+      if (xp >= 2700) return 'Platinum III';
+      if (xp >= 2100) return 'Gold I';
+      if (xp >= 1600) return 'Gold II';
+      if (xp >= 1200) return 'Gold III';
+      if (xp >= 900) return 'Silver I';
       if (xp >= 600) return 'Silver II';
       if (xp >= 400) return 'Silver III';
       if (xp >= 150) return 'Bronze I';
