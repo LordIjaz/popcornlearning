@@ -284,22 +284,68 @@
       questions = [];
       loadQuestion();
     }
+    // Full rank ladder
+const RANKS = [
+  { rank: "Unreal", xp: 30000 },
+  { rank: "Champion", xp: 25000 },
+  { rank: "Elite", xp: 20000 },
+  { rank: "Diamond I", xp: 16000 },
+  { rank: "Diamond II", xp: 13000 },
+  { rank: "Diamond III", xp: 10000 },
+  { rank: "Platinum I", xp: 7750 },
+  { rank: "Platinum II", xp: 6000 },
+  { rank: "Platinum III", xp: 4000 },
+  { rank: "Gold I", xp: 2100 },
+  { rank: "Gold II", xp: 1600 },
+  { rank: "Gold III", xp: 1200 },
+  { rank: "Silver I", xp: 900 },
+  { rank: "Silver II", xp: 600 },
+  { rank: "Silver III", xp: 400 },
+  { rank: "Bronze I", xp: 150 },
+  { rank: "Bronze II", xp: 100 },
+  { rank: "Bronze III", xp: 0 }
+];
 
-    function getRandomFraction() {
-      let a = Math.ceil(Math.random() * 9);
-      let b = Math.ceil(Math.random() * 9);
-      let c = Math.ceil(Math.random() * 9);
-      let d = Math.ceil(Math.random() * 9);
-      const question = `${a}/${b} × ${c}/${d}`;
-      const resultNum = a * c;
-      const resultDen = b * d;
-      const gcd = (x, y) => y === 0 ? x : gcd(y, x % y);
-      const g = gcd(resultNum, resultDen);
-      return {
-        q: question,
-        a: `${resultNum / g}/${resultDen / g}`
-      };
-    }
+// XP threshold for unlocking division
+const DIVISION_UNLOCK_XP = 10000;
+
+// Fetch player's XP (fallback to 0 if not found)
+const playerXP = parseInt(localStorage.getItem("xp") || "0", 10);
+
+// Determine if division is unlocked
+const isDivisionUnlocked = playerXP >= DIVISION_UNLOCK_XP;
+
+// Random fraction question generator
+function getRandomFraction() {
+  const a = Math.ceil(Math.random() * 9);
+  const b = Math.ceil(Math.random() * 9);
+  const c = Math.ceil(Math.random() * 9);
+  const d = Math.ceil(Math.random() * 9);
+
+  const operator = isDivisionUnlocked ? (Math.random() < 0.5 ? "×" : "÷") : "×";
+
+  let question, answerNum, answerDen;
+
+  if (operator === "×") {
+    question = `${a}/${b} × ${c}/${d}`;
+    answerNum = a * c;
+    answerDen = b * d;
+  } else {
+    question = `${a}/${b} ÷ ${c}/${d}`;
+    answerNum = a * d;
+    answerDen = b * c;
+  }
+
+  const gcd = (x, y) => y === 0 ? x : gcd(y, x % y);
+  const g = gcd(answerNum, answerDen);
+
+  return {
+    q: question,
+    a: `${answerNum / g}/${answerDen / g}`
+  };
+}
+
+
 
     function simplifyFraction(fraction) {
       const [num, den] = fraction.split('/').map(Number);
