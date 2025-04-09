@@ -1,142 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Courses - Popcorn Learning</title>
-    <style>
-       body {
-    font-family: 'Arial', sans-serif;
-    background-color: black;
-    color: white;
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Courses - Popcorn Learning</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: black;
+      color: white;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
 
-header {
-    background: linear-gradient(45deg, #007BFF, #F0C808);
-    padding: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 10;
-    box-sizing: border-box;
-}
-
-header h1 {
-    font-size: 36px;
-    color: white;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin: 0;
-}
-
-header .nav-links {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-header .nav-links a {
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-    text-transform: uppercase;
-    font-weight: bold;
-    transition: color 0.3s ease;
-    padding: 5px 10px;
-}
-
-header .nav-links a:hover {
-    color: #F0C808;
-}
-
-.main-content {
-    margin-top: 180px;
-    text-align: center;
-    padding: 50px 20px;
-    background: linear-gradient(45deg, #1f1f1f, #333);
-    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5);
-}
-
-.button {
-    background-color: #F0C808;
-    color: black;
-    padding: 15px 30px;
-    text-decoration: none;
-    border-radius: 50px;
-    font-size: 20px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    margin: 20px auto;
-    display: block;
-    width: fit-content;
-}
-
-.button:hover {
-    background-color: #C79200;
-    transform: scale(1.05);
-}
-
-footer {
-    background-color: #333;
-    text-align: center;
-    padding: 20px;
-    color: white;
-}
-
-/* Responsive adjustments */
-@media screen and (max-width: 768px) {
     header {
-        flex-direction: column;
-        align-items: flex-start;
+      background: linear-gradient(45deg, #007BFF, #F0C808);
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 10;
+      box-sizing: border-box;
+      flex-wrap: wrap;
     }
 
     header h1 {
-        font-size: 28px;
-        margin-bottom: 10px;
+      font-size: 36px;
+      color: white;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin: 0;
     }
 
-    header .nav-links {
-        flex-direction: column;
-        align-items: flex-start;
-        width: 100%;
-        overflow-x: auto;
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 28px;
+      color: white;
+      cursor: pointer;
     }
 
-    header .nav-links a {
-        font-size: 16px;
-        margin: 5px 0;
-        width: 100%;
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      text-transform: uppercase;
+      font-weight: bold;
+      transition: color 0.3s ease;
+      padding: 5px 10px;
+    }
+
+    .nav-links a:hover {
+      color: #F0C808;
     }
 
     .main-content {
-        margin-top: 300px; /* Increased margin to avoid overlap */
-        padding: 30px 10px;
+      margin-top: 180px;
+      text-align: center;
+      padding: 50px 20px;
+      background: linear-gradient(45deg, #1f1f1f, #333);
+      box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5);
     }
 
     .button {
+      background-color: #F0C808;
+      color: black;
+      padding: 15px 30px;
+      text-decoration: none;
+      border-radius: 50px;
+      font-size: 20px;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      margin: 20px auto;
+      display: block;
+      width: fit-content;
+    }
+
+    .button:hover {
+      background-color: #C79200;
+      transform: scale(1.05);
+    }
+
+    footer {
+      background-color: #333;
+      text-align: center;
+      padding: 20px;
+      color: white;
+    }
+
+    @media screen and (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      .nav-links.show {
+        display: flex;
+      }
+
+      .nav-links a {
+        font-size: 16px;
+        margin: 5px 0;
+        width: 100%;
+      }
+
+      .main-content {
+        margin-top: 320px;
+        padding: 30px 10px;
+      }
+
+      .button {
         font-size: 18px;
         padding: 12px 24px;
+      }
     }
-}
-
-        
-    </style>
+  </style>
 </head>
 <body>
+
 <script>
-    if (!localStorage.getItem("loggedInUser")) {
-        window.location.href = "login.html"; // Redirect to login page if not logged in
-    }
+  if (!localStorage.getItem("loggedInUser")) {
+    window.location.href = "login.html";
+  }
 </script>
+
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
@@ -146,7 +155,7 @@ footer {
     apiKey: "AIzaSyBNNcj4L1h0M0_Q8PFaE-Up-hyKMxnMvGY",
     authDomain: "popcornlearning-332a5.firebaseapp.com",
     projectId: "popcornlearning-332a5",
-    storageBucket: "popcornlearning-332a5.firebasestorage.app",
+    storageBucket: "popcornlearning-332a5.appspot.com",
     messagingSenderId: "923654716319",
     appId: "1:923654716319:web:ceb873f28914652b6d1baa"
   };
@@ -157,15 +166,11 @@ footer {
 
   onAuthStateChanged(auth, async (user) => {
     if (!user) {
-      // Not logged in, redirect to login
       window.location.href = "login.html";
     } else {
-      // Check if username exists in Firestore
       const userDocRef = doc(db, "users", user.uid);
       const userDocSnap = await getDoc(userDocRef);
-
       if (!userDocSnap.exists() || !userDocSnap.data().username) {
-        // Redirect to set-username page if username is missing
         window.location.href = "set-username.html";
       }
     }
@@ -173,40 +178,45 @@ footer {
 </script>
 
 <header>
-    <h1>Popcorn Learning</h1>
-    <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="courses.html">Courses</a>
-        <a href="challenge-mode-scores.html">Ranked Leaderboard</a> <!-- Added new button -->
-        <a href="ranked-progression.html">Ranked Progress</a>
-        <a href="avatar.html">Avatar</a>
-        <a href="membership.html">Membership</a>
-        <a href="#" onclick="logout()" class="button">Logout</a>
-        <script>
-            function logout() {
-                localStorage.removeItem("loggedInUser");
-                window.location.href = "login.html";
-            }
-        </script>
-    </div>
+  <h1>Popcorn Learning</h1>
+  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+  <div class="nav-links" id="navLinks">
+    <a href="index.html">Home</a>
+    <a href="courses.html">Courses</a>
+    <a href="challenge-mode-scores.html">Ranked Leaderboard</a>
+    <a href="ranked-progression.html">Ranked Progress</a>
+    <a href="avatar.html">Avatar</a>
+    <a href="membership.html">Membership</a>
+    <a href="#" onclick="logout()" class="button">Logout</a>
+  </div>
 </header>
 
+<script>
+  function toggleMenu() {
+    document.getElementById('navLinks').classList.toggle('show');
+  }
+
+  function logout() {
+    localStorage.removeItem("loggedInUser");
+    window.location.href = "login.html";
+  }
+</script>
+
 <div class="main-content">
-    <h2>Available Courses</h2>
-    
-    <!-- Buttons for different courses -->
-    <a href="ks3.html" class="button">KS3 Maths</a>
-    <a href="ks4.html" class="button">KS4 Maths</a>
-    <a href="maths-game.html" class="button">Multiplication Madness</a>
-    <a href="ks3-science.html" class="button">KS3 Science</a>
-    <a href="wordclash.html" class="button">Word Clash!</a>
-    <a href="challenge-mode.html" class="button">Ranked-Challenge Mode!</a>
+  <h2>Available Courses</h2>
+  <a href="ks3.html" class="button">KS3 Maths</a>
+  <a href="ks4.html" class="button">KS4 Maths</a>
+  <a href="maths-game.html" class="button">Multiplication Madness</a>
+  <a href="ks3-science.html" class="button">KS3 Science</a>
+  <a href="wordclash.html" class="button">Word Clash!</a>
+  <a href="challenge-mode.html" class="button">Ranked-Challenge Mode!</a>
 </div>
 
 <footer>
-    <p>&copy; 2025 Popcorn Learning. All rights reserved.</p>
+  <p>&copy; 2025 Popcorn Learning. All rights reserved.</p>
 </footer>
 
 </body>
 </html>
+
 
