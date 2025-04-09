@@ -79,9 +79,27 @@
     }
 
     .user-rank {
-      color: #ff63c3;
       font-weight: bold;
     }
+
+    /* Rank Title Styles */
+    .rank-title {
+      font-size: 18px;
+      padding: 5px;
+      border-radius: 5px;
+      color: white;
+      text-transform: uppercase;
+    }
+
+    /* Glow effect based on rank */
+    .unreal { background: linear-gradient(to right, #7f00ff, #d900ff); }
+    .champion { background: linear-gradient(to right, #ff0033, #ff6633); }
+    .elite { background: linear-gradient(to right, #00b300, #99ff99); }
+    .diamond { background: linear-gradient(to right, #0080ff, #66aaff); }
+    .platinum { background: linear-gradient(to right, #cccccc, #666666); }
+    .gold { background: linear-gradient(to right, #ffcc00, #ffcc33); }
+    .silver { background: linear-gradient(to right, #c0c0c0, #b0b0b0); }
+    .bronze { background: linear-gradient(to right, #cd7f32, #b38b6d); }
   </style>
 </head>
 <body>
@@ -91,6 +109,8 @@
   <div>
     <button class="home-btn" onclick="window.location.href='index.html'">Home</button>
     <button class="home-btn" onclick="window.location.href='ranked-progression.html'">Ranked progress</button>
+      <button class="home-btn" onclick="window.location.href='challenge-mode.html'">Ranked Challenge Mode</button>
+       <button class="home-btn" onclick="window.location.href='avatar.html'">Avatar</button>
   </div>
 
   <div class="leaderboard-container">
@@ -171,26 +191,77 @@
       return 'Bronze III';
     }
 
-    function updateLeaderboard(leaderboard) {
-      const leaderboardElement = document.getElementById('leaderboard');
-      leaderboardElement.innerHTML = ""; // Clear existing leaderboard
-
-      leaderboard.forEach((entry, index) => {
-        const rankTitle = getRankTitle(entry.xp);
-
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td class="rank">${index + 1}</td>
-          <td class="user-name">${entry.username}</td>
-          <td class="user-score">${entry.xp}</td>
-          <td class="user-rank">${rankTitle}</td>
-        `;
-        leaderboardElement.appendChild(row);
-      });
+    function getRankClass(xp) {
+      if (xp >= 30000) return 'unreal';
+      if (xp >= 25000) return 'champion';
+      if (xp >= 20000) return 'elite';
+      if (xp >= 16000) return 'diamond';
+      if (xp >= 13000) return 'diamond';
+      if (xp >= 10000) return 'diamond';
+      if (xp >= 7750) return 'platinum';
+      if (xp >= 6000) return 'platinum';
+      if (xp >= 4000) return 'platinum';
+      if (xp >= 2100) return 'gold';
+      if (xp >= 1600) return 'gold';
+      if (xp >= 1200) return 'gold';
+      if (xp >= 900) return 'silver';
+      if (xp >= 600) return 'silver';
+      if (xp >= 400) return 'silver';
+      if (xp >= 150) return 'bronze';
+      if (xp >= 100) return 'bronze';
+      return 'bronze';
     }
+    function getTitle(xp) {
+  if (xp >= 30000) return "🌌 The Final Boss";
+  if (xp >= 25000) return "🛡️ Touch Grass";
+  if (xp >= 20000) return "👑 Meta Mastermind";
+  if (xp >= 16000) return "💠 God-Tier";
+  if (xp >= 13000) return "💠 Execution-Class";
+  if (xp >= 10000) return "💠 Ascended from Heaven";
+  if (xp >= 7750) return "💫 Phantom Tactician";
+  if (xp >= 6000) return "💫 Flow State";
+  if (xp >= 4000) return "💫 Quiet Storm";
+  if (xp >= 2100) return "Clutch Commander";
+  if (xp >= 1600) return "Critical Thinker";
+  if (xp >= 1200) return "Rising Threat";
+  if (xp >= 900) return "Momentum Seeker";
+  if (xp >= 600) return "One Thousand Ping";
+  if (xp >= 400) return "Casual Chaos";
+  if (xp >= 150) return "Combo Curious";
+  if (xp >= 100) return "Button Masher";
+  return "Keyboard Warrior";
+}
+
+
+  function updateLeaderboard(leaderboard) {
+  const leaderboardElement = document.getElementById('leaderboard');
+  leaderboardElement.innerHTML = "";
+
+  leaderboard.forEach((entry, index) => {
+    const rankTitle = getRankTitle(entry.xp);    // e.g. Diamond I
+    const rankClass = getRankClass(entry.xp);    // e.g. diamond
+    const userTitle = getTitle(entry.xp);        // e.g. 💠 God-Tier
+
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td class="rank">${index + 1}</td>
+      <td class="user-name">
+        ${entry.username} <span style="color:gold; font-weight:bold;">${userTitle}</span>
+      </td>
+      <td class="user-score">${entry.xp}</td>
+      <td class="user-rank">
+        <span class="rank-title ${rankClass}">${rankTitle}</span>
+      </td>
+    `;
+    leaderboardElement.appendChild(row);
+  });
+}
+
+
 
     // Fetch leaderboard when the page loads
     getLeaderboard();
   </script>
 </body>
 </html>
+

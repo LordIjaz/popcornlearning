@@ -50,7 +50,7 @@
     .progression-table {
       margin: 40px auto;
       width: 90%;
-      max-width: 600px;
+      max-width: 800px;
       border-collapse: collapse;
     }
 
@@ -72,6 +72,75 @@
     .progression-table tr:nth-child(even) {
       background-color: #2a2a3f;
     }
+
+    /* Glow Effect for Unreal Rank */
+    .unreal {
+      font-size: 18px;
+      font-weight: bold;
+      text-shadow: 0 0 10px #ff007f, 0 0 20px #ff007f, 0 0 30px #ff007f, 0 0 40px #8000ff, 0 0 70px #8000ff, 0 0 80px #8000ff;
+      animation: glowUnreal 2s infinite alternate;
+    }
+
+    @keyframes glowUnreal {
+      0% {
+        text-shadow: 0 0 10px #ff007f, 0 0 20px #ff007f, 0 0 30px #ff007f, 0 0 40px #8000ff, 0 0 70px #8000ff, 0 0 80px #8000ff;
+      }
+      100% {
+        text-shadow: 0 0 20px #ff007f, 0 0 40px #ff007f, 0 0 60px #ff007f, 0 0 80px #8000ff, 0 0 120px #8000ff, 0 0 140px #8000ff;
+      }
+    }
+
+    /* Glow Effect for Champion Rank */
+    .champion {
+      font-size: 18px;
+      font-weight: bold;
+      text-shadow: 0 0 10px #ffcc00, 0 0 20px #ffcc00, 0 0 30px #ffcc00, 0 0 40px #ff8000;
+      animation: glowChampion 2s infinite alternate;
+    }
+
+    @keyframes glowChampion {
+      0% {
+        text-shadow: 0 0 10px #ffcc00, 0 0 20px #ffcc00, 0 0 30px #ffcc00, 0 0 40px #ff8000;
+      }
+      100% {
+        text-shadow: 0 0 20px #ffcc00, 0 0 40px #ffcc00, 0 0 60px #ffcc00, 0 0 80px #ff8000;
+      }
+    }
+
+    /* Glow Effect for Elite Rank */
+    .elite {
+      font-size: 18px;
+      font-weight: bold;
+      text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700, 0 0 30px #ffd700, 0 0 40px #f8e71c;
+      animation: glowElite 2s infinite alternate;
+    }
+
+    @keyframes glowElite {
+      0% {
+        text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700, 0 0 30px #ffd700, 0 0 40px #f8e71c;
+      }
+      100% {
+        text-shadow: 0 0 20px #ffd700, 0 0 40px #ffd700, 0 0 60px #ffd700, 0 0 80px #f8e71c;
+      }
+    }
+
+    /* Glow Effect for Diamond Ranks */
+    .diamond {
+      font-size: 18px;
+      font-weight: bold;
+      text-shadow: 0 0 10px #00bfff, 0 0 20px #00bfff, 0 0 30px #00bfff, 0 0 40px #1e90ff, 0 0 60px #1e90ff;
+      animation: glowDiamond 2s infinite alternate;
+    }
+
+    @keyframes glowDiamond {
+      0% {
+        text-shadow: 0 0 10px #00bfff, 0 0 20px #00bfff, 0 0 30px #00bfff, 0 0 40px #1e90ff, 0 0 60px #1e90ff;
+      }
+      100% {
+        text-shadow: 0 0 20px #00bfff, 0 0 40px #00bfff, 0 0 60px #00bfff, 0 0 80px #1e90ff, 0 0 100px #1e90ff;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -80,6 +149,8 @@
   <div class="nav-buttons">
     <a href="index.html"><button>🏠 Home</button></a>
     <a href="challenge-mode.html"><button>⚔️ Challenge Mode</button></a>
+    <a href="challenge-mode-scores.html"><button>⚔️ Ranked Leaderboard</button></a>
+      <a href="avatar.html"><button>Avatar</button></a>
   </div>
 
   <table class="progression-table">
@@ -87,28 +158,34 @@
       <tr>
         <th>Rank</th>
         <th>XP Required</th>
+        <th>Title</th>
+        <th>Description</th>
       </tr>
     </thead>
     <tbody>
-      <tr><td>Unreal</td><td>30,000+</td></tr>
-      <tr><td>Champion</td><td>25,000+</td></tr>
-      <tr><td>Elite</td><td>20,000+</td></tr>
-      <tr><td>Diamond I</td><td>16,000+</td></tr>
-      <tr><td>Diamond II</td><td>13,000+</td></tr>
-      <tr><td>Diamond III</td><td>10,000+</td></tr>
-      <tr><td>Platinum I</td><td>7,750+</td></tr>
-      <tr><td>Platinum II</td><td>6,000+</td></tr>
-      <tr><td>Platinum III</td><td>4,000+</td></tr>
-      <tr><td>Gold I</td><td>2,100+</td></tr>
-      <tr><td>Gold II</td><td>1,600+</td></tr>
-      <tr><td>Gold III</td><td>1,200+</td></tr>
-      <tr><td>Silver I</td><td>900+</td></tr>
-      <tr><td>Silver II</td><td>600+</td></tr>
-      <tr><td>Silver III</td><td>400+</td></tr>
-      <tr><td>Bronze I</td><td>150+</td></tr>
-      <tr><td>Bronze II</td><td>100+</td></tr>
-      <tr><td>Bronze III</td><td>0+</td></tr>
+      <tr><td class="unreal">Unreal</td><td>30,000+</td><td>🌌 The Final Boss</td><td>They fought everyone. You’re the last fight.</td></tr>
+      <tr><td class="champion">Champion</td><td>25,000+</td><td>🛡️ Touch Grass</td><td>If you're reading this... go outside. You’ve earned the memes.</td></tr>
+      <tr><td class="elite">Elite</td><td>20,000+</td><td>👑 Meta Mastermind</td><td>You don't follow the Meta — you shape it.</td></tr>
+      <tr><td class="diamond">Diamond I</td><td>16,000+</td><td>💠 God-Tier</td><td>You're no longer competing. You're being studied.</td></tr>
+      <tr><td class="diamond">Diamond II</td><td>13,000+</td><td>💠 Execution-Class</td><td>Tactical. Deadly. Efficient. No wasted motion.</td></tr>
+      <tr><td class="diamond">Diamond III</td><td>10,000+</td><td>💠 Ascended from Heaven</td><td>Transcended casual play. Feels divine.</td></tr>
+<tr><td> Platinum I</td><td>7,750+</td><td>💫Phantom Tactician</td><td>You're not seen — just felt. The game bends around your moves.</td></tr>
+<tr><td> Platinum II</td><td>6,000+</td><td>💫Flow State</td><td>When you're on, you're untouchable. Just keep the rhythm alive.</td></tr>
+<tr><td> Platinum III</td><td>4,000+</td><td>💫Quiet Storm</td><td>No flash, no noise — just victories stacking up like dominoes.</td></tr>
+<tr><td>Gold I</td><td>2,100+</td><td>Clutch Commander</td><td>You don't panic — you deliver. Especially when it matters most.</td></tr>
+<tr><td>Gold II</td><td>1,600+</td><td>Critical Thinker</td><td>You pause. You plan. You punish. The gears are turning fast.</td></tr>
+<tr><td>Gold III</td><td>1,200+</td><td>Rising Threat</td><td>You're no longer a beginner. People feel the pressure when you enter.</td></tr>
+<tr><td>Silver I</td><td>900+</td><td>Momentum Seeker</td><td>You’ve got moments of magic. Now chain them together.</td></tr>
+<tr><td>Silver II</td><td>600+</td><td>One Thousand Ping</td><td>The idea was solid. The timing? Not so much.</td></tr>
+<tr><td>Silver III</td><td>400+</td><td>Casual Chaos</td><td>Sometimes smart, sometimes lucky. But you’re getting there.</td></tr>
+<tr><td>Bronze I</td><td>150+</td><td>Combo Curious</td><td>You know what you’re <i>trying</i> to do. Execution’s just lagging behind.</td></tr>
+<tr><td>Bronze II</td><td>100+</td><td>Button Masher</td><td>Victory by accident... but hey, still counts.</td></tr>
+<tr><td>Bronze III</td><td>0+</td><td>Keyboard Warrior</td><td>Your enemy is the controls. But at least you're fighting.</td></tr>
+
+
     </tbody>
   </table>
 </body>
 </html>
+
+

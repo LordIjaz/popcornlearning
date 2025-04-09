@@ -15,18 +15,18 @@
             overflow-x: hidden;
         }
         header {
-    background: linear-gradient(45deg, #007BFF, #F0C808);
-    padding: 20px 20px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 10;
-    box-sizing: border-box;
-}
+            background: linear-gradient(45deg, #007BFF, #F0C808);
+            padding: 20px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 10;
+            box-sizing: border-box;
+        }
 
         header h1 {
             font-size: 36px;
@@ -35,20 +35,20 @@
             text-transform: uppercase;
         }
         header .nav-links {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-}
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
 
-header .nav-links a {
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-    text-transform: uppercase;
-    font-weight: bold;
-    transition: color 0.3s ease;
-}
+        header .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
 
         header .nav-links a:hover {
             color: #F0C808;
@@ -121,57 +121,57 @@ header .nav-links a {
             color: white;
         }
         @media (max-width: 768px) {
-    header {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        padding: 15px 20px;
-    }
+            header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                padding: 15px 20px;
+            }
 
-    header h1 {
-        font-size: 28px;
-        margin-bottom: 10px;
-    }
+            header h1 {
+                font-size: 28px;
+                margin-bottom: 10px;
+            }
 
-    .nav-links {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
+            .nav-links {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
 
-    .nav-links a {
-        font-size: 16px;
-    }
+            .nav-links a {
+                font-size: 16px;
+            }
 
-    .features {
-        flex-direction: column;
-        align-items: center;
-        gap: 30px;
-        padding: 0 20px;
-    }
+            .features {
+                flex-direction: column;
+                align-items: center;
+                gap: 30px;
+                padding: 0 20px;
+            }
 
-    .feature-box {
-        width: 90%;
-        max-width: 300px;
-    }
+            .feature-box {
+                width: 90%;
+                max-width: 300px;
+            }
 
-    .main-content {
-        padding: 80px 20px;
-    }
+            .main-content {
+                padding: 80px 20px;
+            }
 
-    .main-content h2 {
-        font-size: 36px;
-    }
+            .main-content h2 {
+                font-size: 36px;
+            }
 
-    .main-content p {
-        font-size: 18px;
-    }
+            .main-content p {
+                font-size: 18px;
+            }
 
-    .button {
-        font-size: 18px;
-        padding: 12px 25px;
-    }
-}
+            .button {
+                font-size: 18px;
+                padding: 12px 25px;
+            }
+        }
 
     </style>
 </head>
@@ -181,10 +181,12 @@ header .nav-links a {
         window.location.href = "login.html"; // Redirect to login page if not logged in
     }
 </script>
+
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
   import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBNNcj4L1h0M0_Q8PFaE-Up-hyKMxnMvGY",
@@ -198,23 +200,75 @@ header .nav-links a {
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
+  const realDb = getDatabase(app, 'https://popcornlearning-332a5-default-rtdb.europe-west1.firebasedatabase.app'); // Corrected URL
+
+  const welcomeEl = document.getElementById("welcomeMessage");
+  const userStatsEl = document.getElementById("userStats");
+
+  // Function to determine the rank title based on XP
+  function getRankTitle(xp) {
+    if (xp >= 30000) return 'Unreal';
+    if (xp >= 25000) return 'Champion';
+    if (xp >= 20000) return 'Elite';
+    if (xp >= 16000) return 'Diamond I';
+    if (xp >= 13000) return 'Diamond II';
+    if (xp >=10000) return 'Diamond III';
+    if (xp >= 7750) return 'Platinum I';
+    if (xp >= 6000) return 'Platinum II';
+    if (xp >= 4000) return 'Platinum III';
+    if (xp >= 2100) return 'Gold I';
+    if (xp >= 1600) return 'Gold II';
+    if (xp >= 1200) return 'Gold III';
+    if (xp >= 900) return 'Silver I';
+    if (xp >= 600) return 'Silver II';
+    if (xp >= 400) return 'Silver III';
+    if (xp >= 150) return 'Bronze I';
+    if (xp >= 100) return 'Bronze II';
+    return 'Bronze III';
+  }
 
   onAuthStateChanged(auth, async (user) => {
-    if (!user) {
-      // Not logged in, redirect to login
-      window.location.href = "login.html";
-    } else {
-      // Check if username exists in Firestore
-      const userDocRef = doc(db, "users", user.uid);
-      const userDocSnap = await getDoc(userDocRef);
+    if (user) {
+      try {
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+        const leaderboardRef = ref(realDb, 'challengeUsers/' + userSnap.data().username);  // Use username instead of uid
+        const leaderboardSnap = await get(leaderboardRef);
 
-      if (!userDocSnap.exists() || !userDocSnap.data().username) {
-        // Redirect to set-username page if username is missing
-        window.location.href = "set-username.html";
+        console.log("User Data Snapshot:", userSnap.data()); // Debug Firestore user data
+        console.log("Leaderboard Snapshot:", leaderboardSnap.val()); // Debug Realtime Database data
+
+        if (userSnap.exists()) {
+          const username = userSnap.data().username;
+          welcomeEl.textContent = `Welcome back, ${username}!`;
+
+          if (leaderboardSnap.exists()) {
+            const xp = leaderboardSnap.val().xp;
+            console.log("XP retrieved:", xp);  // Debug XP value
+            const rank = getRankTitle(xp);
+            userStatsEl.innerHTML = `XP: ${xp} | Rank: ${rank}`;
+          } else {
+            // Handle the case where leaderboard data is missing
+            console.log("No leaderboard data found for this user.");
+            userStatsEl.innerHTML = "XP and Rank: Data not available.";
+          }
+        } else {
+          welcomeEl.textContent = "Welcome!";
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        welcomeEl.textContent = "Error loading user data!";
+        userStatsEl.innerHTML = "Error fetching stats.";
       }
+    } else {
+      window.location.href = "login.html";
     }
   });
 </script>
+
+
+
+
 
 <header>
     <h1>Popcorn Learning</h1>
@@ -227,6 +281,7 @@ header .nav-links a {
 
 <div class="main-content">
     <h2 id="welcomeMessage">Welcome to Popcorn Learning!</h2>
+    <p id="userStats">Loading your stats...</p>
     <p>We provide interactive and fun learning experiences designed to keep you engaged and motivated. Explore our courses and join a community of learners!</p>
     <a href="courses.html" class="button">Start Learning Now</a>
 </div>
@@ -250,48 +305,11 @@ header .nav-links a {
     <p>&copy; 2025 Popcorn Learning. All rights reserved.</p>
 </footer>
 
-<!-- Firebase Code -->
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyBNNcj4L1h0M0_Q8PFaE-Up-hyKMxnMvGY",
-        authDomain: "popcornlearning-332a5.firebaseapp.com",
-        projectId: "popcornlearning-332a5",
-        storageBucket: "popcornlearning-332a5.appspot.com",
-        messagingSenderId: "923654716319",
-        appId: "1:923654716319:web:ceb873f28914652b6d1baa"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    const welcomeEl = document.getElementById("welcomeMessage");
-
-    onAuthStateChanged(auth, async (user) => {
-        if (user) {
-            try {
-                const userRef = doc(db, "users", user.uid);
-                const userSnap = await getDoc(userRef);
-
-                if (userSnap.exists()) {
-                    const username = userSnap.data().username;
-                    welcomeEl.textContent = `Welcome back, ${username}!`;
-                } else {
-                    welcomeEl.textContent = "Welcome back!";
-                }
-            } catch (error) {
-                console.error("Error fetching user data:", error);
-                welcomeEl.textContent = "Welcome!";
-            }
-        } else {
-            window.location.href = "login.html";
-        }
-    });
-</script>
 </body>
 </html>
+
+
+
+
+
 

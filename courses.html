@@ -5,114 +5,130 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Courses - Popcorn Learning</title>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: black;
-            color: white;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-        }
-        header {
-            background: linear-gradient(45deg, #007BFF, #F0C808);
-            padding: 20px 20px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 10;
-            box-sizing: border-box;
-        }
+       body {
+    font-family: 'Arial', sans-serif;
+    background-color: black;
+    color: white;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
 
-        header h1 {
-            font-size: 36px;
-            color: white;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-        header .nav-links {
-            display: flex;
-            justify-content: center;
-            flex-grow: 1;
-            align-items: center;
-        }
-        header .nav-links a {
-            margin: 0 15px;
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-            text-transform: uppercase;
-            font-weight: bold;
-            transition: color 0.3s ease;
-        }
-        header .nav-links a:hover {
-            color: #F0C808;
-        }
-        .main-content {
-            margin-top: 120px;
-            text-align: center;
-            padding: 50px 20px;
-            background: linear-gradient(45deg, #1f1f1f, #333);
-            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5);
-        }
-        .button {
-            background-color: #F0C808;
-            color: black;
-            padding: 15px 30px;
-            text-decoration: none;
-            border-radius: 50px;
-            font-size: 20px;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-            margin: 20px auto;
-            display: block;
-            width: fit-content;
-        }
-        .button:hover {
-            background-color: #C79200;
-            transform: scale(1.05);
-        }
-        footer {
-            background-color: #333;
-            text-align: center;
-            padding: 20px;
-            color: white;
-        }
-        @media screen and (max-width: 768px) {
-            .main-content {
-                margin-top: 220px;
-            }
+header {
+    background: linear-gradient(45deg, #007BFF, #F0C808);
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 10;
+    box-sizing: border-box;
+}
 
-            header {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 20px;
-            }
+header h1 {
+    font-size: 36px;
+    color: white;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 0;
+}
 
-            header h1 {
-                margin-bottom: 10px;
-                font-size: 28px;
-            }
+header .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
 
-            header .nav-links {
-                display: flex;
-                flex-direction: column;
-                width: 100%;
-            }
+header .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: color 0.3s ease;
+    padding: 5px 10px;
+}
 
-            header .nav-links a {
-                margin: 8px 0;
-                font-size: 16px;
-            }
+header .nav-links a:hover {
+    color: #F0C808;
+}
 
-            header .nav-links .button {
-                margin-top: 10px;
-                width: 100%;
-                text-align: center;
-            }
-        }
+.main-content {
+    margin-top: 180px;
+    text-align: center;
+    padding: 50px 20px;
+    background: linear-gradient(45deg, #1f1f1f, #333);
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.button {
+    background-color: #F0C808;
+    color: black;
+    padding: 15px 30px;
+    text-decoration: none;
+    border-radius: 50px;
+    font-size: 20px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin: 20px auto;
+    display: block;
+    width: fit-content;
+}
+
+.button:hover {
+    background-color: #C79200;
+    transform: scale(1.05);
+}
+
+footer {
+    background-color: #333;
+    text-align: center;
+    padding: 20px;
+    color: white;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    header h1 {
+        font-size: 28px;
+        margin-bottom: 10px;
+    }
+
+    header .nav-links {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    header .nav-links a {
+        font-size: 16px;
+        margin: 5px 0;
+        width: 100%;
+    }
+
+    .main-content {
+        margin-top: 300px; /* Increased margin to avoid overlap */
+        padding: 30px 10px;
+    }
+
+    .button {
+        font-size: 18px;
+        padding: 12px 24px;
+    }
+}
+
+        
     </style>
 </head>
 <body>
@@ -163,6 +179,7 @@
         <a href="courses.html">Courses</a>
         <a href="challenge-mode-scores.html">Ranked Leaderboard</a> <!-- Added new button -->
         <a href="ranked-progression.html">Ranked Progress</a>
+        <a href="avatar.html">Avatar</a>
         <a href="membership.html">Membership</a>
         <a href="#" onclick="logout()" class="button">Logout</a>
         <script>
