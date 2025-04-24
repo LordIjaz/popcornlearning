@@ -178,15 +178,15 @@
 
   <div class="container">
     <h2>Login</h2>
-    <input type="email" id="login-email" placeholder="Email" required />
-    <input type="password" id="login-password" placeholder="Password" required />
+    <input type="email" id="login-email" placeholder="Email" required autocomplete="off" />
+    <input type="password" id="login-password" placeholder="Access Code" required autocomplete="off" />
     <button onclick="loginUser()">Login</button>
 
     <h2>Register</h2>
-    <input type="email" id="register-email" placeholder="Email" required />
-    <input type="password" id="register-password" placeholder="Password" required />
+    <input type="email" id="register-email" placeholder="Email" required autocomplete="off" />
+    <input type="password" id="register-password" placeholder="Create Access Code" required autocomplete="off" />
     <button onclick="signUpUser()">Sign Up</button>
-    <button onclick="window.location.href='reset-password.html'">Forgot Password?</button>
+    <button onclick="window.location.href='reset-password.html'">Forgot Access Code?</button>
 
     <button onclick="logoutUser()" style="display:none;" id="logoutBtn">Logout</button>
     <p id="message" class="error"></p>
@@ -207,7 +207,7 @@
       apiKey: "AIzaSyBNNcj4L1h0M0_Q8PFaE-Up-hyKMxnMvGY",
       authDomain: "popcornlearning-332a5.firebaseapp.com",
       projectId: "popcornlearning-332a5",
-      storageBucket: "popcornlearning-332a5.firebasestorage.app",
+      storageBucket: "popcornlearning-332a5.appspot.com",
       messagingSenderId: "923654716319",
       appId: "1:923654716319:web:ceb873f28914652b6d1baa"
     };
@@ -221,7 +221,8 @@
 
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          console.log("Signed up:", userCredential.user);
+          const user = userCredential.user;
+          localStorage.setItem("newUserId", user.uid);
           window.location.href = "set-username.html";
         })
         .catch((error) => {
@@ -280,4 +281,5 @@
   </script>
 </body>
 </html>
+
 
