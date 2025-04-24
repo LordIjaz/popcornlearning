@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login - Popcorn Learning</title>
+  <title>Access - Popcorn Learning</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -177,18 +177,20 @@
   </header>
 
   <div class="container">
-    <h2>Login</h2>
-    <input type="email" id="login-email" placeholder="Email" required autocomplete="off" />
+    <h2>Access Portal</h2>
+    <input type="email" id="login-email" placeholder="Email" required />
     <input type="password" id="login-password" placeholder="Access Code" required autocomplete="off" />
-    <button onclick="loginUser()">Login</button>
 
-    <h2>Register</h2>
-    <input type="email" id="register-email" placeholder="Email" required autocomplete="off" />
+    <button onclick="loginUser()">Enter</button>
+
+    <h2>Join Portal</h2>
+    <input type="email" id="register-email" placeholder="Email" required />
     <input type="password" id="register-password" placeholder="Create Access Code" required autocomplete="off" />
-    <button onclick="signUpUser()">Sign Up</button>
-    <button onclick="window.location.href='reset-password.html'">Forgot Access Code?</button>
 
-    <button onclick="logoutUser()" style="display:none;" id="logoutBtn">Logout</button>
+    <button onclick="signUpUser()">Join Now</button>
+    <button onclick="window.location.href='reset-password.html'">Forgot Access?</button>
+
+    <button onclick="logoutUser()" style="display:none;" id="logoutBtn">Exit</button>
     <p id="message" class="error"></p>
   </div>
 
@@ -207,7 +209,7 @@
       apiKey: "AIzaSyBNNcj4L1h0M0_Q8PFaE-Up-hyKMxnMvGY",
       authDomain: "popcornlearning-332a5.firebaseapp.com",
       projectId: "popcornlearning-332a5",
-      storageBucket: "popcornlearning-332a5.appspot.com",
+      storageBucket: "popcornlearning-332a5.firebasestorage.app",
       messagingSenderId: "923654716319",
       appId: "1:923654716319:web:ceb873f28914652b6d1baa"
     };
@@ -216,19 +218,20 @@
     const auth = getAuth(app);
 
     window.signUpUser = function () {
-      const email = document.getElementById("register-email").value;
-      const password = document.getElementById("register-password").value;
+  const email = document.getElementById("register-email").value;
+  const password = document.getElementById("register-password").value;
 
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          localStorage.setItem("newUserId", user.uid);
-          window.location.href = "set-username.html";
-        })
-        .catch((error) => {
-          alert("Sign-up error: " + error.message);
-        });
-    };
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      localStorage.setItem("newUserId", user.uid); // ✅ Step 4: store uid
+      window.location.href = "set-username.html";  // ✅ Step 4: redirect
+    })
+    .catch((error) => {
+      alert("Sign-up error: " + error.message);
+    });
+};
+
 
     window.loginUser = function () {
       const email = document.getElementById("login-email").value;
@@ -281,5 +284,4 @@
   </script>
 </body>
 </html>
-
 
