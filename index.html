@@ -4,178 +4,250 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Popcorn Learning - Home</title>
+
     <style>
-        /* Global Styles */
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: black;
-            color: white;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-        }
-        header {
-            background: linear-gradient(45deg, #007BFF, #F0C808);
-            padding: 20px 20px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 10;
-            box-sizing: border-box;
-        }
+/* Base Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: black;
+    color: white;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
 
-        header h1 {
-            font-size: 36px;
-            color: white;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-        header .nav-links {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-        }
+/* Header */
+header {
+    background: linear-gradient(45deg, #007BFF, #F0C808);
+    padding: 20px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 10;
+    box-sizing: border-box;
+}
 
-        header .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-            text-transform: uppercase;
-            font-weight: bold;
-            transition: color 0.3s ease;
-        }
+header h1 {
+    font-size: 36px;
+    color: white;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
 
-        header .nav-links a:hover {
-            color: #F0C808;
-        }
-        .main-content {
-            margin-top: 120px;
-            text-align: center;
-            padding: 100px 20px;
-            background: linear-gradient(45deg, #1f1f1f, #333);
-            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5);
-        }
-        .main-content h2 {
-            font-size: 48px;
-            margin-bottom: 20px;
-            color: #F0C808;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-        .main-content p {
-            font-size: 20px;
-            line-height: 1.6;
-            margin-bottom: 30px;
-            color: #D1D1D1;
-        }
-        .button {
-            background-color: #F0C808;
-            color: black;
-            padding: 15px 30px;
-            text-decoration: none;
-            border-radius: 50px;
-            font-size: 20px;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-        .button:hover {
-            background-color: #C79200;
-            transform: scale(1.05);
-        }
-        .features {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin-top: 50px;
-        }
-        .feature-box {
-            background: rgba(0, 0, 0, 0.6);
-            border: 2px solid #007BFF;
-            border-radius: 15px;
-            padding: 40px;
-            text-align: center;
-            color: white;
-            width: 250px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .feature-box:hover {
-            transform: translateY(-10px);
-            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.6);
-        }
-        .feature-box h3 {
-            font-size: 24px;
-            margin-bottom: 15px;
-            color: #F0C808;
-        }
-        .feature-box p {
-            font-size: 18px;
-        }
-        footer {
-            background-color: #333;
-            text-align: center;
-            padding: 20px;
-            color: white;
-        }
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-                padding: 15px 20px;
-            }
+header .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
 
-            header h1 {
-                font-size: 28px;
-                margin-bottom: 10px;
-            }
+header .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
 
-            .nav-links {
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-            }
+header .nav-links a:hover {
+    color: #F0C808;
+}
 
-            .nav-links a {
-                font-size: 16px;
-            }
+/* Main Content */
+.main-content {
+    margin-top: 120px;
+    text-align: center;
+    padding: 100px 20px;
+    background: linear-gradient(45deg, #1f1f1f, #333);
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5);
+}
 
-            .features {
-                flex-direction: column;
-                align-items: center;
-                gap: 30px;
-                padding: 0 20px;
-            }
+.main-content h2 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    color: #F0C808;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
 
-            .feature-box {
-                width: 90%;
-                max-width: 300px;
-            }
+.main-content p {
+    font-size: 20px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    color: #D1D1D1;
+}
 
-            .main-content {
-                padding: 80px 20px;
-            }
+/* Button */
+.button {
+    background-color: #F0C808;
+    color: black;
+    padding: 15px 30px;
+    text-decoration: none;
+    border-radius: 50px;
+    font-size: 20px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
 
-            .main-content h2 {
-                font-size: 36px;
-            }
+.button:hover {
+    background-color: #C79200;
+    transform: scale(1.05);
+}
 
-            .main-content p {
-                font-size: 18px;
-            }
+/* Features Section */
+.features {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 50px;
+}
 
-            .button {
-                font-size: 18px;
-                padding: 12px 25px;
-            }
-        }
+.feature-box {
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid #007BFF;
+    border-radius: 15px;
+    padding: 40px;
+    text-align: center;
+    color: white;
+    width: 250px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-    </style>
+.feature-box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+.feature-box h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #F0C808;
+}
+
+.feature-box p {
+    font-size: 18px;
+}
+
+/* Footer */
+footer {
+    background-color: #333;
+    text-align: center;
+    padding: 20px;
+    color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 15px 20px;
+    }
+
+    header h1 {
+        font-size: 28px;
+        margin-bottom: 10px;
+    }
+
+    .nav-links {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .nav-links a {
+        font-size: 16px;
+    }
+
+    .features {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+        padding: 0 20px;
+    }
+
+    .feature-box {
+        width: 90%;
+        max-width: 300px;
+    }
+
+    .main-content {
+        padding: 80px 20px;
+    }
+
+    .main-content h2 {
+        font-size: 36px;
+    }
+
+    .main-content p {
+        font-size: 18px;
+    }
+
+    .button {
+        font-size: 18px;
+        padding: 12px 25px;
+    }
+}
+
+/* Double XP Event Text */
+.double-xp-event {
+    text-align: center;
+    font-size: 40px;
+    font-weight: bold;
+    color: #00ffff;
+    -webkit-text-stroke: 0.8px black; /* Crisp outline */
+    text-shadow:
+        0 0 5px #00ffff,
+        0 0 10px #00ffff,
+        0 0 15px #00ffff,
+        0 0 20px #00ffff;
+    animation: colourChange 4s infinite linear, floatEffect 3s ease-in-out infinite;
+    margin: 40px 0 20px 0;
+}
+
+/* Animations */
+@keyframes colourChange {
+    0% {
+        color: #00ffff;
+        text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 15px #00ffff, 0 0 20px #00ffff;
+    }
+    25% {
+        color: #ff00ff;
+        text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff, 0 0 15px #ff00ff, 0 0 20px #ff00ff;
+    }
+    50% {
+        color: #ffff00;
+        text-shadow: 0 0 5px #ffff00, 0 0 10px #ffff00, 0 0 15px #ffff00, 0 0 20px #ffff00;
+    }
+    75% {
+        color: #ff0000;
+        text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 15px #ff0000, 0 0 20px #ff0000;
+    }
+    100% {
+        color: #00ffff;
+        text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 15px #00ffff, 0 0 20px #00ffff;
+    }
+}
+
+@keyframes floatEffect {
+    0%, 100% {
+        transform: translate3d(0, 0, 0);
+    }
+    50% {
+        transform: translate3d(0, -8px, 0);
+    }
+}
+</style>
+
 </head>
 <body>
+<header> <div class="double-xp-event">DOUBLE XP EVENT - RANKED</div>
+</header>
 <script>
     if (!localStorage.getItem("loggedInUser")) {
         window.location.href = "login.html"; // Redirect to login page if not logged in
@@ -280,6 +352,7 @@
 </header>
 
 <div class="main-content">
+    <div class="double-xp-event">Double XP Event Now Live!</div>
     <h2 id="welcomeMessage">Welcome to Popcorn Learning!</h2>
     <p id="userStats">Loading your stats...</p>
     <p>We provide interactive and fun learning experiences designed to keep you engaged and motivated. Explore our courses and join a community of learners!</p>
