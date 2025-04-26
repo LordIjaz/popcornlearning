@@ -1,0 +1,140 @@
+/* quiz-style.css */
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: radial-gradient(circle at top right, #0f2027, #203a43, #2c5364);
+  color: #e0e0e0;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+}
+
+header h1 {
+  font-size: 30px;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+header .nav-links a {
+  color: #ffffff;
+  text-decoration: none;
+  margin-left: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+header .nav-links a:hover {
+  color: #ffd700;
+}
+
+.container {
+  flex: 1;
+  padding: 40px 20px;
+  max-width: 900px;
+  margin: 100px auto 40px auto;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+}
+
+h2 {
+  text-align: center;
+  color: #00c6ff;
+  font-size: 32px;
+  margin-bottom: 30px;
+}
+
+.question {
+  margin-bottom: 25px;
+}
+
+.question label {
+  font-size: 18px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.question input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #00c6ff;
+  background: rgba(0,0,0,0.3);
+  color: #ffffff;
+  font-size: 18px;
+  border-radius: 12px;
+  transition: border-color 0.3s, background 0.3s;
+}
+
+.question input:focus {
+  border-color: #ffd700;
+  background: rgba(0,0,0,0.5);
+  outline: none;
+}
+
+.correct {
+  background-color: rgba(46, 204, 113, 0.5) !important;
+  border-color: #2ecc71 !important;
+}
+
+.incorrect {
+  background-color: rgba(231, 76, 60, 0.5) !important;
+  border-color: #e74c3c !important;
+}
+
+.warning {
+  background-color: rgba(243, 156, 18, 0.5) !important;
+  border-color: #f39c12 !important;
+}
+
+.score {
+  font-size: 24px;
+  text-align: center;
+  margin-top: 30px;
+  color: #ffd700;
+}
+
+.submit-btn {
+  display: block;
+  width: 200px;
+  margin: 30px auto 0 auto;
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+  border: none;
+  padding: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.submit-btn:hover {
+  background: linear-gradient(90deg, #0072ff, #00c6ff);
+}
+
+footer {
+  background: #111;
+  color: #666;
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+}

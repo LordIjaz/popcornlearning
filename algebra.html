@@ -145,7 +145,11 @@ header {
   </style>
 </head>
 <body>
-
+<script>
+    if (!localStorage.getItem("loggedInUser")) {
+        window.location.href = "login.html"; // Redirect to login page if not logged in
+    }
+</script>
 <header>
     <div class="header-container">
         <h1>KS3 Maths Starters - Number</h1>

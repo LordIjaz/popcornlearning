@@ -150,7 +150,11 @@ footer {
   </style>
 </head>
 <body>
-
+<script>
+    if (!localStorage.getItem("loggedInUser")) {
+        window.location.href = "login.html"; // Redirect to login page if not logged in
+    }
+</script>
 <script>
   if (!localStorage.getItem("loggedInUser")) {
     window.location.href = "login.html"; // Redirect if not logged in
