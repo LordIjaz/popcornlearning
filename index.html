@@ -243,6 +243,53 @@ footer {
     }
 }
 </style>
+<style>
+.designed-by {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 600;
+    color: #e5c100; /* Soft Gold */
+    -webkit-text-stroke: 0.5px black; /* Gentle outline */
+    text-shadow:
+        0 0 4px #e5c100,
+        0 0 8px #e5c100,
+        0 0 12px #e5c100;
+    animation:
+        luxuryGlow 10s infinite alternate,
+        fadeIn 2s ease forwards;
+    opacity: 0; /* Start invisible */
+    margin: 40px 0 20px 0;
+    letter-spacing: 1px;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Glow colour change */
+@keyframes luxuryGlow {
+    0% {
+        color: #e5c100; /* Soft Gold */
+        text-shadow: 0 0 4px #e5c100, 0 0 8px #e5c100, 0 0 12px #e5c100;
+    }
+    33% {
+        color: #8ab6ff; /* Royal Blue */
+        text-shadow: 0 0 4px #8ab6ff, 0 0 8px #8ab6ff, 0 0 12px #8ab6ff;
+    }
+    66% {
+        color: #d0d0d0; /* Platinum */
+        text-shadow: 0 0 4px #d0d0d0, 0 0 8px #d0d0d0, 0 0 12px #d0d0d0;
+    }
+    100% {
+        color: #e5c100;
+        text-shadow: 0 0 4px #e5c100, 0 0 8px #e5c100, 0 0 12px #e5c100;
+    }
+}
+
+/* Fade-in effect */
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+</style>
 
 </head>
 <body>
@@ -377,6 +424,7 @@ footer {
 <footer>
     <p>&copy; 2025 Popcorn Learning. All rights reserved.</p>
 </footer>
+<div class="designed-by">Designed and Developed by Isa Ijaz</div>
 
 </body>
 </html>
