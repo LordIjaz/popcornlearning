@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KS3 Maths Starters - Statistics</title>
+    <style>
+        body {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    font-family: 'Orbitron', sans-serif;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+header {
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    padding: 20px;
+    text-align: center;
+    font-size: 2em;
+    letter-spacing: 2px;
+}
+
+.container {
+    padding: 50px 20px;
+    max-width: 1000px;
+    margin: auto;
+}
+
+.question {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #1a1a1a;
+    border-radius: 12px;
+    box-shadow: 0 0 15px #00c6ff;
+    font-size: 24px; /* Increased font size for larger text */
+    line-height: 1.5; /* Increased line height for better readability */
+}
+
+input[type="text"] {
+    width: 50%;
+    padding: 10px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.correct {
+    background-color: #28a745;
+    color: white;
+}
+
+.incorrect {
+    background-color: #dc3545;
+    color: white;
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background: #00c6ff;
+    border: none;
+    border-radius: 20px;
+    color: #000;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #0072ff;
+    color: #fff;
+}
+
+.feedback {
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+#score {
+    font-size: 24px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+header {
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between; /* Space between title and button */
+    align-items: center; /* Vertically aligns items */
+    font-size: 2em;
+    letter-spacing: 2px;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.maths-starters-btn {
+    padding: 10px 20px;
+    background: #00c6ff;
+    border-radius: 20px;
+    color: #000;
+    font-size: 16px;
+    text-decoration: none;
+    margin-left: 20px; /* Space between title and button */
+    text-align: center;
+}
+
+.maths-starters-btn:hover {
+    background: #0072ff;
+    color: #fff;
+}
+
+@media screen and (max-width: 768px) {
+    header {
+        flex-direction: column; /* Stack title and button vertically */
+        align-items: flex-start; /* Align elements to the left */
+        text-align: center; /* Center the title */
+    }
+
+    .maths-starters-btn {
+        margin-left: 0; /* Remove left margin for better alignment */
+        margin-top: 10px; /* Space between title and button */
+    }
+
+    .question {
+        font-size: 20px; /* Adjust font size on mobile for better readability */
+    }
+}
+
+
+
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <h1>KS3 Maths Starters - Number</h1>
+        <a href="maths-starters-ks3.html" class="maths-starters-btn">Maths Starters</a>
+    </div>
+</header>
+
+
+<div class="container">
+    <div id="score">Score: 0</div>
+    <div id="quiz"></div>
+</div>
+
+<script>
+const questions = [
+    { q: "Find the mean of the following set of numbers: 4, 6, 8, 10, 12", a: "8" },
+    { q: "Find the median of the following set of numbers: 3, 7, 9, 11, 13", a: "9" },
+    { q: "Find the mode of the following set of numbers: 2, 3, 5, 5, 7", a: "5" },
+    { q: "Find the range of the following set of numbers: 15, 23, 28, 34, 40", a: "25" },
+    { q: "A class has the following scores: 85, 90, 78, 92, 88, 74. What is the mean score?", a: "84.5" },
+    { q: "The scores of 5 students are: 50, 60, 60, 70, 80. What is the median score?", a: "60" },
+    { q: "The ages of 6 children are: 5, 7, 10, 12, 14, 15. What is the mode of the ages?", a: "None" },
+    { q: "The temperatures for the week are: 20°C, 21°C, 19°C, 23°C, 22°C, 19°C, 18°C. What is the range?", a: "5" },
+    { q: "Find the mean of these numbers: 1, 4, 6, 10, 15", a: "7.2" },
+    { q: "The scores on a test are: 5, 7, 8, 8, 8, 10, 12. What is the mode?", a: "8" },
+    { q: "The heights of 5 plants are: 3, 4, 5, 6, 7. What is the median height?", a: "5" },
+    { q: "The ages of 6 children are: 5, 6, 7, 8, 9, 10. What is the mean age?", a: "7.5" },
+    { q: "A student has the following scores: 55, 60, 65, 70, 75. What is the range of scores?", a: "20" },
+    { q: "Find the mode of the following set of numbers: 11, 12, 13, 14, 15, 15, 15", a: "15" },
+    { q: "The weights of 6 people are: 60, 70, 75, 75, 80, 85. What is the median weight?", a: "75" },
+    { q: "The number of books borrowed by students is: 2, 3, 4, 4, 5, 5, 6. What is the mean number of books?", a: "4.14" },
+    { q: "The number of apples in a basket are: 5, 8, 9, 9, 9. What is the mode?", a: "9" },
+    { q: "The test scores are: 80, 85, 90, 95, 100. What is the mean score?", a: "90" },
+    { q: "The daily rainfall over the week was: 2mm, 3mm, 5mm, 0mm, 4mm, 3mm, 6mm. What is the range of rainfall?", a: "6mm" }
+];
+
+let score = 0;
+
+function renderQuiz() {
+    const quiz = document.getElementById("quiz");
+    quiz.innerHTML = questions.map((q, idx) => `
+        <div class="question">
+            <p><b>Q${idx + 1}:</b> ${q.q}</p>
+            <input type="text" id="input${idx}">
+            <button onclick="checkAnswer(${idx})">Check</button>
+            <div id="feedback${idx}" class="feedback"></div>
+        </div>
+    `).join('');
+}
+
+function formatAnswer(ans) {
+    return ans.replace(/\s+/g, '').toLowerCase();
+}
+
+function checkAnswer(idx) {
+    const userInput = document.getElementById(`input${idx}`);
+    const feedback = document.getElementById(`feedback${idx}`);
+    const userAnswer = formatAnswer(userInput.value);
+    const correctAnswer = formatAnswer(questions[idx].a);
+
+    if (userAnswer === correctAnswer) {
+        feedback.innerHTML = "✅ Correct!";
+        feedback.style.color = "#0f0";
+        userInput.classList.add("correct");
+        score++;
+    } else {
+        feedback.innerHTML = `❌ Wrong! Correct: ${questions[idx].a}`;
+        feedback.style.color = "#f00";
+        userInput.classList.add("incorrect");
+    }
+    userInput.disabled = true;
+    document.getElementById("score").innerText = `Score: ${score}`;
+}
+
+renderQuiz();
+</script>
+<a href="maths-starters-ks3.html" class="maths-starters-btn">Maths Starters</a>
+
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KS3 Maths Starters - Ratio, Proportion and Rates of Change</title>
+  <style>
+    body {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    font-family: 'Orbitron', sans-serif;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+header {
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    padding: 20px;
+    text-align: center;
+    font-size: 2em;
+    letter-spacing: 2px;
+}
+
+.container {
+    padding: 50px 20px;
+    max-width: 1000px;
+    margin: auto;
+}
+
+.question {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #1a1a1a;
+    border-radius: 12px;
+    box-shadow: 0 0 15px #00c6ff;
+    font-size: 24px; /* Increased font size for larger text */
+    line-height: 1.5; /* Increased line height for better readability */
+}
+
+input[type="text"] {
+    width: 50%;
+    padding: 10px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.correct {
+    background-color: #28a745;
+    color: white;
+}
+
+.incorrect {
+    background-color: #dc3545;
+    color: white;
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background: #00c6ff;
+    border: none;
+    border-radius: 20px;
+    color: #000;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #0072ff;
+    color: #fff;
+}
+
+.feedback {
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+#score {
+    font-size: 24px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+header {
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between; /* Space between title and button */
+    align-items: center; /* Vertically aligns items */
+    font-size: 2em;
+    letter-spacing: 2px;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.maths-starters-btn {
+    padding: 10px 20px;
+    background: #00c6ff;
+    border-radius: 20px;
+    color: #000;
+    font-size: 16px;
+    text-decoration: none;
+    margin-left: 20px; /* Space between title and button */
+    text-align: center;
+}
+
+.maths-starters-btn:hover {
+    background: #0072ff;
+    color: #fff;
+}
+
+@media screen and (max-width: 768px) {
+    header {
+        flex-direction: column; /* Stack title and button vertically */
+        align-items: flex-start; /* Align elements to the left */
+        text-align: center; /* Center the title */
+    }
+
+    .maths-starters-btn {
+        margin-left: 0; /* Remove left margin for better alignment */
+        margin-top: 10px; /* Space between title and button */
+    }
+
+    .question {
+        font-size: 20px; /* Adjust font size on mobile for better readability */
+    }
+}
+
+
+
+
+
+  </style>
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <h1>KS3 Maths Starters - Number</h1>
+        <a href="maths-starters-ks3.html" class="maths-starters-btn">Maths Starters</a>
+    </div>
+</header>
+
+
+<div class="container">
+  <div id="score">Score: 0</div>
+  <div id="quiz"></div>
+</div>
+
+<script>
+const questions = [
+  { q: "Simplify the ratio 12:16", a: ["3:4"] },
+  { q: "Divide £60 in the ratio 2:3", a: ["24:36"] },
+  { q: "A map scale is 1:5000. What distance does 2 cm represent in real life (in m)?", a: ["100"] },
+  { q: "If 5 pens cost £3.50, what is the cost of 8 pens?", a: ["5.6", "5.60"] },
+  { q: "A recipe uses 200g of flour for 5 muffins. How much flour for 8 muffins?", a: ["320"] },
+  { q: "Simplify the ratio 18:27", a: ["2:3"] },
+  { q: "If 6 apples cost £1.80, what is the cost of 10 apples?", a: ["3"] },
+  { q: "In a school, the ratio of boys to girls is 5:7. If there are 140 girls, how many boys?", a: ["100"] },
+  { q: "A car travels 150 miles in 3 hours. What is the average speed? (mph)", a: ["50"] },
+  { q: "Simplify the ratio 35:14", a: ["5:2"] },
+  { q: "A machine makes 240 items in 4 hours. How many in 6 hours?", a: ["360"] },
+  { q: "£5 is shared between A and B in the ratio 3:2. How much does A get?", a: ["3"] },
+  { q: "A map has a scale of 1cm:2km. How many km are 7cm?", a: ["14"] },
+  { q: "The ratio of cats to dogs is 2:5. If there are 15 dogs, how many cats?", a: ["6"] },
+  { q: "Simplify the ratio 9:12", a: ["3:4"] },
+  { q: "If a bus travels 80 miles in 2 hours, what is its speed? (mph)", a: ["40"] },
+  { q: "Divide £150 in the ratio 4:1", a: ["120:30"] },
+  { q: "A drink is mixed in the ratio 1:4 (juice:water). How much juice for 250 ml of drink?", a: ["50"] },
+  { q: "The ratio of blue to red counters is 3:7. What fraction are blue?", a: ["3/10"] },
+  { q: "Simplify the ratio 21:35", a: ["3:5"] },
+  { q: "A photocopier enlarges by a scale factor of 2. What is the new length of a 15 cm photo?", a: ["30"] },
+  { q: "A price increases from £80 to £100. Find the percentage increase.", a: ["25%"] },
+  { q: "Speed = 60 km/h. How far in 1.5 hours?", a: ["90"] },
+  { q: "Simplify the ratio 50:65", a: ["10:13"] },
+  { q: "A map scale is 1cm:3km. How many cm represent 9km?", a: ["3"] }
+];
+
+let score = 0;
+
+function renderQuiz() {
+  const quiz = document.getElementById("quiz");
+  quiz.innerHTML = questions.map((q, idx) => `
+    <div class="question">
+      <p><b>Q${idx + 1}:</b> ${q.q}</p>
+      <input type="text" id="input${idx}">
+      <button onclick="checkAnswer(${idx})">Check</button>
+      <div id="feedback${idx}" class="feedback"></div>
+    </div>
+  `).join('');
+}
+
+function formatAnswer(ans) {
+  return ans.replace(/\s+/g, '').toLowerCase().replace(/×/g, '*');
+}
+
+function checkAnswer(idx) {
+  const userInput = document.getElementById(`input${idx}`);
+  const feedback = document.getElementById(`feedback${idx}`);
+  const userAnswer = formatAnswer(userInput.value);
+  const correctAnswers = questions[idx].a.map(formatAnswer);
+
+  if (correctAnswers.includes(userAnswer)) {
+    feedback.innerHTML = "✅ Correct!";
+    feedback.style.color = "#0f0";
+    userInput.classList.add("correct");
+    score++;
+  } else {
+    feedback.innerHTML = `❌ Wrong! Correct: ${questions[idx].a[0]}`;
+    feedback.style.color = "#f00";
+    userInput.classList.add("incorrect");
+  }
+  userInput.disabled = true;
+  document.getElementById("score").innerText = `Score: ${score}`;
+}
+
+renderQuiz();
+</script>
+<a href="maths-starters-ks3.html" class="maths-starters-btn">Maths Starters</a>
+
+</body>
+</html>

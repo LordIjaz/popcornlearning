@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KS3 Maths Starters - Geometry and Measures</title>
+  <style>
+    body {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    font-family: 'Orbitron', sans-serif;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+header {
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    padding: 20px;
+    text-align: center;
+    font-size: 2em;
+    letter-spacing: 2px;
+}
+
+.container {
+    padding: 50px 20px;
+    max-width: 1000px;
+    margin: auto;
+}
+
+.question {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #1a1a1a;
+    border-radius: 12px;
+    box-shadow: 0 0 15px #00c6ff;
+    font-size: 24px; /* Increased font size for larger text */
+    line-height: 1.5; /* Increased line height for better readability */
+}
+
+input[type="text"] {
+    width: 50%;
+    padding: 10px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.correct {
+    background-color: #28a745;
+    color: white;
+}
+
+.incorrect {
+    background-color: #dc3545;
+    color: white;
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background: #00c6ff;
+    border: none;
+    border-radius: 20px;
+    color: #000;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #0072ff;
+    color: #fff;
+}
+
+.feedback {
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+#score {
+    font-size: 24px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+header {
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between; /* Space between title and button */
+    align-items: center; /* Vertically aligns items */
+    font-size: 2em;
+    letter-spacing: 2px;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.maths-starters-btn {
+    padding: 10px 20px;
+    background: #00c6ff;
+    border-radius: 20px;
+    color: #000;
+    font-size: 16px;
+    text-decoration: none;
+    margin-left: 20px; /* Space between title and button */
+    text-align: center;
+}
+
+.maths-starters-btn:hover {
+    background: #0072ff;
+    color: #fff;
+}
+
+@media screen and (max-width: 768px) {
+    header {
+        flex-direction: column; /* Stack title and button vertically */
+        align-items: flex-start; /* Align elements to the left */
+        text-align: center; /* Center the title */
+    }
+
+    .maths-starters-btn {
+        margin-left: 0; /* Remove left margin for better alignment */
+        margin-top: 10px; /* Space between title and button */
+    }
+
+    .question {
+        font-size: 20px; /* Adjust font size on mobile for better readability */
+    }
+}
+
+
+
+
+
+  </style>
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <h1>KS3 Maths Starters - Number</h1>
+        <a href="maths-starters-ks3.html" class="maths-starters-btn">Maths Starters</a>
+    </div>
+</header>
+
+
+<div class="container">
+  <div id="score">Score: 0</div>
+  <div id="quiz"></div>
+</div>
+
+<script>
+const questions = [
+  { q: "Find the area of a triangle with base 10cm and height 5cm.", a: "25" },
+  { q: "What is the sum of interior angles of a hexagon?", a: "720" },
+  { q: "Convert 5km to metres.", a: "5000" },
+  { q: "Find the circumference of a circle with radius 7cm. (Use \u03c0 = 3.14)", a: "43.96" },
+  { q: "Calculate the volume of a cube with side 4cm.", a: "64" },
+  { q: "Work out the area of a circle with radius 3cm. (\u03c0 = 3.14)", a: "28.26" },
+  { q: "Find the missing angle in a triangle if two angles are 65\u00b0 and 45\u00b0.", a: "70" },
+  { q: "Convert 2500ml to litres.", a: "2.5" },
+  { q: "A shape has rotational symmetry of order 4. What shape is it likely to be?", a: "square" },
+  { q: "Work out the surface area of a cube with side length 5cm.", a: "150" },
+  { q: "Find the perimeter of a rectangle with length 8cm and width 3cm.", a: "22" },
+  { q: "What is the volume of a cylinder with radius 2cm and height 10cm? (\u03c0 = 3.14)", a: "125.6" },
+  { q: "Find the exterior angle of a regular pentagon.", a: "72" },
+  { q: "Convert 1.5kg to grams.", a: "1500" },
+  { q: "Find the area of a trapezium with parallel sides 5cm and 9cm, height 4cm.", a: "28" },
+  { q: "Calculate the diagonal of a rectangle with sides 3cm and 4cm.", a: "5" },
+  { q: "What is the total surface area of a sphere with radius 6cm? (\u03c0 = 3.14)", a: "452.16" },
+  { q: "Convert 3 hours into minutes.", a: "180" },
+  { q: "Find the volume of a cuboid with dimensions 2cm \u00d7 3cm \u00d7 5cm.", a: "30" },
+  { q: "A regular polygon has exterior angles of 30\u00b0 each. How many sides does it have?", a: "12" }
+];
+
+let score = 0;
+
+function renderQuiz() {
+  const quiz = document.getElementById("quiz");
+  quiz.innerHTML = questions.map((q, idx) => `
+    <div class="question">
+      <p><b>Q${idx + 1}:</b> ${q.q}</p>
+      <input type="text" id="input${idx}">
+      <button onclick="checkAnswer(${idx})">Check</button>
+      <div id="feedback${idx}" class="feedback"></div>
+    </div>
+  `).join('');
+}
+
+function formatAnswer(ans) {
+  return ans.replace(/\s+/g, '').toLowerCase();
+}
+
+function checkAnswer(idx) {
+  const userInput = document.getElementById(`input${idx}`);
+  const feedback = document.getElementById(`feedback${idx}`);
+  const userAnswer = formatAnswer(userInput.value);
+  const correctAnswer = formatAnswer(questions[idx].a);
+
+  if (userAnswer === correctAnswer) {
+    feedback.innerHTML = "✅ Correct!";
+    feedback.style.color = "#0f0";
+    userInput.classList.add("correct");
+    score++;
+  } else {
+    feedback.innerHTML = `❌ Wrong! Correct: ${questions[idx].a}`;
+    feedback.style.color = "#f00";
+    userInput.classList.add("incorrect");
+  }
+  userInput.disabled = true;
+  document.getElementById("score").innerText = `Score: ${score}`;
+}
+
+renderQuiz();
+</script>
+<a href="maths-starters-ks3.html" class="maths-starters-btn">Maths Starters</a>
+
+</body>
+</html>

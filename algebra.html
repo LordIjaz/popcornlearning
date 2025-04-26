@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KS3 Maths Starters - Algebra</title>
+  <style>
+    body {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    font-family: 'Orbitron', sans-serif;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+header {
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    padding: 20px;
+    text-align: center;
+    font-size: 2em;
+    letter-spacing: 2px;
+}
+
+.container {
+    padding: 50px 20px;
+    max-width: 1000px;
+    margin: auto;
+}
+
+.question {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #1a1a1a;
+    border-radius: 12px;
+    box-shadow: 0 0 15px #00c6ff;
+    font-size: 24px; /* Increased font size for larger text */
+    line-height: 1.5; /* Increased line height for better readability */
+}
+
+input[type="text"] {
+    width: 50%;
+    padding: 10px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.correct {
+    background-color: #28a745;
+    color: white;
+}
+
+.incorrect {
+    background-color: #dc3545;
+    color: white;
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background: #00c6ff;
+    border: none;
+    border-radius: 20px;
+    color: #000;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #0072ff;
+    color: #fff;
+}
+
+.feedback {
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+#score {
+    font-size: 24px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+header {
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between; /* Space between title and button */
+    align-items: center; /* Vertically aligns items */
+    font-size: 2em;
+    letter-spacing: 2px;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.maths-starters-btn {
+    padding: 10px 20px;
+    background: #00c6ff;
+    border-radius: 20px;
+    color: #000;
+    font-size: 16px;
+    text-decoration: none;
+    margin-left: 20px; /* Space between title and button */
+    text-align: center;
+}
+
+.maths-starters-btn:hover {
+    background: #0072ff;
+    color: #fff;
+}
+
+@media screen and (max-width: 768px) {
+    header {
+        flex-direction: column; /* Stack title and button vertically */
+        align-items: flex-start; /* Align elements to the left */
+        text-align: center; /* Center the title */
+    }
+
+    .maths-starters-btn {
+        margin-left: 0; /* Remove left margin for better alignment */
+        margin-top: 10px; /* Space between title and button */
+    }
+
+    .question {
+        font-size: 20px; /* Adjust font size on mobile for better readability */
+    }
+}
+
+
+
+
+
+
+  </style>
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <h1>KS3 Maths Starters - Number</h1>
+        <a href="maths-starters-ks3.html" class="maths-starters-btn">Maths Starters</a>
+    </div>
+</header>
+
+
+<div class="container">
+  <div id="score">Score: 0</div>
+  <div id="quiz"></div>
+</div>
+
+<script>
+const questions = [
+  { q: "Simplify: 2x + 3x", a: ["5x"] },
+  { q: "Expand: (x + 4)(x - 5)", a: ["x^2-x-20"] },
+  { q: "Factorise: x² + 7x + 12", a: ["(x+3)(x+4)", "(x+4)(x+3)"] },
+  { q: "Solve for x: 3x - 7 = 11", a: ["6"] },
+  { q: "Simplify: (2x²)(-3x³)", a: ["-6x^5"] },
+  { q: "Expand and simplify: (x - 2)²", a: ["x^2-4x+4"] },
+  { q: "Factorise: 2x² + 8x", a: ["2x(x+4)"] },
+  { q: "Solve: 5(x - 2) = 3x + 4", a: ["7"] },
+  { q: "Simplify: (x³)²", a: ["x^6"] },
+  { q: "Expand: 3(x - 4)", a: ["3x-12"] },
+  { q: "Solve for x: x/5 = 3", a: ["15"] },
+  { q: "Simplify: 4a - 2a + 6", a: ["2a+6"] },
+  { q: "Expand: (2x - 3)(x + 5)", a: ["2x^2+7x-15"] },
+  { q: "Factorise: x² - 16", a: ["(x+4)(x-4)", "(x-4)(x+4)"] },
+  { q: "Solve: 2(x + 3) = x + 10", a: ["4"] },
+  { q: "Simplify: (3x²y)(-2xy²)", a: ["-6x^3y^3"] },
+  { q: "Expand and simplify: (x + 1)(x - 1)", a: ["x^2-1"] },
+  { q: "Factorise: 5x² - 20", a: ["5(x^2-4)", "5(x+2)(x-2)"] },
+  { q: "Solve for x: x² = 49", a: ["7", "-7"] },
+  { q: "Expand: (x - 3)(x + 2)", a: ["x^2-x-6"] },
+  { q: "Simplify fully: (2x³)(3x⁴)", a: ["6x^7"] },
+  { q: "Solve: 2x + 3 = 5x - 6", a: ["3"] },
+  { q: "Expand and simplify: (2x - 1)(x + 4)", a: ["2x^2+7x-4"] },
+  { q: "Factorise: x² + 2x - 15", a: ["(x+5)(x-3)", "(x-3)(x+5)"] },
+  { q: "Solve for x: 4(x - 1) = 2(x + 5)", a: ["7"] }
+];
+
+let score = 0;
+
+function renderQuiz() {
+  const quiz = document.getElementById("quiz");
+  quiz.innerHTML = questions.map((q, idx) => `
+    <div class="question">
+      <p><b>Q${idx + 1}:</b> ${q.q}</p>
+      <input type="text" id="input${idx}">
+      <button onclick="checkAnswer(${idx})">Check</button>
+      <div id="feedback${idx}" class="feedback"></div>
+    </div>
+  `).join('');
+}
+
+function formatAnswer(ans) {
+  return ans.replace(/\s+/g, '').toLowerCase().replace(/×/g, '*');
+}
+
+function checkAnswer(idx) {
+  const userInput = document.getElementById(`input${idx}`);
+  const feedback = document.getElementById(`feedback${idx}`);
+  const userAnswer = formatAnswer(userInput.value);
+  const correctAnswers = questions[idx].a.map(formatAnswer);
+
+  if (correctAnswers.includes(userAnswer)) {
+    feedback.innerHTML = "✅ Correct!";
+    feedback.style.color = "#0f0";
+    userInput.classList.add("correct");
+    score++;
+  } else {
+    feedback.innerHTML = `❌ Wrong! Correct: ${questions[idx].a[0]}`;
+    feedback.style.color = "#f00";
+    userInput.classList.add("incorrect");
+  }
+  userInput.disabled = true;
+  document.getElementById("score").innerText = `Score: ${score}`;
+}
+
+renderQuiz();
+</script>
+<a href="maths-starters-ks3.html" class="maths-starters-btn">Maths Starters</a>
+
+</body>
+</html>
+

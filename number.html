@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KS3 Maths Starters - Number</title>
+  <style>
+    body {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    font-family: 'Orbitron', sans-serif;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+header {
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    padding: 20px;
+    text-align: center;
+    font-size: 2em;
+    letter-spacing: 2px;
+}
+
+.container {
+    padding: 50px 20px;
+    max-width: 1000px;
+    margin: auto;
+}
+
+.question {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #1a1a1a;
+    border-radius: 12px;
+    box-shadow: 0 0 15px #00c6ff;
+    font-size: 24px; /* Increased font size for larger text */
+    line-height: 1.5; /* Increased line height for better readability */
+}
+
+input[type="text"] {
+    width: 50%;
+    padding: 10px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.correct {
+    background-color: #28a745;
+    color: white;
+}
+
+.incorrect {
+    background-color: #dc3545;
+    color: white;
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background: #00c6ff;
+    border: none;
+    border-radius: 20px;
+    color: #000;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #0072ff;
+    color: #fff;
+}
+
+.feedback {
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+#score {
+    font-size: 24px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+header {
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between; /* Space between title and button */
+    align-items: center; /* Vertically aligns items */
+    font-size: 2em;
+    letter-spacing: 2px;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.maths-starters-btn {
+    padding: 10px 20px;
+    background: #00c6ff;
+    border-radius: 20px;
+    color: #000;
+    font-size: 16px;
+    text-decoration: none;
+    margin-left: 20px; /* Space between title and button */
+    text-align: center;
+}
+
+.maths-starters-btn:hover {
+    background: #0072ff;
+    color: #fff;
+}
+
+@media screen and (max-width: 768px) {
+    header {
+        flex-direction: column; /* Stack title and button vertically */
+        align-items: flex-start; /* Align elements to the left */
+        text-align: center; /* Center the title */
+    }
+
+    .maths-starters-btn {
+        margin-left: 0; /* Remove left margin for better alignment */
+        margin-top: 10px; /* Space between title and button */
+    }
+
+    .question {
+        font-size: 20px; /* Adjust font size on mobile for better readability */
+    }
+}
+
+  </style>
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <h1>KS3 Maths Starters - Number</h1>
+        <a href="maths-starters-ks3.html" class="maths-starters-btn">Maths Starters</a>
+    </div>
+</header>
+
+
+<div class="container">
+  <div id="score">Score: 0</div>
+  <div id="quiz"></div>
+</div>
+
+<script>
+const questions = [
+  { q: "Simplify: (3²) × (3⁴)", a: ["3^6", "729"] },
+  { q: "Evaluate: 2⁵", a: ["32"] },
+  { q: "Simplify: (5³) ÷ (5²)", a: ["5^1", "5"] },
+  { q: "What is the cube root of 512?", a: ["8"] },
+  { q: "Expand: (x + 3)(x - 2)", a: ["x^2+x-6"] },
+  { q: "Factorise: x² - 9", a: ["(x+3)(x-3)", "(x-3)(x+3)"] },
+  { q: "Work out: 2/3 of 120", a: ["80"] },
+  { q: "Convert 0.375 into a fraction", a: ["3/8"] },
+  { q: "Find the HCF of 36 and 48", a: ["12"] },
+  { q: "Find the LCM of 4 and 6", a: ["12"] },
+  { q: "What is 25% of 240?", a: ["60"] },
+  { q: "Express 45 as a product of prime factors", a: ["3^2×5", "3×3×5"] },
+  { q: "Simplify: (2x²y)(3xy²)", a: ["6x^3y^3"] },
+  { q: "Calculate: 7² - 5²", a: ["24"] },
+  { q: "What is the reciprocal of 2/3?", a: ["3/2"] },
+  { q: "Solve for x: 2x + 7 = 21", a: ["7"] },
+  { q: "Simplify: 3(2x - 4) - 5(x + 2)", a: ["x-22"] },
+  { q: "Find the value of 4! (4 factorial)", a: ["24"] },
+  { q: "Estimate √50 to 1 decimal place", a: ["7.1"] },
+  { q: "Write 0.07 as a percentage", a: ["7%"] },
+  { q: "Convert 7/20 to a decimal", a: ["0.35"] },
+  { q: "Find 120% of 80", a: ["96"] },
+  { q: "Work out: (2³)²", a: ["2^6", "64"] },
+  { q: "Simplify: (4x²)³", a: ["64x^6"] },
+  { q: "Expand: (2x - 5)²", a: ["4x^2-20x+25"] }
+];
+
+let score = 0;
+
+function renderQuiz() {
+  const quiz = document.getElementById("quiz");
+  quiz.innerHTML = questions.map((q, idx) => `
+    <div class="question">
+      <p><b>Q${idx + 1}:</b> ${q.q}</p>
+      <input type="text" id="input${idx}">
+      <button onclick="checkAnswer(${idx})">Check</button>
+      <div id="feedback${idx}" class="feedback"></div>
+    </div>
+  `).join('');
+}
+
+function formatAnswer(ans) {
+  return ans.replace(/\s+/g, '').toLowerCase().replace(/×/g, '*');
+}
+
+function checkAnswer(idx) {
+  const userInput = document.getElementById(`input${idx}`);
+  const feedback = document.getElementById(`feedback${idx}`);
+  const userAnswer = formatAnswer(userInput.value);
+  const correctAnswers = questions[idx].a.map(formatAnswer);
+
+  if (correctAnswers.includes(userAnswer)) {
+    feedback.innerHTML = "✅ Correct!";
+    feedback.style.color = "#0f0";
+    userInput.classList.add("correct");
+    score++;
+  } else {
+    feedback.innerHTML = `❌ Wrong! Correct: ${questions[idx].a[0]}`;
+    feedback.style.color = "#f00";
+    userInput.classList.add("incorrect");
+  }
+  userInput.disabled = true;
+  document.getElementById("score").innerText = `Score: ${score}`;
+}
+
+renderQuiz();
+</script>
+<a href="maths-starters-ks3.html" class="maths-starters-btn">Maths Starters</a>
+
+</body>
+</html>
+
+ 
+
+
