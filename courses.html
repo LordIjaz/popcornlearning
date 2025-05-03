@@ -92,6 +92,22 @@
       transform: scale(1.05);
     }
 
+    /* Add styles for the search input */
+    .search-container {
+      margin-bottom: 20px;
+    }
+
+    .search-input {
+      padding: 10px;
+      font-size: 16px;
+      width: 300px;
+      border-radius: 25px;
+      border: none;
+      outline: none;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
     footer {
       background-color: #333;
       text-align: center;
@@ -137,54 +153,6 @@
       }
     }
   </style>
-   <style>
-.designed-by {
-    text-align: center;
-    font-size: 28px;
-    font-weight: 600;
-    color: #e5c100; /* Soft Gold */
-    -webkit-text-stroke: 0.5px black; /* Gentle outline */
-    text-shadow:
-        0 0 4px #e5c100,
-        0 0 8px #e5c100,
-        0 0 12px #e5c100;
-    animation:
-        luxuryGlow 10s infinite alternate,
-        fadeIn 2s ease forwards;
-    opacity: 0; /* Start invisible */
-    margin: 40px 0 20px 0;
-    letter-spacing: 1px;
-    font-family: 'Arial', sans-serif;
-}
-
-/* Glow colour change */
-@keyframes luxuryGlow {
-    0% {
-        color: #e5c100; /* Soft Gold */
-        text-shadow: 0 0 4px #e5c100, 0 0 8px #e5c100, 0 0 12px #e5c100;
-    }
-    33% {
-        color: #8ab6ff; /* Royal Blue */
-        text-shadow: 0 0 4px #8ab6ff, 0 0 8px #8ab6ff, 0 0 12px #8ab6ff;
-    }
-    66% {
-        color: #d0d0d0; /* Platinum */
-        text-shadow: 0 0 4px #d0d0d0, 0 0 8px #d0d0d0, 0 0 12px #d0d0d0;
-    }
-    100% {
-        color: #e5c100;
-        text-shadow: 0 0 4px #e5c100, 0 0 8px #e5c100, 0 0 12px #e5c100;
-    }
-}
-
-/* Fade-in effect */
-@keyframes fadeIn {
-    to {
-        opacity: 1;
-    }
-}
-</style>
-
 </head>
 <body>
 
@@ -235,6 +203,7 @@
     <a href="ranked-progression.html">Ranked Progress</a>
     <a href="avatar.html">Avatar</a>
     <a href="membership.html">Membership</a>
+    <a href="halloffame.html">Hall Of Fame</a>
     <a href="#" onclick="logout()" class="button">Logout</a>
   </div>
 </header>
@@ -248,22 +217,51 @@
     localStorage.removeItem("loggedInUser");
     window.location.href = "login.html";
   }
+
+  // Function to filter courses based on search input
+  function filterCourses() {
+    const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+    const courses = document.getElementsByClassName('course-button');
+    for (let course of courses) {
+      const courseName = course.textContent.toLowerCase();
+      if (courseName.includes(searchQuery)) {
+        course.style.display = 'block';
+      } else {
+        course.style.display = 'none';
+      }
+    }
+  }
 </script>
 
 <div class="main-content">
   <h2>Available Courses</h2>
-  <a href="ks3.html" class="button">KS3 Maths</a>
-  <a href="ks4.html" class="button">KS4 Maths</a>
-  <a href="maths-game.html" class="button">Multiplication Madness</a>
-  <a href="ks3-science.html" class="button">KS3 Science</a>
-  <a href="wordclash.html" class="button">Word Clash!</a>
-  <a href="challenge-mode.html" class="button">Ranked-Challenge Mode!</a>
-    <a href="maths-starters-ks3.html" class="button">Maths Starters!</a>
+  
+  <!-- Search input -->
+  <div class="search-container">
+    <input
+      type="text"
+      id="searchInput"
+      class="search-input"
+      placeholder="Search for a course..."
+      onkeyup="filterCourses()"
+    />
+  </div>
+  
+  <a href="halloffame.html" class="button course-button">The Hall Of Fame</a>
+  <a href="ks3.html" class="button course-button">KS3 Maths</a>
+  <a href="ks4.html" class="button course-button">KS4 Maths</a>
+  <a href="ks3-science.html" class="button course-button">KS3 Science</a>
+  <a href="maths-game.html" class="button course-button">Multiplication Madness</a>
+  <a href="wordclash.html" class="button course-button">Word Clash!</a>
+  <a href="challenge-mode.html" class="button course-button">Ranked-Challenge Mode!</a>
+  <a href="maths-starters-ks3.html" class="button course-button">Maths Starters!</a>
+  
 </div>
 
 <footer>
   <p>&copy; 2025 Popcorn Learning. All rights reserved.</p>
 </footer>
+
 <div class="designed-by">Designed and Developed by Isa Ijaz</div>
 
 </body>
