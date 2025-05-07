@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> History Course - Popcorn Learning</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: black;
+            color: white;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        header {
+            background: linear-gradient(45deg, #007BFF, #F0C808);
+            padding: 20px 40px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 10;
+        }
+        header h1 {
+            font-size: 36px;
+            color: white;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        header .nav-links a {
+            margin: 0 15px;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        header .nav-links a:hover {
+            color: #F0C808;
+        }
+        .main-content {
+            margin-top: 120px;
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(45deg, #1f1f1f, #333);
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        .main-content h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #F0C808;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .question-container {
+            margin-top: 30px;
+        }
+        .question {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        .input-box {
+            margin: 10px;
+            padding: 10px;
+            font-size: 18px;
+            border: 2px solid #007BFF;
+            border-radius: 5px;
+            background-color: #333;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .button {
+            background-color: #F0C808;
+            color: black;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 20px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #C79200;
+            transform: scale(1.05);
+        }
+        .feedback {
+            font-size: 20px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .correct {
+            color: #0f0;
+        }
+        .incorrect {
+            color: #f00;
+        }
+        .input-box.correct {
+            background-color: #0f0;
+            transition: background-color 0.5s ease;
+        }
+        .input-box.incorrect {
+            background-color: #f00;
+            transition: background-color 0.5s ease;
+        }
+        .input-box.warning {
+            background-color: purple;
+            transition: background-color 0.5s ease;
+        }
+        footer {
+            background-color: #333;
+            text-align: center;
+            padding: 20px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<script>
+    if (!localStorage.getItem("loggedInUser")) {
+        window.location.href = "login.html"; // Redirect to login page if not logged in
+    }
+</script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBNNcj4L1h0M0_Q8PFaE-Up-hyKMxnMvGY",
+    authDomain: "popcornlearning-332a5.firebaseapp.com",
+    projectId: "popcornlearning-332a5",
+    storageBucket: "popcornlearning-332a5.firebasestorage.app",
+    messagingSenderId: "923654716319",
+    appId: "1:923654716319:web:ceb873f28914652b6d1baa"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      // Not logged in, redirect to login
+      window.location.href = "login.html";
+    } else {
+      // Check if username exists in Firestore
+      const userDocRef = doc(db, "users", user.uid);
+      const userDocSnap = await getDoc(userDocRef);
+
+      if (!userDocSnap.exists() || !userDocSnap.data().username) {
+        // Redirect to set-username page if username is missing
+        window.location.href = "set-username.html";
+      }
+    }
+  });
+</script>
+
+<header>
+    <h1>Popcorn Learning</h1>
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="courses.html">Courses</a>
+        <a href="membership.html">Membership</a>
+        <a href="#" onclick="logout()" class="button">Logout</a>
+
+<script>
+    function logout() {
+        localStorage.removeItem("loggedInUser");
+        window.location.href = "login.html";
+    }
+</script>
+
+    </div>
+</header>
+
+<div class="main-content">
+    <h2>History Ks3</h2>
+    <p>(HINT: DO NOT USE SPACES) Test your geography skills with 30 questions!</p>
+    <div id="scoreDisplay">Score: 0</div>
+    
+    <div class="question-container" id="question-container">
+<script>
+const questions = [
+  { q: "Who was the first President of the United States?", a: "Washington" },
+  { q: "What empire was ruled by Julius Caesar?", a: "Rome" },
+  { q: "Who discovered America in 1492?", a: "Columbus" },
+  { q: "What wall divided Berlin during the Cold War?", a: "Berlin" },
+  { q: "Who was the British Prime Minister during WWII?", a: "Churchill" },
+  { q: "Which country was ruled by Napoleon Bonaparte?", a: "France" },
+  { q: "What was the name of the ship that sank in 1912?", a: "Titanic" },
+  { q: "Who was assassinated in 1865 by John Wilkes Booth?", a: "Lincoln" },
+  { q: "What ancient civilization built the pyramids?", a: "Egyptians" },
+  { q: "What war ended in 1945?", a: "WWII" },
+  { q: "Who led India to independence through nonviolence?", a: "Gandhi" },
+  { q: "Which U.S. president abolished slavery?", a: "Lincoln" },
+  { q: "Who was Queen of England during the Spanish Armada?", a: "Elizabeth" },
+  { q: "Which revolution began in 1789?", a: "French" },
+  { q: "Who was the first man on the moon?", a: "Armstrong" },
+  { q: "Which city was bombed in 1945 by the atomic bomb?", a: "Hiroshima" },
+  { q: "What event started WWII in 1939?", a: "Invasion" },
+  { q: "Who painted the Mona Lisa?", a: "DaVinci" },
+  { q: "Who was the first female Prime Minister of the UK?", a: "Thatcher" },
+  { q: "Which empire built the Colosseum?", a: "Roman" },
+  { q: "What country was formerly known as Persia?", a: "Iran" },
+  { q: "What wall was torn down in 1989?", a: "Berlin" },
+  { q: "Who was the U.S. president during WWI?", a: "Wilson" },
+  { q: "Which war was fought between the North and South in the U.S.?", a: "Civil" },
+  { q: "What document was signed in 1215?", a: "MagnaCarta" },
+  { q: "Who discovered gravity under an apple tree?", a: "Newton" },
+  { q: "What year did the Soviet Union collapse?", a: "1991" },
+  { q: "Which battle ended Napoleon’s reign?", a: "Waterloo" },
+  { q: "What plague killed millions in the 14th century?", a: "BlackDeath" },
+  { q: "Who was known as the Maid of Orléans?", a: "Joan" }
+];
+
+
+// Get or initialize score
+let score = localStorage.getItem('score') ? parseInt(localStorage.getItem('score')) : 0;
+document.getElementById("scoreDisplay").innerHTML = `Score: ${score}`;
+
+// Set attempts per question
+let attempts = Array(questions.length).fill(3);
+
+// Render questions
+document.write(
+  questions.map((q, i) =>
+    `<p>${q.q} <input id='q${i}' class='input-box'> 
+     <button class='button' onclick="checkAnswer(${i})">Submit</button> 
+     <span id='feedback${i}' class='feedback'></span></p>`
+  ).join("")
+);
+
+// Case-insensitive check function
+function checkAnswer(i) {
+  const inputBox = document.getElementById(`q${i}`);
+  const userAnswer = inputBox.value.trim().toLowerCase();
+  const correctAnswer = questions[i].a.toLowerCase();
+  const feedback = document.getElementById(`feedback${i}`);
+
+  if (attempts[i] > 0) {
+    if (userAnswer === correctAnswer) {
+      feedback.innerHTML = "✅ Correct!";
+      feedback.className = "feedback correct";
+      inputBox.className = "input-box correct";
+      inputBox.disabled = true;
+
+      score++;
+      document.getElementById("scoreDisplay").innerHTML = `Score: ${score}`;
+      localStorage.setItem('score', score);
+    } else {
+      attempts[i]--;
+      if (attempts[i] === 0) {
+        feedback.innerHTML = `❌ Incorrect! The correct answer was: ${questions[i].a}`;
+        feedback.className = "feedback incorrect";
+        inputBox.className = "input-box incorrect";
+        inputBox.disabled = true;
+      } else {
+        feedback.innerHTML = `❌ Incorrect! ${attempts[i]} attempt(s) left.`;
+        feedback.className = "feedback incorrect";
+        inputBox.className = "input-box warning";
+      }
+    }
+  }
+}
+</script>

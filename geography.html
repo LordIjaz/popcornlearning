@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Geography Course - Popcorn Learning</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: black;
+            color: white;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        header {
+            background: linear-gradient(45deg, #007BFF, #F0C808);
+            padding: 20px 40px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 10;
+        }
+        header h1 {
+            font-size: 36px;
+            color: white;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        header .nav-links a {
+            margin: 0 15px;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        header .nav-links a:hover {
+            color: #F0C808;
+        }
+        .main-content {
+            margin-top: 120px;
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(45deg, #1f1f1f, #333);
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        .main-content h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #F0C808;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .question-container {
+            margin-top: 30px;
+        }
+        .question {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        .input-box {
+            margin: 10px;
+            padding: 10px;
+            font-size: 18px;
+            border: 2px solid #007BFF;
+            border-radius: 5px;
+            background-color: #333;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .button {
+            background-color: #F0C808;
+            color: black;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 20px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #C79200;
+            transform: scale(1.05);
+        }
+        .feedback {
+            font-size: 20px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .correct {
+            color: #0f0;
+        }
+        .incorrect {
+            color: #f00;
+        }
+        .input-box.correct {
+            background-color: #0f0;
+            transition: background-color 0.5s ease;
+        }
+        .input-box.incorrect {
+            background-color: #f00;
+            transition: background-color 0.5s ease;
+        }
+        .input-box.warning {
+            background-color: purple;
+            transition: background-color 0.5s ease;
+        }
+        footer {
+            background-color: #333;
+            text-align: center;
+            padding: 20px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<script>
+    if (!localStorage.getItem("loggedInUser")) {
+        window.location.href = "login.html"; // Redirect to login page if not logged in
+    }
+</script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBNNcj4L1h0M0_Q8PFaE-Up-hyKMxnMvGY",
+    authDomain: "popcornlearning-332a5.firebaseapp.com",
+    projectId: "popcornlearning-332a5",
+    storageBucket: "popcornlearning-332a5.firebasestorage.app",
+    messagingSenderId: "923654716319",
+    appId: "1:923654716319:web:ceb873f28914652b6d1baa"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      // Not logged in, redirect to login
+      window.location.href = "login.html";
+    } else {
+      // Check if username exists in Firestore
+      const userDocRef = doc(db, "users", user.uid);
+      const userDocSnap = await getDoc(userDocRef);
+
+      if (!userDocSnap.exists() || !userDocSnap.data().username) {
+        // Redirect to set-username page if username is missing
+        window.location.href = "set-username.html";
+      }
+    }
+  });
+</script>
+
+<header>
+    <h1>Popcorn Learning</h1>
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="courses.html">Courses</a>
+        <a href="membership.html">Membership</a>
+        <a href="#" onclick="logout()" class="button">Logout</a>
+
+<script>
+    function logout() {
+        localStorage.removeItem("loggedInUser");
+        window.location.href = "login.html";
+    }
+</script>
+
+    </div>
+</header>
+
+<div class="main-content">
+    <h2>Geography Course</h2>
+    <p>(HINT: DO NOT USE SPACES) Test your geography skills with 30 questions!</p>
+    <div id="scoreDisplay">Score: 0</div>
+    
+    <div class="question-container" id="question-container">
+<script>
+const questions = [
+  { q: "What is the capital of France?", a: "Paris" },
+  { q: "Which continent is Egypt in?", a: "Africa" },
+  { q: "What is the largest ocean?", a: "Pacific" },
+  { q: "Which country is Tokyo in?", a: "Japan" },
+  { q: "What is the capital of Canada?", a: "Ottawa" },
+  { q: "Which desert is the largest?", a: "Sahara" },
+  { q: "What country is Berlin in?", a: "Germany" },
+  { q: "What is the capital of Australia?", a: "Canberra" },
+  { q: "What continent is Brazil in?", a: "SouthAmerica" },
+  { q: "Which river runs through Egypt?", a: "Nile" },
+  { q: "What is the capital of Italy?", a: "Rome" },
+  { q: "What is the capital of Spain?", a: "Madrid" },
+  { q: "Which continent is India in?", a: "Asia" },
+  { q: "Which ocean is east of Africa?", a: "Indian" },
+  { q: "What is the capital of China?", a: "Beijing" },
+  { q: "What is the capital of Russia?", a: "Moscow" },
+  { q: "Which country has Mount Fuji?", a: "Japan" },
+  { q: "Which continent is Argentina in?", a: "SouthAmerica" },
+  { q: "What is the capital of the UK?", a: "London" },
+  { q: "What is the capital of the USA?", a: "Washington" },
+  { q: "What is the capital of Mexico?", a: "MexicoCity" },
+  { q: "Which continent is Germany in?", a: "Europe" },
+  { q: "What is the capital of Egypt?", a: "Cairo" },
+  { q: "Which ocean borders California?", a: "Pacific" },
+  { q: "What is the capital of South Korea?", a: "Seoul" },
+  { q: "What is the capital of Nigeria?", a: "Abuja" },
+  { q: "What is the capital of Kenya?", a: "Nairobi" },
+  { q: "Which continent is Canada in?", a: "NorthAmerica" },
+  { q: "Which desert is in Australia?", a: "Outback" },
+  { q: "What is the capital of Greece?", a: "Athens" }
+];
+
+// Get or initialize score
+let score = localStorage.getItem('score') ? parseInt(localStorage.getItem('score')) : 0;
+document.getElementById("scoreDisplay").innerHTML = `Score: ${score}`;
+
+// Set attempts per question
+let attempts = Array(questions.length).fill(3);
+
+// Render questions
+document.write(
+  questions.map((q, i) =>
+    `<p>${q.q} <input id='q${i}' class='input-box'> 
+     <button class='button' onclick="checkAnswer(${i})">Submit</button> 
+     <span id='feedback${i}' class='feedback'></span></p>`
+  ).join("")
+);
+
+// Case-insensitive check function
+function checkAnswer(i) {
+  const inputBox = document.getElementById(`q${i}`);
+  const userAnswer = inputBox.value.trim().toLowerCase();
+  const correctAnswer = questions[i].a.toLowerCase();
+  const feedback = document.getElementById(`feedback${i}`);
+
+  if (attempts[i] > 0) {
+    if (userAnswer === correctAnswer) {
+      feedback.innerHTML = "✅ Correct!";
+      feedback.className = "feedback correct";
+      inputBox.className = "input-box correct";
+      inputBox.disabled = true;
+
+      score++;
+      document.getElementById("scoreDisplay").innerHTML = `Score: ${score}`;
+      localStorage.setItem('score', score);
+    } else {
+      attempts[i]--;
+      if (attempts[i] === 0) {
+        feedback.innerHTML = `❌ Incorrect! The correct answer was: ${questions[i].a}`;
+        feedback.className = "feedback incorrect";
+        inputBox.className = "input-box incorrect";
+        inputBox.disabled = true;
+      } else {
+        feedback.innerHTML = `❌ Incorrect! ${attempts[i]} attempt(s) left.`;
+        feedback.className = "feedback incorrect";
+        inputBox.className = "input-box warning";
+      }
+    }
+  }
+}
+</script>
