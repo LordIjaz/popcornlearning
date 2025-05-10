@@ -217,40 +217,47 @@
     }
 
     function evaluateAnswer(val) {
-      clearInterval(countdown);
-      if (val === correctAnswer) {
-        feedbackDisplay.textContent = '✅ Correct!';
-        setTimeout(() => {
-          mathPrompt.style.display = 'none';
-          if (pendingPoint === 'left') {
-            leftScore++;
-            if (leftScore >= winScore) return endGame("Left Player-WASD");
-          } else {
-            rightScore++;
-            if (rightScore >= winScore) return endGame("Right Player-Arrows");
-          }
-          updateScore();
-          resetBall();
-          isPaused = false;
-        }, 1000);
+  clearInterval(countdown);
+  const userAnswer = val ?? parseInt(answerInput.value);
+  if (userAnswer === correctAnswer) {
+    feedbackDisplay.textContent = '✅ Correct!';
+    setTimeout(() => {
+      mathPrompt.style.display = 'none';
+      if (pendingPoint === 'left') {
+        leftScore++;
+        if (leftScore >= winScore) return endGame("Left Player-WASD");
       } else {
-        feedbackDisplay.textContent = '❌ Incorrect!';
-        setTimeout(() => {
-          mathPrompt.style.display = 'none';
-          if (pendingPoint === 'left' && leftScore > 0) leftScore--;
-          if (pendingPoint === 'right' && rightScore > 0) rightScore--;
-          updateScore();
-          resetBall();
-          isPaused = false;
-        }, 1000);
+        rightScore++;
+        if (rightScore >= winScore) return endGame("Right Player-Arrows");
       }
-    }
+      updateScore();
+      resetBall();
+      isPaused = false;
+    }, 1000);
+  } else {
+    feedbackDisplay.textContent = '❌ Incorrect!';
+    setTimeout(() => {
+      mathPrompt.style.display = 'none';
+      if (pendingPoint === 'left' && leftScore > 0) leftScore--;
+      if (pendingPoint === 'right' && rightScore > 0) rightScore--;
+      updateScore();
+      resetBall();
+      isPaused = false;
+    }, 1000);
+  }
+}
 
-    answerInput.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') {
-        evaluateAnswer(parseInt(answerInput.value));
-      }
-    });
+    answerInput.addEventListener('input', function () {
+  const val = parseInt(answerInput.value);
+  if (!isNaN(val)) {
+    evaluateAnswer(val);
+  }
+});
+      answerInput.addEventListener('keydown', function (e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+  }
+});
 
     function update() {
       if (isPaused || gameOver) return;
@@ -319,9 +326,9 @@
     }
 
     function togglePause() {
-      if (gameOver) return;
-      isPaused = !isPaused;
-    }
+  if (gameOver || mathPrompt.style.display === 'block') return;
+  isPaused = !isPaused;
+}
 
     document.addEventListener('keydown', (e) => {
       switch (e.key) {
