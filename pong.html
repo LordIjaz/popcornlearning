@@ -222,10 +222,10 @@
           mathPrompt.style.display = 'none';
           if (pendingPoint === 'left') {
             leftScore++;
-            if (leftScore >= winScore) return endGame("Left Player");
+            if (leftScore >= winScore) return endGame("Left Player-WASD");
           } else {
             rightScore++;
-            if (rightScore >= winScore) return endGame("Right Player");
+            if (rightScore >= winScore) return endGame("Right Player-Arrows");
           }
           updateScore();
           resetBall();
