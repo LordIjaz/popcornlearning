@@ -248,11 +248,13 @@
 }
 
     answerInput.addEventListener('input', function () {
-  const val = parseInt(answerInput.value);
-  if (!isNaN(val)) {
+  const inputVal = answerInput.value;
+  const val = parseInt(inputVal);
+  if (!isNaN(val) && inputVal.length >= correctAnswer.toString().length) {
     evaluateAnswer(val);
   }
 });
+
       answerInput.addEventListener('keydown', function (e) {
   if (e.key === 'Enter') {
     e.preventDefault();
