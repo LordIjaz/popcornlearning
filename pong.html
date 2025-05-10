@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pong 2-Player</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(circle, #111, #000);
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    nav {
+      width: 100%;
+      background: #222;
+      padding: 10px;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: white;
+    }
+    canvas {
+      background: linear-gradient(to right, #111, #222);
+      border: 5px solid #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 20px #fff;
+      max-width: 100%;
+      height: auto;
+    }
+    .score {
+      font-size: 2rem;
+      font-weight: bold;
+      margin: 10px 0;
+      letter-spacing: 5px;
+      text-shadow: 2px 2px 8px rgba(255,255,255,0.3);
+    }
+    .controls {
+      margin: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      font-size: 1rem;
+      font-weight: bold;
+      background: #fff;
+      color: #111;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover { background: #ddd; }
+    .winner, .math-prompt {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 2rem;
+      font-weight: bold;
+      text-align: center;
+      color: #0f0;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 20px 40px;
+      border-radius: 10px;
+      display: none;
+    }
+    .math-prompt input {
+      display: block;
+      margin: 10px auto 0;
+      font-size: 1.2rem;
+      padding: 5px 10px;
+      width: 80%;
+    }
+    .math-prompt .timer {
+      font-size: 1.5rem;
+      margin-top: 10px;
+      color: #f00;
+    }
+    .feedback {
+      margin-top: 10px;
+      font-size: 1.2rem;
+    }
+    @media (max-width: 600px) {
+      .score { font-size: 1.5rem; }
+      .controls button { width: 100%; margin: 5px 0; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+  <a href="index.html" style="margin: 0 15px; color: white; text-decoration: none;">Home</a>
+  <a href="halloffame.html" style="margin: 0 15px; color: white; text-decoration: none;">Hall Of Fame</a>
+  <a href="courses.html" style="margin: 0 15px; color: white; text-decoration: none;">Courses</a>
+  <a href="maths-game.html" style="margin: 0 15px; color: white; text-decoration: none;">Multiplication Madness</a>
+</nav>
+  <div class="controls">
+    <button onclick="startGame()">Start / Restart</button>
+    <button onclick="togglePause()">Pause</button>
+  </div>
+  <div class="score" id="score">0 : 0</div>
+  <div class="winner" id="winner"></div>
+  <div class="math-prompt" id="mathPrompt">
+    <div id="question"></div>
+    <input id="answerInput" type="text" placeholder="Enter answer and press Enter" />
+    <div class="timer" id="timer">5</div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+  <canvas id="pong" width="800" height="500"></canvas>
+  <script>
+    const canvas = document.getElementById('pong');
+    const ctx = canvas.getContext('2d');
+    const scoreDisplay = document.getElementById('score');
+    const winnerDisplay = document.getElementById('winner');
+    const mathPrompt = document.getElementById('mathPrompt');
+    const questionEl = document.getElementById('question');
+    const answerInput = document.getElementById('answerInput');
+    const timerDisplay = document.getElementById('timer');
+    const feedbackDisplay = document.getElementById('feedback');
+
+    const paddleWidth = 10, paddleHeight = 100, ballSize = 10;
+    const speed = 8;
+    const winScore = 10;
+
+    const leftPaddle = { x: 10, y: canvas.height / 2 - 50, dy: 0 };
+    const rightPaddle = { x: canvas.width - 20, y: canvas.height / 2 - 50, dy: 0 };
+    const ball = { x: 0, y: 0, dx: 0, dy: 0 };
+
+    let leftScore = 0;
+    let rightScore = 0;
+    let animationFrame;
+    let isPaused = true;
+    let gameOver = false;
+    let pendingPoint = null;
+    let correctAnswer = 0;
+    let countdown;
+    let countdownTime = 5;
+
+    function drawRect(x, y, w, h, color) {
+      ctx.fillStyle = color;
+      ctx.fillRect(x, y, w, h);
+    }
+
+    function drawBall(x, y, size, color) {
+      ctx.fillStyle = color;
+      ctx.fillRect(x, y, size, size);
+    }
+
+    function updateScore() {
+      scoreDisplay.textContent = `${leftScore} : ${rightScore}`;
+    }
+
+    function resetBall() {
+      ball.x = canvas.width / 2;
+      ball.y = canvas.height / 2;
+      ball.dx = 6 * (Math.random() > 0.5 ? 1 : -1);
+      ball.dy = 6 * (Math.random() > 0.5 ? 1 : -1);
+    }
+
+    function endGame(winner) {
+      isPaused = true;
+      gameOver = true;
+      winnerDisplay.textContent = `${winner} Wins!`;
+      winnerDisplay.style.display = 'block';
+    }
+
+    function askMathQuestion(pending) {
+      isPaused = true;
+      pendingPoint = pending;
+      const a = Math.floor(Math.random() * 12 + 1);
+      const b = Math.floor(Math.random() * 12 + 1);
+      correctAnswer = a * b;
+      questionEl.textContent = `What is ${a} × ${b}?`;
+      feedbackDisplay.textContent = '';
+      answerInput.value = '';
+      timerDisplay.textContent = countdownTime;
+      mathPrompt.style.display = 'block';
+      answerInput.focus();
+      let remaining = countdownTime;
+      countdown = setInterval(() => {
+        remaining--;
+        timerDisplay.textContent = remaining;
+        if (remaining <= 0) {
+          clearInterval(countdown);
+          evaluateAnswer(null);
+        }
+      }, 1000);
+    }
+
+    function evaluateAnswer(val) {
+      clearInterval(countdown);
+      if (val === correctAnswer) {
+        feedbackDisplay.textContent = '✅ Correct!';
+        setTimeout(() => {
+          mathPrompt.style.display = 'none';
+          if (pendingPoint === 'left') {
+            leftScore++;
+            if (leftScore >= winScore) return endGame("Left Player");
+          } else {
+            rightScore++;
+            if (rightScore >= winScore) return endGame("Right Player");
+          }
+          updateScore();
+          resetBall();
+          isPaused = false;
+        }, 1000);
+      } else {
+        feedbackDisplay.textContent = '❌ Incorrect!';
+        setTimeout(() => {
+          mathPrompt.style.display = 'none';
+          if (pendingPoint === 'left' && leftScore > 0) leftScore--;
+          if (pendingPoint === 'right' && rightScore > 0) rightScore--;
+          updateScore();
+          resetBall();
+          isPaused = false;
+        }, 1000);
+      }
+    }
+
+    answerInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        evaluateAnswer(parseInt(answerInput.value));
+      }
+    });
+
+    function update() {
+      if (isPaused || gameOver) return;
+
+      leftPaddle.y += leftPaddle.dy;
+      rightPaddle.y += rightPaddle.dy;
+
+      ball.x += ball.dx;
+      ball.y += ball.dy;
+
+      if (leftPaddle.y < 0) leftPaddle.y = 0;
+      if (leftPaddle.y + paddleHeight > canvas.height) leftPaddle.y = canvas.height - paddleHeight;
+      if (rightPaddle.y < 0) rightPaddle.y = 0;
+      if (rightPaddle.y + paddleHeight > canvas.height) rightPaddle.y = canvas.height - paddleHeight;
+
+      if (ball.y <= 0 || ball.y + ballSize >= canvas.height) ball.dy *= -1;
+
+      if (
+        ball.x <= leftPaddle.x + paddleWidth &&
+        ball.y + ballSize > leftPaddle.y &&
+        ball.y < leftPaddle.y + paddleHeight
+      ) {
+        ball.dx *= -1.05;
+        ball.dy *= 1.05;
+        ball.x = leftPaddle.x + paddleWidth;
+      }
+
+      if (
+        ball.x + ballSize >= rightPaddle.x &&
+        ball.y + ballSize > rightPaddle.y &&
+        ball.y < rightPaddle.y + paddleHeight
+      ) {
+        ball.dx *= -1.05;
+        ball.dy *= 1.05;
+        ball.x = rightPaddle.x - ballSize;
+      }
+
+      if (ball.x < 0) askMathQuestion('right');
+      if (ball.x > canvas.width) askMathQuestion('left');
+    }
+
+    function draw() {
+      drawRect(0, 0, canvas.width, canvas.height, '#111');
+      drawRect(leftPaddle.x, leftPaddle.y, paddleWidth, paddleHeight, '#fff');
+      drawRect(rightPaddle.x, rightPaddle.y, paddleWidth, paddleHeight, '#fff');
+      drawBall(ball.x, ball.y, ballSize, '#fff');
+    }
+
+    function gameLoop() {
+      update();
+      draw();
+      animationFrame = requestAnimationFrame(gameLoop);
+    }
+
+    function startGame() {
+      leftScore = 0;
+      rightScore = 0;
+      updateScore();
+      resetBall();
+      isPaused = false;
+      gameOver = false;
+      winnerDisplay.style.display = 'none';
+      mathPrompt.style.display = 'none';
+      cancelAnimationFrame(animationFrame);
+      gameLoop();
+    }
+
+    function togglePause() {
+      if (gameOver) return;
+      isPaused = !isPaused;
+    }
+
+    document.addEventListener('keydown', (e) => {
+      switch (e.key) {
+        case 'w': leftPaddle.dy = -speed; break;
+        case 's': leftPaddle.dy = speed; break;
+        case 'ArrowUp': rightPaddle.dy = -speed; break;
+        case 'ArrowDown': rightPaddle.dy = speed; break;
+      }
+    });
+
+    document.addEventListener('keyup', (e) => {
+      switch (e.key) {
+        case 'w':
+        case 's': leftPaddle.dy = 0; break;
+        case 'ArrowUp':
+        case 'ArrowDown': rightPaddle.dy = 0; break;
+      }
+    });
+
+    updateScore();
+  </script>
+</body>
+</html>
+
