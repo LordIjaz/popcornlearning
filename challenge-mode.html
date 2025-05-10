@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3262030914719528"
+     crossorigin="anonymous"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Challenge Mode - Fractions Fiend</title>
@@ -174,15 +176,71 @@
 }
 
   </style>
+    <style>
+/* Glowing "Designed and Developed by Isa Ijaz" */
+.designed-by {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    color: #00ffff;
+    -webkit-text-stroke: 1px black; /* Sharper outline */
+    text-shadow:
+        0 0 6px #00ffff,
+        0 0 12px #00ffff,
+        0 0 18px #00ffff,
+        0 0 24px #00ffff;
+    animation: colourPulse 5s linear infinite, floatSway 4s ease-in-out infinite;
+    margin: 20px 0;
+}
+
+/* Colour changing animation */
+@keyframes colourPulse {
+  0% {
+    color: #00ffff;
+    text-shadow: 0 0 6px #00ffff, 0 0 12px #00ffff, 0 0 18px #00ffff, 0 0 24px #00ffff;
+  }
+  20% {
+    color: #ff00ff;
+    text-shadow: 0 0 6px #ff00ff, 0 0 12px #ff00ff, 0 0 18px #ff00ff, 0 0 24px #ff00ff;
+  }
+  40% {
+    color: #ffff00;
+    text-shadow: 0 0 6px #ffff00, 0 0 12px #ffff00, 0 0 18px #ffff00, 0 0 24px #ffff00;
+  }
+  60% {
+    color: #00ff00;
+    text-shadow: 0 0 6px #00ff00, 0 0 12px #00ff00, 0 0 18px #00ff00, 0 0 24px #00ff00;
+  }
+  80% {
+    color: #ff4500;
+    text-shadow: 0 0 6px #ff4500, 0 0 12px #ff4500, 0 0 18px #ff4500, 0 0 24px #ff4500;
+  }
+  100% {
+    color: #00ffff;
+    text-shadow: 0 0 6px #00ffff, 0 0 12px #00ffff, 0 0 18px #00ffff, 0 0 24px #00ffff;
+  }
+}
+
+/* Floating effect animation */
+@keyframes floatSway {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+</style>
+
 </head>
 <body>
+    
     <script>
     if (!localStorage.getItem("loggedInUser")) {
         window.location.href = "login.html"; // Redirect to login page if not logged in
     }
 </script>
   <header>🧙‍♂️ Challenge Mode: The Fractions Fiend</header>
-
   <div class="nav-buttons">
     <a href="index.html"><button>🏠 Home</button></a>
     <a href="ranked-progression.html"><button> Ranked Progress</button></a>
@@ -472,6 +530,8 @@ function getRandomFraction() {
     loadUserData();
     loadQuestion();
   </script>
+    <div class="designed-by">Designed and Developed by Isa Ijaz</div>
+
 </body>
 </html>
 
