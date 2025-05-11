@@ -109,7 +109,25 @@
       .score { font-size: 1.5rem; }
       .controls button { width: 100%; margin: 5px 0; }
     }
+      
   </style>
+    <style>
+  /* Add paused overlay */
+  #pauseOverlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 2.5rem;
+    font-weight: bold;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 20px 40px;
+    border-radius: 12px;
+    display: none;
+    z-index: 10;
+  }
+</style>
 </head>
 <body>
   <header class="bg-gradient-to-r from-gray-800 to-gray-900 text-white shadow-xl rounded-2xl p-6 m-4 text-center animate-fade-in w-full max-w-4xl">
@@ -233,6 +251,8 @@
       updateScore();
       resetBall();
       isPaused = false;
+      pauseOverlay.style.display = 'none';
+      gameLoop();
     }, 1000);
   } else {
     feedbackDisplay.textContent = '❌ Incorrect!';
@@ -243,9 +263,12 @@
       updateScore();
       resetBall();
       isPaused = false;
+      pauseOverlay.style.display = 'none';
+      gameLoop();
     }, 1000);
   }
 }
+
 
 
     answerInput.addEventListener('input', function () {
@@ -329,12 +352,16 @@
       gameLoop();
     }
 
+const pauseOverlay = document.getElementById('pauseOverlay');
+
 function togglePause() {
   if (gameOver || mathPrompt.style.display === 'block') return;
   isPaused = !isPaused;
   if (!isPaused) {
+    pauseOverlay.style.display = 'none';
     gameLoop();
   } else {
+    pauseOverlay.style.display = 'block';
     cancelAnimationFrame(animationFrame);
   }
 }
