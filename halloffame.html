@@ -245,6 +245,46 @@
                 text-shadow: 0 0 6px #00ffff, 0 0 12px #00ffff, 0 0 18px #00ffff, 0 0 24px #00ffff;
             }
         }
+        .hall-of-fame-description {
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #fff;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            margin-top: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            text-align: justify;
+            font-weight: normal;
+        }
+
+        .hall-of-fame-description h2 {
+            font-size: 2em;
+            margin-bottom: 15px;
+            color: #ffd700;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        /* Floating Animation */
+        @keyframes floatSway {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-6px);
+            }
+        }
+
+        /* FadeIn Animation for Container */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
 
         /* Floating effect animation */
         @keyframes floatSway {
@@ -300,7 +340,13 @@
             </div>
         </div>
     </div>
-
+<div class="hall-of-fame-description">
+            <h2>Welcome to Our Hall of Fame!</h2>
+            <p>The Hall of Fame is a tribute to those who have made exceptional contributions and achievements that resonate far beyond their fields. It celebrates individuals, teams, and organizations that have left an indelible mark on our community and the world at large.</p>
+            <p>Each inductee has demonstrated remarkable passion, dedication, and leadership. Whether through exceptional skill, innovative breakthroughs, or tireless service, these remarkable figures inspire us all to reach for greatness.</p>
+            <p>As you explore the profiles of our honorees, take a moment to reflect on their extraordinary journeys. From trailblazers who have broken barriers to visionaries who have sparked meaningful change, our Hall of Fame honors the very best of humanity's potential.</p>
+            <p>We are proud to showcase these legends and look forward to adding more incredible individuals to this prestigious list. Join us in celebrating their accomplishments, and remember: greatness is not defined solely by personal success but by the positive impact you leave on others.</p>
+        </div>
     <script>
         function toggleMenu() {
             const navLinks = document.querySelector('.nav-links');
