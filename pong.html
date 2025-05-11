@@ -21,19 +21,19 @@
     }
     * { box-sizing: border-box; }
     html, body {
-      margin: 0;
+  margin: 0;
   padding: 0;
+  height: auto;
+  min-height: 100vh;
+  width: 100%;
   background: radial-gradient(circle, #111, #000);
   color: #fff;
   font-family: 'Segoe UI', sans-serif;
-  height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   scroll-behavior: smooth;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-    }
+}
+
     nav {
       width: 100%;
       background: #222;
@@ -155,7 +155,8 @@
     <div class="timer" id="timer">5</div>
     <div class="feedback" id="feedback"></div>
   </div>
-  <canvas id="pong" width="800" height="500"></canvas>
+  <canvas id="pong" width="1000" height="600" style="width: 100%; height: auto; max-width: 1000px;"></canvas>
+
     <div style="height: 1000px; width: 100%; text-align: center; color: #fff; padding-top: 50px;">
   <h2 class="text-2xl font-bold">More Coming Soon...</h2>
   <p class="mt-4 text-lg">Stay tuned for more games and features!</p>
