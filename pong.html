@@ -329,9 +329,14 @@
       gameLoop();
     }
 
-    function togglePause() {
+function togglePause() {
   if (gameOver || mathPrompt.style.display === 'block') return;
   isPaused = !isPaused;
+  if (!isPaused) {
+    gameLoop();
+  } else {
+    cancelAnimationFrame(animationFrame);
+  }
 }
 
     document.addEventListener('keydown', (e) => {
