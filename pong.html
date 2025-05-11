@@ -247,7 +247,9 @@
   }
 }
 
+
     answerInput.addEventListener('input', function () {
+  answerInput.value = answerInput.value.replace(/\D/g, '');
   const inputVal = answerInput.value;
   const val = parseInt(inputVal);
   if (!isNaN(val) && inputVal.length >= correctAnswer.toString().length) {
