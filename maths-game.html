@@ -315,9 +315,7 @@
 </script>
 
 <script>
-  if (!localStorage.getItem("loggedInUser")) {
-    window.location.href = "login.html";
-  }
+ 
     async function saveScoreToLeaderboard(score) {
   const username = localStorage.getItem("loggedInUser") || "Anonymous";
   await db.collection("leaderboard").add({
