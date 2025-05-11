@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3262030914719528"
-     crossorigin="anonymous"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pong 2-Player</title>
@@ -21,19 +19,18 @@
     }
     * { box-sizing: border-box; }
     html, body {
-  margin: 0;
-  padding: 0;
-  height: auto;
-  min-height: 100vh;
-  width: 100%;
-  background: radial-gradient(circle, #111, #000);
-  color: #fff;
-  font-family: 'Segoe UI', sans-serif;
-  overflow-y: auto;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-}
-
+      margin: 0;
+      padding: 0;
+      height: auto;
+      min-height: 100vh;
+      width: 100%;
+      background: radial-gradient(circle, #111, #000);
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
     nav {
       width: 100%;
       background: #222;
@@ -107,60 +104,58 @@
       margin-top: 10px;
       font-size: 1.2rem;
     }
+    #pauseOverlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #fff;
+      font-size: 2.5rem;
+      font-weight: bold;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 20px 40px;
+      border-radius: 12px;
+      display: none;
+      z-index: 10;
+    }
     @media (max-width: 600px) {
       .score { font-size: 1.5rem; }
       .controls button { width: 100%; margin: 5px 0; }
     }
-      
   </style>
-    <style>
-  /* Add paused overlay */
-  #pauseOverlay {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #fff;
-    font-size: 2.5rem;
-    font-weight: bold;
-    background: rgba(0, 0, 0, 0.6);
-    padding: 20px 40px;
-    border-radius: 12px;
-    display: none;
-    z-index: 10;
-  }
-</style>
 </head>
 <body>
-  <header class="bg-gradient-to-r from-gray-800 to-gray-900 text-white shadow-xl rounded-2xl p-6 m-4 text-center animate-fade-in w-full max-w-4xl">
-    <h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-wide drop-shadow-lg retro-font">
-      Pong! <span class="text-blue-400">WASD</span> and <span class="text-red-400">Arrow keys!</span>
-    </h1>
-  </header>
-  <nav>
-    <a href="index.html" style="margin: 0 15px; color: white; text-decoration: none;">Home</a>
-    <a href="halloffame.html" style="margin: 0 15px; color: white; text-decoration: none;">Hall Of Fame</a>
-    <a href="courses.html" style="margin: 0 15px; color: white; text-decoration: none;">Courses</a>
-    <a href="maths-game.html" style="margin: 0 15px; color: white; text-decoration: none;">Multiplication Madness</a>
-  </nav>
-  <div class="controls">
-    <button onclick="startGame()">Start / Restart</button>
-    <button onclick="togglePause()">Pause</button>
-  </div>
-  <div class="score" id="score">0 : 0</div>
-  <div class="winner" id="winner"></div>
-  <div class="math-prompt" id="mathPrompt">
-    <div id="question"></div>
-    <input id="answerInput" type="text" placeholder="Enter answer and press Enter" />
-    <div class="timer" id="timer">5</div>
-    <div class="feedback" id="feedback"></div>
-  </div>
-  <canvas id="pong" width="1000" height="600" style="width: 100%; height: auto; max-width: 1000px;"></canvas>
-
+  <div class="flex flex-col items-center justify-center min-h-screen px-4">
+    <header class="bg-gradient-to-r from-gray-800 to-gray-900 text-white shadow-xl rounded-2xl p-6 m-4 text-center animate-fade-in w-full max-w-4xl">
+      <h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-wide drop-shadow-lg retro-font">
+        Pong! <span class="text-blue-400">WASD</span> and <span class="text-red-400">Arrow keys!</span>
+      </h1>
+    </header>
+    <nav>
+      <a href="index.html" style="margin: 0 15px; color: white; text-decoration: none;">Home</a>
+      <a href="halloffame.html" style="margin: 0 15px; color: white; text-decoration: none;">Hall Of Fame</a>
+      <a href="courses.html" style="margin: 0 15px; color: white; text-decoration: none;">Courses</a>
+      <a href="maths-game.html" style="margin: 0 15px; color: white; text-decoration: none;">Multiplication Madness</a>
+    </nav>
+    <div class="controls">
+      <button onclick="startGame()">Start / Restart</button>
+      <button onclick="togglePause()">Pause</button>
+    </div>
+    <div class="score" id="score">0 : 0</div>
+    <div class="winner" id="winner"></div>
+    <div class="math-prompt" id="mathPrompt">
+      <div id="question"></div>
+      <input id="answerInput" type="text" placeholder="Enter answer and press Enter" />
+      <div class="timer" id="timer">5</div>
+      <div class="feedback" id="feedback"></div>
+    </div>
+    <canvas id="pong" width="1000" height="600" style="width: 100%; height: auto; max-width: 1000px;"></canvas>
     <div style="height: 1000px; width: 100%; text-align: center; color: #fff; padding-top: 50px;">
-  <h2 class="text-2xl font-bold">More Coming Soon...</h2>
-  <p class="mt-4 text-lg">Stay tuned for more games and features!</p>
-</div>
+      <h2 class="text-2xl font-bold">More Coming Soon...</h2>
+      <p class="mt-4 text-lg">Stay tuned for more games and features!</p>
+    </div>
+  </div>
+  <div id="pauseOverlay">Paused</div>
 
   <script>
     const canvas = document.getElementById('pong');
