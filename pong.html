@@ -209,7 +209,7 @@ const feedbackDisplay = document.getElementById('feedback');
 const pauseOverlay = document.getElementById('pauseOverlay');
 
 const paddleWidth = 10, paddleHeight = 100, ballSize = 10, speed = 8, winScore = 10;
-const BASE_SPEED = 6, MAX_SPEED = 20;
+const BASE_SPEED = 6, MAX_SPEED = 12; // Reduced max speed
 const leftPaddle = { x: 10, y: canvas.height / 2 - 50, dy: 0 };
 const rightPaddle = { x: canvas.width - 20, y: canvas.height / 2 - 50, dy: 0 };
 const ball = { x: 0, y: 0, dx: 0, dy: 0 };
@@ -289,7 +289,10 @@ function evaluateAnswer(val) {
     updateScore();
     if (leftScore >= winScore) return endGame("Left Player-WASD");
     if (rightScore >= winScore) return endGame("Right Player-Arrows");
-    resetBall(); // Reset ball speed on answer
+    ball.dx = BASE_SPEED * (Math.random() > 0.5 ? 1 : -1);
+    ball.dy = BASE_SPEED * (Math.random() > 0.5 ? 1 : -1);
+    ball.x = canvas.width / 2;
+    ball.y = canvas.height / 2;
     isPaused = false;
     pauseOverlay.style.display = 'none';
     answering = false;
@@ -337,8 +340,8 @@ function update() {
     ball.y + ballSize > leftPaddle.y &&
     ball.y < leftPaddle.y + paddleHeight
   ) {
-    ball.dx = Math.max(Math.min(ball.dx * -1.1, MAX_SPEED), -MAX_SPEED);
-    ball.dy *= 1.05;
+    ball.dx = Math.max(Math.min(ball.dx * -1.05, MAX_SPEED), -MAX_SPEED);
+    ball.dy *= 1.02;
     ball.x = leftPaddle.x + paddleWidth;
   }
 
@@ -348,8 +351,8 @@ function update() {
     ball.y + ballSize > rightPaddle.y &&
     ball.y < rightPaddle.y + paddleHeight
   ) {
-    ball.dx = Math.max(Math.min(ball.dx * -1.1, MAX_SPEED), -MAX_SPEED);
-    ball.dy *= 1.05;
+    ball.dx = Math.max(Math.min(ball.dx * -1.05, MAX_SPEED), -MAX_SPEED);
+    ball.dy *= 1.02;
     ball.x = rightPaddle.x - ballSize;
   }
 
@@ -394,6 +397,7 @@ function togglePause() {
 
 updateScore();
 </script>
+
 
 
 
