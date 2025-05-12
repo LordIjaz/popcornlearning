@@ -289,10 +289,14 @@ function evaluateAnswer(val) {
     updateScore();
     if (leftScore >= winScore) return endGame("Left Player-WASD");
     if (rightScore >= winScore) return endGame("Right Player-Arrows");
-    ball.dx = BASE_SPEED * (Math.random() > 0.5 ? 1 : -1);
-    ball.dy = BASE_SPEED * (Math.random() > 0.5 ? 1 : -1);
+    ball.dx = 0;
+    ball.dy = 0;
     ball.x = canvas.width / 2;
     ball.y = canvas.height / 2;
+    setTimeout(() => {
+      ball.dx = BASE_SPEED * (Math.random() > 0.5 ? 1 : -1);
+      ball.dy = BASE_SPEED * (Math.random() > 0.5 ? 1 : -1);
+    }, 1000);
     isPaused = false;
     pauseOverlay.style.display = 'none';
     answering = false;
@@ -398,6 +402,7 @@ function togglePause() {
 
 updateScore();
 </script>
+
 
 
 
