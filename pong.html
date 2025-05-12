@@ -196,7 +196,7 @@
   </div>
   <div id="pauseOverlay">Paused</div>
 
- <script>
+<script>
 const canvas = document.getElementById('pong');
 const ctx = canvas.getContext('2d');
 const scoreDisplay = document.getElementById('score');
@@ -209,6 +209,7 @@ const feedbackDisplay = document.getElementById('feedback');
 const pauseOverlay = document.getElementById('pauseOverlay');
 
 const paddleWidth = 10, paddleHeight = 100, ballSize = 10, speed = 8, winScore = 10;
+const BASE_SPEED = 6, MAX_SPEED = 20;
 const leftPaddle = { x: 10, y: canvas.height / 2 - 50, dy: 0 };
 const rightPaddle = { x: canvas.width - 20, y: canvas.height / 2 - 50, dy: 0 };
 const ball = { x: 0, y: 0, dx: 0, dy: 0 };
@@ -234,8 +235,8 @@ function updateScore() {
 function resetBall() {
   ball.x = canvas.width / 2;
   ball.y = canvas.height / 2;
-  ball.dx = 6 * (Math.random() > 0.5 ? 1 : -1);
-  ball.dy = 6 * (Math.random() > 0.5 ? 1 : -1);
+  ball.dx = BASE_SPEED * (Math.random() > 0.5 ? 1 : -1);
+  ball.dy = BASE_SPEED * (Math.random() > 0.5 ? 1 : -1);
 }
 
 function endGame(winner) {
@@ -246,9 +247,9 @@ function endGame(winner) {
 }
 
 function askMathQuestion(pending) {
-  cancelAnimationFrame(animationFrame); // FIX 1
+  cancelAnimationFrame(animationFrame);
   isPaused = true;
-  ball.dx = 0; ball.dy = 0; // FIX 3
+  ball.dx = 0; ball.dy = 0;
   pendingPoint = pending;
   const a = Math.floor(Math.random() * 12 + 1);
   const b = Math.floor(Math.random() * 12 + 1);
@@ -271,14 +272,12 @@ function askMathQuestion(pending) {
 }
 
 function evaluateAnswer(val) {
-  if (answering) return; // FIX 2
+  if (answering) return;
   answering = true;
-
   clearInterval(countdown);
   const userAnswer = val ?? parseInt(answerInput.value);
   const correct = userAnswer === correctAnswer;
   feedbackDisplay.textContent = correct ? '✅ Correct!' : '❌ Incorrect!';
-
   setTimeout(() => {
     mathPrompt.style.display = 'none';
     if (correct) {
@@ -287,11 +286,9 @@ function evaluateAnswer(val) {
       if (pendingPoint === 'left' && leftScore > 0) leftScore--;
       if (pendingPoint === 'right' && rightScore > 0) rightScore--;
     }
-
     updateScore();
     if (leftScore >= winScore) return endGame("Left Player-WASD");
     if (rightScore >= winScore) return endGame("Right Player-Arrows");
-
     resetBall();
     isPaused = false;
     pauseOverlay.style.display = 'none';
@@ -302,6 +299,21 @@ function evaluateAnswer(val) {
 
 answerInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') evaluateAnswer();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (["ArrowUp", "ArrowDown", " "].includes(e.key)) e.preventDefault();
+  switch (e.key) {
+    case 'w': leftPaddle.dy = -speed; break;
+    case 's': leftPaddle.dy = speed; break;
+    case 'ArrowUp': rightPaddle.dy = -speed; break;
+    case 'ArrowDown': rightPaddle.dy = speed; break;
+  }
+});
+
+document.addEventListener('keyup', (e) => {
+  if (["w", "s"].includes(e.key)) leftPaddle.dy = 0;
+  if (["ArrowUp", "ArrowDown"].includes(e.key)) rightPaddle.dy = 0;
 });
 
 function update() {
@@ -319,22 +331,24 @@ function update() {
 
   if (ball.y <= 0 || ball.y + ballSize >= canvas.height) ball.dy *= -1;
 
+  // Paddle bounce - LEFT
   if (
     ball.x <= leftPaddle.x + paddleWidth &&
     ball.y + ballSize > leftPaddle.y &&
     ball.y < leftPaddle.y + paddleHeight
   ) {
-    ball.dx *= -1.05;
+    ball.dx = Math.max(Math.min(ball.dx * -1.1, MAX_SPEED), -MAX_SPEED);
     ball.dy *= 1.05;
     ball.x = leftPaddle.x + paddleWidth;
   }
 
+  // Paddle bounce - RIGHT
   if (
     ball.x + ballSize >= rightPaddle.x &&
     ball.y + ballSize > rightPaddle.y &&
     ball.y < rightPaddle.y + paddleHeight
   ) {
-    ball.dx *= -1.05;
+    ball.dx = Math.max(Math.min(ball.dx * -1.1, MAX_SPEED), -MAX_SPEED);
     ball.dy *= 1.05;
     ball.x = rightPaddle.x - ballSize;
   }
@@ -373,32 +387,10 @@ function startGame() {
 function togglePause() {
   if (gameOver || mathPrompt.style.display === 'block') return;
   isPaused = !isPaused;
-  if (!isPaused) {
-    pauseOverlay.style.display = 'none';
-    gameLoop();
-  } else {
-    pauseOverlay.style.display = 'block';
-    cancelAnimationFrame(animationFrame);
-  }
+  pauseOverlay.style.display = isPaused ? 'block' : 'none';
+  if (!isPaused) gameLoop();
+  else cancelAnimationFrame(animationFrame);
 }
-
-document.addEventListener('keydown', (e) => {
-  switch (e.key) {
-    case 'w': leftPaddle.dy = -speed; break;
-    case 's': leftPaddle.dy = speed; break;
-    case 'ArrowUp': rightPaddle.dy = -speed; break;
-    case 'ArrowDown': rightPaddle.dy = speed; break;
-  }
-});
-
-document.addEventListener('keyup', (e) => {
-  switch (e.key) {
-    case 'w':
-    case 's': leftPaddle.dy = 0; break;
-    case 'ArrowUp':
-    case 'ArrowDown': rightPaddle.dy = 0; break;
-  }
-});
 
 updateScore();
 </script>
