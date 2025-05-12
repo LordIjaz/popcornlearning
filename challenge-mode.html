@@ -307,7 +307,16 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
     import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
 
-    const apiKey = process.env.API_KEY;
+    const firebaseConfig = {
+  apiKey: process.env.API_KEY, // Get the API key from the environment variable
+  authDomain: "popcornlearning-332a5.firebaseapp.com",
+  databaseURL: "https://popcornlearning-332a5-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "popcornlearning-332a5",
+  storageBucket: "popcornlearning-332a5.appspot.com",
+  messagingSenderId: "227316807463",
+  appId: "1:227316807463:web:e8b5dbd2c1998a11faef26"
+};
+
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
