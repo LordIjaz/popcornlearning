@@ -378,7 +378,8 @@ function startGame() {
   rightScore = 0;
   updateScore();
   resetBall();
-  isPaused = false;
+    cancelAnimationFrame(animationFrame); // Ensure only one loop
+    isPaused = false;
   gameOver = false;
   winnerDisplay.style.display = 'none';
   mathPrompt.style.display = 'none';
@@ -397,6 +398,7 @@ function togglePause() {
 
 updateScore();
 </script>
+
 
 
 
