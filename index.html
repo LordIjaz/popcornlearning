@@ -305,14 +305,7 @@ footer {
   import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
   import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyBNNcj4L1h0M0_Q8PFaE-Up-hyKMxnMvGY",
-    authDomain: "popcornlearning-332a5.firebaseapp.com",
-    projectId: "popcornlearning-332a5",
-    storageBucket: "popcornlearning-332a5.firebasestorage.app",
-    messagingSenderId: "923654716319",
-    appId: "1:923654716319:web:ceb873f28914652b6d1baa"
-  };
+ const apiKey = process.env.API_KEY;
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
