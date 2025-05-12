@@ -196,205 +196,179 @@
   </div>
   <div id="pauseOverlay">Paused</div>
 
-  <script>
-    const canvas = document.getElementById('pong');
-    const ctx = canvas.getContext('2d');
-    const scoreDisplay = document.getElementById('score');
-    const winnerDisplay = document.getElementById('winner');
-    const mathPrompt = document.getElementById('mathPrompt');
-    const questionEl = document.getElementById('question');
-    const answerInput = document.getElementById('answerInput');
-    const timerDisplay = document.getElementById('timer');
-    const feedbackDisplay = document.getElementById('feedback');
+ <script>
+const canvas = document.getElementById('pong');
+const ctx = canvas.getContext('2d');
+const scoreDisplay = document.getElementById('score');
+const winnerDisplay = document.getElementById('winner');
+const mathPrompt = document.getElementById('mathPrompt');
+const questionEl = document.getElementById('question');
+const answerInput = document.getElementById('answerInput');
+const timerDisplay = document.getElementById('timer');
+const feedbackDisplay = document.getElementById('feedback');
+const pauseOverlay = document.getElementById('pauseOverlay');
 
-    const paddleWidth = 10, paddleHeight = 100, ballSize = 10;
-    const speed = 8;
-    const winScore = 10;
+const paddleWidth = 10, paddleHeight = 100, ballSize = 10, speed = 8, winScore = 10;
+const leftPaddle = { x: 10, y: canvas.height / 2 - 50, dy: 0 };
+const rightPaddle = { x: canvas.width - 20, y: canvas.height / 2 - 50, dy: 0 };
+const ball = { x: 0, y: 0, dx: 0, dy: 0 };
 
-    const leftPaddle = { x: 10, y: canvas.height / 2 - 50, dy: 0 };
-    const rightPaddle = { x: canvas.width - 20, y: canvas.height / 2 - 50, dy: 0 };
-    const ball = { x: 0, y: 0, dx: 0, dy: 0 };
+let leftScore = 0, rightScore = 0, animationFrame, isPaused = true, gameOver = false;
+let pendingPoint = null, correctAnswer = 0, countdown, countdownTime = 5;
+let answering = false;
 
-    let leftScore = 0;
-    let rightScore = 0;
-    let animationFrame;
-    let isPaused = true;
-    let gameOver = false;
-    let pendingPoint = null;
-    let correctAnswer = 0;
-    let countdown;
-    let countdownTime = 5;
-
-    function drawRect(x, y, w, h, color) {
-      ctx.fillStyle = color;
-      ctx.fillRect(x, y, w, h);
-    }
-
-    function drawBall(x, y, size, color) {
-      ctx.fillStyle = color;
-      ctx.fillRect(x, y, size, size);
-    }
-
-    function updateScore() {
-      scoreDisplay.textContent = `${leftScore} : ${rightScore}`;
-    }
-
-    function resetBall() {
-      ball.x = canvas.width / 2;
-      ball.y = canvas.height / 2;
-      ball.dx = 6 * (Math.random() > 0.5 ? 1 : -1);
-      ball.dy = 6 * (Math.random() > 0.5 ? 1 : -1);
-    }
-
-    function endGame(winner) {
-      isPaused = true;
-      gameOver = true;
-      winnerDisplay.textContent = `${winner} Wins!`;
-      winnerDisplay.style.display = 'block';
-    }
-
-    function askMathQuestion(pending) {
-      isPaused = true;
-      pendingPoint = pending;
-      const a = Math.floor(Math.random() * 12 + 1);
-      const b = Math.floor(Math.random() * 12 + 1);
-      correctAnswer = a * b;
-      questionEl.textContent = `What is ${a} × ${b}?`;
-      feedbackDisplay.textContent = '';
-      answerInput.value = '';
-      timerDisplay.textContent = countdownTime;
-      mathPrompt.style.display = 'block';
-      answerInput.focus();
-      let remaining = countdownTime;
-      countdown = setInterval(() => {
-        remaining--;
-        timerDisplay.textContent = remaining;
-        if (remaining <= 0) {
-          clearInterval(countdown);
-          evaluateAnswer(null);
-        }
-      }, 1000);
-    }
-
-    function evaluateAnswer(val) {
-  clearInterval(countdown);
-  const userAnswer = val ?? parseInt(answerInput.value);
-  if (userAnswer === correctAnswer) {
-    feedbackDisplay.textContent = '✅ Correct!';
-    setTimeout(() => {
-      mathPrompt.style.display = 'none';
-      if (pendingPoint === 'left') {
-        leftScore++;
-        if (leftScore >= winScore) return endGame("Left Player-WASD");
-      } else {
-        rightScore++;
-        if (rightScore >= winScore) return endGame("Right Player-Arrows");
-      }
-      updateScore();
-      resetBall();
-      isPaused = false;
-      pauseOverlay.style.display = 'none';
-      gameLoop();
-    }, 1000);
-  } else {
-    feedbackDisplay.textContent = '❌ Incorrect!';
-    setTimeout(() => {
-      mathPrompt.style.display = 'none';
-      if (pendingPoint === 'left' && leftScore > 0) leftScore--;
-      if (pendingPoint === 'right' && rightScore > 0) rightScore--;
-      updateScore();
-      resetBall();
-      isPaused = false;
-      pauseOverlay.style.display = 'none';
-      gameLoop();
-    }, 1000);
-  }
+function drawRect(x, y, w, h, color) {
+  ctx.fillStyle = color;
+  ctx.fillRect(x, y, w, h);
 }
 
+function drawBall(x, y, size, color) {
+  ctx.fillStyle = color;
+  ctx.fillRect(x, y, size, size);
+}
 
+function updateScore() {
+  scoreDisplay.textContent = `${leftScore} : ${rightScore}`;
+}
 
-    answerInput.addEventListener('input', function () {
-  answerInput.value = answerInput.value.replace(/\D/g, '');
-  const inputVal = answerInput.value;
-  const val = parseInt(inputVal);
-  if (!isNaN(val) && inputVal.length >= correctAnswer.toString().length) {
-    evaluateAnswer(val);
-  }
+function resetBall() {
+  ball.x = canvas.width / 2;
+  ball.y = canvas.height / 2;
+  ball.dx = 6 * (Math.random() > 0.5 ? 1 : -1);
+  ball.dy = 6 * (Math.random() > 0.5 ? 1 : -1);
+}
+
+function endGame(winner) {
+  isPaused = true;
+  gameOver = true;
+  winnerDisplay.textContent = `${winner} Wins!`;
+  winnerDisplay.style.display = 'block';
+}
+
+function askMathQuestion(pending) {
+  cancelAnimationFrame(animationFrame); // FIX 1
+  isPaused = true;
+  ball.dx = 0; ball.dy = 0; // FIX 3
+  pendingPoint = pending;
+  const a = Math.floor(Math.random() * 12 + 1);
+  const b = Math.floor(Math.random() * 12 + 1);
+  correctAnswer = a * b;
+  questionEl.textContent = `What is ${a} × ${b}?`;
+  feedbackDisplay.textContent = '';
+  answerInput.value = '';
+  timerDisplay.textContent = countdownTime;
+  mathPrompt.style.display = 'block';
+  answerInput.focus();
+  let remaining = countdownTime;
+  countdown = setInterval(() => {
+    remaining--;
+    timerDisplay.textContent = remaining;
+    if (remaining <= 0) {
+      clearInterval(countdown);
+      evaluateAnswer(null);
+    }
+  }, 1000);
+}
+
+function evaluateAnswer(val) {
+  if (answering) return; // FIX 2
+  answering = true;
+
+  clearInterval(countdown);
+  const userAnswer = val ?? parseInt(answerInput.value);
+  const correct = userAnswer === correctAnswer;
+  feedbackDisplay.textContent = correct ? '✅ Correct!' : '❌ Incorrect!';
+
+  setTimeout(() => {
+    mathPrompt.style.display = 'none';
+    if (correct) {
+      pendingPoint === 'left' ? leftScore++ : rightScore++;
+    } else {
+      if (pendingPoint === 'left' && leftScore > 0) leftScore--;
+      if (pendingPoint === 'right' && rightScore > 0) rightScore--;
+    }
+
+    updateScore();
+    if (leftScore >= winScore) return endGame("Left Player-WASD");
+    if (rightScore >= winScore) return endGame("Right Player-Arrows");
+
+    resetBall();
+    isPaused = false;
+    pauseOverlay.style.display = 'none';
+    answering = false;
+    gameLoop();
+  }, 1000);
+}
+
+answerInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') evaluateAnswer();
 });
 
-      answerInput.addEventListener('keydown', function (e) {
-  if (e.key === 'Enter') {
-    e.preventDefault();
+function update() {
+  if (isPaused || gameOver) return;
+
+  leftPaddle.y += leftPaddle.dy;
+  rightPaddle.y += rightPaddle.dy;
+  ball.x += ball.dx;
+  ball.y += ball.dy;
+
+  if (leftPaddle.y < 0) leftPaddle.y = 0;
+  if (leftPaddle.y + paddleHeight > canvas.height) leftPaddle.y = canvas.height - paddleHeight;
+  if (rightPaddle.y < 0) rightPaddle.y = 0;
+  if (rightPaddle.y + paddleHeight > canvas.height) rightPaddle.y = canvas.height - paddleHeight;
+
+  if (ball.y <= 0 || ball.y + ballSize >= canvas.height) ball.dy *= -1;
+
+  if (
+    ball.x <= leftPaddle.x + paddleWidth &&
+    ball.y + ballSize > leftPaddle.y &&
+    ball.y < leftPaddle.y + paddleHeight
+  ) {
+    ball.dx *= -1.05;
+    ball.dy *= 1.05;
+    ball.x = leftPaddle.x + paddleWidth;
   }
-});
 
-    function update() {
-      if (isPaused || gameOver) return;
+  if (
+    ball.x + ballSize >= rightPaddle.x &&
+    ball.y + ballSize > rightPaddle.y &&
+    ball.y < rightPaddle.y + paddleHeight
+  ) {
+    ball.dx *= -1.05;
+    ball.dy *= 1.05;
+    ball.x = rightPaddle.x - ballSize;
+  }
 
-      leftPaddle.y += leftPaddle.dy;
-      rightPaddle.y += rightPaddle.dy;
+  if (ball.x < 0) askMathQuestion('right');
+  if (ball.x > canvas.width) askMathQuestion('left');
+}
 
-      ball.x += ball.dx;
-      ball.y += ball.dy;
+function draw() {
+  drawRect(0, 0, canvas.width, canvas.height, '#111');
+  drawRect(leftPaddle.x, leftPaddle.y, paddleWidth, paddleHeight, '#fff');
+  drawRect(rightPaddle.x, rightPaddle.y, paddleWidth, paddleHeight, '#fff');
+  drawBall(ball.x, ball.y, ballSize, '#fff');
+}
 
-      if (leftPaddle.y < 0) leftPaddle.y = 0;
-      if (leftPaddle.y + paddleHeight > canvas.height) leftPaddle.y = canvas.height - paddleHeight;
-      if (rightPaddle.y < 0) rightPaddle.y = 0;
-      if (rightPaddle.y + paddleHeight > canvas.height) rightPaddle.y = canvas.height - paddleHeight;
+function gameLoop() {
+  update();
+  draw();
+  animationFrame = requestAnimationFrame(gameLoop);
+}
 
-      if (ball.y <= 0 || ball.y + ballSize >= canvas.height) ball.dy *= -1;
-
-      if (
-        ball.x <= leftPaddle.x + paddleWidth &&
-        ball.y + ballSize > leftPaddle.y &&
-        ball.y < leftPaddle.y + paddleHeight
-      ) {
-        ball.dx *= -1.05;
-        ball.dy *= 1.05;
-        ball.x = leftPaddle.x + paddleWidth;
-      }
-
-      if (
-        ball.x + ballSize >= rightPaddle.x &&
-        ball.y + ballSize > rightPaddle.y &&
-        ball.y < rightPaddle.y + paddleHeight
-      ) {
-        ball.dx *= -1.05;
-        ball.dy *= 1.05;
-        ball.x = rightPaddle.x - ballSize;
-      }
-
-      if (ball.x < 0) askMathQuestion('right');
-      if (ball.x > canvas.width) askMathQuestion('left');
-    }
-
-    function draw() {
-      drawRect(0, 0, canvas.width, canvas.height, '#111');
-      drawRect(leftPaddle.x, leftPaddle.y, paddleWidth, paddleHeight, '#fff');
-      drawRect(rightPaddle.x, rightPaddle.y, paddleWidth, paddleHeight, '#fff');
-      drawBall(ball.x, ball.y, ballSize, '#fff');
-    }
-
-    function gameLoop() {
-      update();
-      draw();
-      animationFrame = requestAnimationFrame(gameLoop);
-    }
-
-    function startGame() {
-      leftScore = 0;
-      rightScore = 0;
-      updateScore();
-      resetBall();
-      isPaused = false;
-      gameOver = false;
-      winnerDisplay.style.display = 'none';
-      mathPrompt.style.display = 'none';
-      cancelAnimationFrame(animationFrame);
-      gameLoop();
-    }
-
-const pauseOverlay = document.getElementById('pauseOverlay');
+function startGame() {
+  leftScore = 0;
+  rightScore = 0;
+  updateScore();
+  resetBall();
+  isPaused = false;
+  gameOver = false;
+  winnerDisplay.style.display = 'none';
+  mathPrompt.style.display = 'none';
+  answering = false;
+  cancelAnimationFrame(animationFrame);
+  gameLoop();
+}
 
 function togglePause() {
   if (gameOver || mathPrompt.style.display === 'block') return;
@@ -408,26 +382,27 @@ function togglePause() {
   }
 }
 
-    document.addEventListener('keydown', (e) => {
-      switch (e.key) {
-        case 'w': leftPaddle.dy = -speed; break;
-        case 's': leftPaddle.dy = speed; break;
-        case 'ArrowUp': rightPaddle.dy = -speed; break;
-        case 'ArrowDown': rightPaddle.dy = speed; break;
-      }
-    });
+document.addEventListener('keydown', (e) => {
+  switch (e.key) {
+    case 'w': leftPaddle.dy = -speed; break;
+    case 's': leftPaddle.dy = speed; break;
+    case 'ArrowUp': rightPaddle.dy = -speed; break;
+    case 'ArrowDown': rightPaddle.dy = speed; break;
+  }
+});
 
-    document.addEventListener('keyup', (e) => {
-      switch (e.key) {
-        case 'w':
-        case 's': leftPaddle.dy = 0; break;
-        case 'ArrowUp':
-        case 'ArrowDown': rightPaddle.dy = 0; break;
-      }
-    });
+document.addEventListener('keyup', (e) => {
+  switch (e.key) {
+    case 'w':
+    case 's': leftPaddle.dy = 0; break;
+    case 'ArrowUp':
+    case 'ArrowDown': rightPaddle.dy = 0; break;
+  }
+});
 
-    updateScore();
-  </script>
+updateScore();
+</script>
+
 <div class="hall-of-fame-description">Popcorn Pong is a fast-paced reaction game designed to enhance hand-eye coordination, concentration, and cognitive reflexes. Inspired by the classic arcade game, this version brings a fun twist with vibrant visuals and educational value. While it may appear simple, Pong actually helps students develop skills essential for classroom focus and sports performance. Studies have shown that playing games that require rapid responses can improve the brain’s processing speed. Popcorn Pong invites learners to take short breaks from intense study sessions while still engaging their minds actively. The game mechanics involve controlling a paddle to bounce a ball back and forth, requiring constant attention and fast decision-making. It’s particularly effective for improving lateral thinking and adapting to changing speeds. In a digital learning context, Pong also encourages time management, as players must strategise their moves and pace themselves. Although it’s a recreational feature on Popcorn Learning, it still aligns with our goal of holistic education — nurturing not only academic excellence but also cognitive agility. We encourage students to challenge themselves, beat their high scores, and enjoy a fun moment between lessons. Whether you're waiting for the next class or looking to refresh your brain after a maths challenge, Popcorn Pong offers a quick, enjoyable way to stay mentally sharp. This game is suitable for all ages and can be played solo or with a friend for some light-hearted competition. Remember, healthy screen time includes moments of playful interaction — and Popcorn Pong offers just that with its clean interface, responsive controls, and cheerful soundtrack. Join in the fun and discover how even a classic arcade game can be part of your educational journey!
 
 </div> 
