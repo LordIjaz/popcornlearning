@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3262030914719528"
-     crossorigin="anonymous"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Multiplication Madness - Popcorn Learning</title>
@@ -178,101 +176,6 @@
       50% { transform: translateY(-15px); }
     }
   </style>
-    <style>
-/* Glowing "Designed and Developed by Isa Ijaz" */
-.designed-by {
-    text-align: center;
-    font-size: 28px;
-    font-weight: bold;
-    color: #00ffff;
-    -webkit-text-stroke: 1px black; /* Sharper outline */
-    text-shadow:
-        0 0 6px #00ffff,
-        0 0 12px #00ffff,
-        0 0 18px #00ffff,
-        0 0 24px #00ffff;
-    animation: colourPulse 5s linear infinite, floatSway 4s ease-in-out infinite;
-    margin: 20px 0;
-}
-
-/* Colour changing animation */
-@keyframes colourPulse {
-  0% {
-    color: #00ffff;
-    text-shadow: 0 0 6px #00ffff, 0 0 12px #00ffff, 0 0 18px #00ffff, 0 0 24px #00ffff;
-  }
-  20% {
-    color: #ff00ff;
-    text-shadow: 0 0 6px #ff00ff, 0 0 12px #ff00ff, 0 0 18px #ff00ff, 0 0 24px #ff00ff;
-  }
-  40% {
-    color: #ffff00;
-    text-shadow: 0 0 6px #ffff00, 0 0 12px #ffff00, 0 0 18px #ffff00, 0 0 24px #ffff00;
-  }
-  60% {
-    color: #00ff00;
-    text-shadow: 0 0 6px #00ff00, 0 0 12px #00ff00, 0 0 18px #00ff00, 0 0 24px #00ff00;
-  }
-  80% {
-    color: #ff4500;
-    text-shadow: 0 0 6px #ff4500, 0 0 12px #ff4500, 0 0 18px #ff4500, 0 0 24px #ff4500;
-  }
-  100% {
-    color: #00ffff;
-    text-shadow: 0 0 6px #00ffff, 0 0 12px #00ffff, 0 0 18px #00ffff, 0 0 24px #00ffff;
-  }
-}
-        .hall-of-fame-description { 
-
-            font-size: 1.2em; 
-
-            line-height: 1.8; 
-
-            color: #fff; 
-
-            padding: 20px; 
-
-            background: rgba(0, 0, 0, 0.7); 
-
-            border-radius: 10px; 
-
-            margin-top: 30px; 
-
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3); 
-
-            text-align: justify; 
-
-            font-weight: normal; 
-
-        } 
-
-  
-
-        .hall-of-fame-description h2 { 
-
-            font-size: 2em; 
-
-            margin-bottom: 15px; 
-
-            color: #ffd700; 
-
-            font-weight: bold; 
-
-            text-transform: uppercase; 
-
-        } 
-
-/* Floating effect animation */
-@keyframes floatSway {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
-}
-</style>
-
     <!-- Firebase App (Core) -->
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
@@ -315,7 +218,9 @@
 </script>
 
 <script>
- 
+  if (!localStorage.getItem("loggedInUser")) {
+    window.location.href = "login.html";
+  }
     async function saveScoreToLeaderboard(score) {
   const username = localStorage.getItem("loggedInUser") || "Anonymous";
   await db.collection("leaderboard").add({
@@ -345,26 +250,39 @@
 
 </script>
 <!-- Firebase SDKs -->
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
 
 <script>
   const firebaseConfig = {
-    apiKey: "AIzaSyBNNcj4L1h0M0_Q8PFaE-Up-hyKMxnMvGY", 
-
-  authDomain: "popcornlearning-332a5.firebaseapp.com", 
-
-  projectId: "popcornlearning-332a5", 
-
-  storageBucket: "popcornlearning-332a5.firebasestorage.app", 
-
-  messagingSenderId: "923654716319", 
-
-  appId: "1:923654716319:web:ceb873f28914652b6d1baa", 
+    apiKey: "AIzaSyBNNcj4L1h0M0_Q8PFaE-Up-hyKMxnMvGY",
+    authDomain: "popcornlearning-332a5.firebaseapp.com",
+    projectId: "popcornlearning-332a5",
+    storageBucket: "popcornlearning-332a5.appspot.com",
+    messagingSenderId: "923654716319",
+    appId: "1:923654716319:web:ceb873f28914652b6d1baa"
   };
 
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
+  const auth = firebase.auth();
+
+  auth.onAuthStateChanged(async (user) => {
+    if (!user) {
+      window.location.href = "login.html";
+    } else {
+      const userDocRef = db.collection("users").doc(user.uid);
+      const userDoc = await userDocRef.get();
+      if (!userDoc.exists || !userDoc.data().username) {
+        window.location.href = "set-username.html";
+      } else {
+        // Store username in localStorage (for easy access)
+        localStorage.setItem("loggedInUser", userDoc.data().username);
+        loadLeaderboard();
+      }
+    }
+  });
 
   async function saveScoreToLeaderboard(score) {
     const username = localStorage.getItem("loggedInUser") || "Anonymous";
@@ -377,19 +295,30 @@
   }
 
   async function loadLeaderboard() {
-    const leaderboardRef = db.collection("leaderboard").orderBy("score", "desc").limit(5);
-    const snapshot = await leaderboardRef.get();
     const leaderboardEl = document.getElementById("leaderboard-entries");
     leaderboardEl.innerHTML = "";
 
+    const snapshot = await db.collection("leaderboard")
+      .orderBy("score", "desc")
+      .limit(10)
+      .get();
+
     snapshot.forEach(doc => {
       const data = doc.data();
-      const entry = document.createElement("li");
-      entry.textContent = `${data.username}: ${data.score}`;
-      leaderboardEl.appendChild(entry);
+      const li = document.createElement("li");
+      li.textContent = `${data.username}: ${data.score}`;
+      leaderboardEl.appendChild(li);
+    });
+  }
+
+  function logout() {
+    firebase.auth().signOut().then(() => {
+      localStorage.removeItem("loggedInUser");
+      window.location.href = "login.html";
     });
   }
 </script>
+
 
 <header>
   <h1>Popcorn Learning</h1>
@@ -407,7 +336,8 @@
   <h2>Answer as many as you can in 60 seconds!</h2>
   <div id="countdown" class="countdown"></div>
   <div id="question">Loading...</div>
-<input type="number" id="answer" placeholder="Type your answer..." autofocus />
+<input type="number" id="answer" inputmode="numeric" pattern="[0-9]*" placeholder="Type your answer..." autofocus />
+
 
 
   <div id="score">Score: 0</div>
@@ -533,19 +463,8 @@
   startGame();
   loadLeaderboard();
 };
-<div class="hall-of-fame-description"Multiplication Madness is Popcorn Learning’s fast-paced, action-packed maths game designed to test and improve your multiplication skills under pressure. Built for students in Key Stage 2 and 3, this game transforms maths practice into a high-energy challenge where accuracy and speed go hand in hand. The game gives you 60 seconds to solve as many multiplication problems as possible. Each correct answer scores a point, but beware — wrong answers subtract a point, encouraging precision as well as pace. A colourful timer bar shrinks as time runs out, building excitement and focus. The game also features fun sound effects, vibrant animations, and a smooth interface that engages learners from the moment they start. Designed with gamification in mind, it includes a real-time leaderboard where students can track their best scores and compete with others, fostering healthy competition and personal growth. You can even submit your score and aim to be the best of the best! Whether you're warming up for a maths lesson or enjoying a quick brain workout at home, Multiplication Madness is perfect for building confidence in multiplication tables and mental arithmetic. The game is optimised for desktop and tablet use and blends education with entertainment seamlessly. Teachers can use it as a starter activity, a revision tool, or a reward for hard work, while students can play again and again to beat their personal bests. By turning core skills into a game, Popcorn Learning helps students see maths in a new light. Get ready, set... multiply!
 
-></div> 
 </script>
-    <footer>
-  <nav>
-    <ul>
-      <li><a href="/privacypolicy.html">Privacy Policy</a></li>
-      <!-- Add other footer links here if needed -->
-    </ul>
-  </nav>
-</footer>
-
     <audio id="correct-sound" src="correct.mp3" preload="auto"></audio>
   <audio id="wrong-sound" src="wrong.mp3" preload="auto"></audio>
   <script src="script.js"></script>
@@ -553,9 +472,7 @@
     <!-- Your game content here -->
 
     <script src="script.js"></script>
-        
 </body>
-
 
 </body>
 </html>
