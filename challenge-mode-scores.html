@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Challenge Mode - Leaderboard</title>
@@ -91,45 +90,7 @@
       color: white;
       text-transform: uppercase;
     }
-.hall-of-fame-description { 
 
-            font-size: 1.2em; 
-
-            line-height: 1.8; 
-
-            color: #fff; 
-
-            padding: 20px; 
-
-            background: rgba(0, 0, 0, 0.7); 
-
-            border-radius: 10px; 
-
-            margin-top: 30px; 
-
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3); 
-
-            text-align: justify; 
-
-            font-weight: normal; 
-
-        } 
-
-  
-
-        .hall-of-fame-description h2 { 
-
-            font-size: 2em; 
-
-            margin-bottom: 15px; 
-
-            color: #ffd700; 
-
-            font-weight: bold; 
-
-            text-transform: uppercase; 
-
-        } 
     /* Glow effect based on rank */
     .unreal { background: linear-gradient(to right, #7f00ff, #d900ff); }
     .champion { background: linear-gradient(to right, #ff0033, #ff6633); }
@@ -142,9 +103,13 @@
   </style>
 </head>
 <body>
-    
+    <script>
+    if (!localStorage.getItem("loggedInUser")) {
+        window.location.href = "login.html"; // Redirect to login page if not logged in
+    }
+</script>
   <header>🧙‍♂️ Challenge Mode - Leaderboard</header>
-  
+
   <!-- Home Button -->
   <div>
     <button class="home-btn" onclick="window.location.href='index.html'">Home</button>
@@ -172,24 +137,22 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
     import { getDatabase, ref, get, orderByChild, limitToFirst } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
 
-
-const firebaseConfig = {
-    apiKey: "AIzaSyBNNcj4L1h0M0_Q8PFaE-Up-hyKMxnMvGY",
-    authDomain: "popcornlearning-332a5.firebaseapp.com",
-    projectId: "popcornlearning-332a5",
-    storageBucket: "popcornlearning-332a5.firebasestorage.app",
-    messagingSenderId: "923654716319",
-    appId: "1:923654716319:web:ceb873f28914652b6d1baa"
-  };
-
-
+    const firebaseConfig = {
+      apiKey: "AIzaSyC4s2aWk3XkKqgzV_Bz3-s-VWk8ZPMTLNY",
+      authDomain: "popcornlearning-332a5.firebaseapp.com",
+      databaseURL: "https://popcornlearning-332a5-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "popcornlearning-332a5",
+      storageBucket: "popcornlearning-332a5.appspot.com",
+      messagingSenderId: "227316807463",
+      appId: "1:227316807463:web:e8b5dbd2c1998a11faef26"
+    };
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
     function getLeaderboard() {
       const leaderboardRef = ref(db, 'challengeUsers');
-      
+
       get(leaderboardRef, orderByChild('xp'), limitToFirst(10))
         .then((snapshot) => {
           if (snapshot.exists()) {
@@ -304,16 +267,6 @@ const firebaseConfig = {
     // Fetch leaderboard when the page loads
     getLeaderboard();
   </script>
-    <div class="hall-of-fame-description"></div> 
-    <footer>
-  <nav>
-    <ul>
-      <li><a href="/privacypolicy.html">Privacy Policy</a></li>
-      <!-- Add other footer links here if needed -->
-    </ul>
-  </nav>
-</footer>
-
 </body>
 </html>
 
