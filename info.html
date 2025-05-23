@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3262030914719528"
+     crossorigin="anonymous"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Popcorn Learning</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      background: black;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      overflow-x: hidden;
+      position: relative;
+      text-align: center;
+      padding: 20px;
+    }
+    #particles-js {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+    main {
+      position: relative;
+      z-index: 1;
+      animation: fadeInUp 1.5s ease forwards;
+      max-width: 1200px;
+      width: 100%;
+    }
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    h1 {
+      font-size: 2.8rem;
+      margin-bottom: 1.5rem;
+      animation: glow 2s infinite alternate;
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #ff0, 0 0 20px #ff0; }
+      to { text-shadow: 0 0 20px #facc15, 0 0 30px #facc15; }
+    }
+    p {
+      font-size: 1.15rem;
+      max-width: 700px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.7;
+    }
+    .floating-popcorn {
+      position: absolute;
+      font-size: 4rem;
+      animation: float 3s ease-in-out infinite;
+      z-index: 1;
+    }
+    .pop1 { top: 20%; left: 25%; animation-delay: 0s; }
+    .pop2 { top: 30%; right: 20%; animation-delay: 1s; }
+    .pop3 { top: 50%; left: 50%; animation-delay: 2s; }
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+      100% { transform: translateY(0); }
+    }
+    .button {
+      display: inline-block;
+      padding: 12px 24px;
+      font-size: 1rem;
+      background-color: #facc15;
+      color: #000;
+      text-decoration: none;
+      border-radius: 1rem;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    .button:hover {
+      background-color: #fde047;
+    }
+    .info-boxes {
+      display: flex;
+      gap: 30px;
+      margin-top: 80px;
+      justify-content: center;
+      flex-wrap: wrap;
+      z-index: 1;
+      position: relative;
+    }
+    .info-box {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid #facc15;
+      border-radius: 1rem;
+      padding: 24px;
+      width: 100%;
+      max-width: 320px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-sizing: border-box;
+    }
+    .info-box:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 20px #facc15;
+    }
+    .info-box h3 {
+      margin-top: 0;
+      color: #facc15;
+      font-size: 1.3rem;
+    }
+    .info-box p {
+      font-size: 1rem;
+      color: #eee;
+    }
+    .floating-fact {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1rem;
+      color: #facc15;
+      opacity: 0.8;
+      animation: driftDown 60s linear infinite;
+      white-space: nowrap;
+    }
+    .fact1 { top: -10%; animation-delay: 0s; }
+    .fact2 { top: -20%; animation-delay: 15s; }
+    .fact3 { top: -30%; animation-delay: 30s; }
+    @keyframes driftDown {
+      0% { transform: translate(-50%, 0); opacity: 0.5; }
+      100% { transform: translate(-50%, 100vh); opacity: 0; }
+    }
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.2rem;
+      }
+      p {
+        font-size: 1rem;
+      }
+      .info-boxes {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="particles-js"></div>
+  <div class="floating-popcorn pop1">🍿</div>
+  <div class="floating-popcorn pop2">🍿</div>
+  <div class="floating-popcorn pop3">🍿</div>
+  <div class="floating-fact fact1">🍿 Did you know? Popcorn kernels can pop up to 3 feet in the air!</div>
+  <div class="floating-fact fact2">🎥 Americans eat around 17 billion quarts of popcorn each year!</div>
+  <div class="floating-fact fact3">🌽 Only one variety of corn can pop - Zea mays everta!</div>
+  <main>
+    <h1>Welcome to Popcorn Learning</h1>
+    <p>Bite-sized, explosive knowledge moments. Like popcorn, it's quick, fun, and unforgettable. Dive into our futuristic world where knowledge pops in the air and lands in your brain.</p>
+    <a href="index.html" class="button">Back to Home</a>
+    <div class="info-boxes">
+      <div class="info-box">
+        <h3>Popcorn History</h3>
+        <p>Popcorn has been enjoyed for over 5,000 years—first discovered in ancient Peru!</p>
+      </div>
+      <div class="info-box">
+        <h3>Explosive Science</h3>
+        <p>Each kernel has moisture that turns to steam and causes a mini-explosion when heated.</p>
+      </div>
+      <div class="info-box">
+        <h3>Movie Must-Have</h3>
+        <p>Popcorn became the #1 movie snack during the Great Depression thanks to its low cost.</p>
+      </div>
+    </div>
+
+    <section style="margin-top: 100px; padding: 40px 20px; background: rgba(255,255,255,0.05); border-radius: 1rem; max-width: 900px; margin-left: auto; margin-right: auto;">
+      <h2 style="color: #facc15; font-size: 2rem; margin-bottom: 20px;">About Us</h2>
+      <p style="font-size: 1.1rem; line-height: 1.8; color: #eee;">
+        At Popcorn Learning, we’re redefining the way you absorb knowledge. Our mission is to make education engaging, accessible, and fun—just like popcorn. We deliver bite-sized, explosive learning experiences designed to pop into your brain and stick. Whether it's quick facts, entertaining lessons, or interactive content, we're here to ignite curiosity and feed your hunger for learning, one kernel at a time.
+      </p>
+    </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script>
+    particlesJS("particles-js", {
+      particles: {
+        number: { value: 100 },
+        size: { value: 4 },
+        shape: {
+          type: "star",
+          stroke: { width: 1, color: "#facc15" }
+        },
+        color: { value: "#facc15" },
+        move: { speed: 1 },
+        line_linked: {
+          enable: true,
+          distance: 150,
+          color: "#facc15",
+          opacity: 0.4,
+          width: 1
+        }
+      },
+      interactivity: {
+        detect_on: "canvas",
+        events: {
+          onhover: { enable: true, mode: "grab" },
+          onclick: { enable: true, mode: "push" },
+          resize: true
+        },
+        modes: {
+          grab: { distance: 200, line_linked: { opacity: 1 } },
+          push: { particles_nb: 4 }
+        }
+      },
+      retina_detect: true
+    });
+  </script>
+</body>
+</html>
+
+
